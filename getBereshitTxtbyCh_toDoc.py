@@ -206,7 +206,7 @@ def prompt_user_choice():
     print("2. Get Genesis Chapters 1-50")
     print("3. Open english Torah Site")
 
-    choice = input("Enter 1 or 2: ").strip()
+    choice = input("Please enter a number: 1 through 3.: ").strip()
 
     if choice == "1":
         # Call the function to get a specific Genesis chapter
