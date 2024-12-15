@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import Select
 import time
+import subprocess
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -147,8 +148,8 @@ def get_Genesis_and_verses(chapter_number):
         time.sleep(5)  # Wait for 5 seconds to observe the result
         driver.quit()
 
-# Main entry point
-if __name__ == "__main__":
+# Encapsulated main function
+def main_get_gen_ch():
     # Prompt the user for the chapter number between 1 and 50
     chapter_number = input("Enter the chapter number (1-50): ").strip()
 
@@ -159,3 +160,49 @@ if __name__ == "__main__":
         get_Genesis_and_verses(chapter_number)  # Pass the chapter number to the function
     else:
         print("Invalid chapter number. Please enter a number between 1 and 50.")
+
+def main_get_gen():
+    # Iterate through chapters 1 to 50
+    for chapter_number in range(1, 51):
+        # Convert the chapter number to a two-digit string if necessary
+        chapter_number_str = str(chapter_number).zfill(2)
+        # Get the verses for the chapter
+        get_Genesis_and_verses(chapter_number_str)
+
+
+# Function to open a website in Google Chrome on macOS
+def main_open_website_with_chrome(website_url):
+    try:
+        # Path to the Google Chrome executable on macOS
+        chrome_path = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        subprocess.Popen([chrome_path, website_url])  # Launch Chrome without tying it to the Python script
+        print(f"Website {website_url} opened in Google Chrome successfully.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def prompt_user_choice():
+    # Ask the user to choose between the two options
+    print("Choose an option:")
+    print("1. Get Genesis Chapter for a specific number")
+    print("2. Get Genesis Chapters 1-50")
+    print("3. Open english Torah Site")
+
+    choice = input("Enter 1 or 2: ").strip()
+
+    if choice == "1":
+        # Call the function to get a specific Genesis chapter
+        main_get_gen_ch()
+    elif choice == "2":
+        # Call the function to get all Genesis chapters from 1 to 50
+        main_get_gen()
+    elif choice == "3":
+        # Call the function to get all Genesis chapters from 1 to 50
+        eng_website_url = "http://www.mnemotrix.com/texis/vtx/chumash"
+        main_open_website_with_chrome(eng_website_url)
+    else:
+        print("Invalid choice. Please enter a number: 1 through 3.")
+        prompt_user_choice()  # Recurse until a valid choice is made
+
+# Call prompt_user_choice in the main entry point
+if __name__ == "__main__":
+    prompt_user_choice()
