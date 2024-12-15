@@ -1,15 +1,17 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.ui import Select
-import time
-import subprocess
-from bs4 import BeautifulSoup
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from docx import Document  # Import the python-docx library
+from selenium import webdriver                                      # For automating and controlling the web browser
+from selenium.webdriver.common.by import By                         # For locating elements on the web page
+from selenium.webdriver.chrome.service import Service               # For initializing and configuring the ChromeDriver
+from webdriver_manager.chrome import ChromeDriverManager            # Manages downloading and setting up ChromeDriver
+from selenium.webdriver.support.ui import Select                    # For interacting with drop-down menus (select elements)
+import time                                                         # For pausing the execution of the program (e.g., sleep or wait)
+import subprocess                                                   # For running system commands and interacting with the system shell
+from bs4 import BeautifulSoup                                       # For parsing and navigating HTML or XML content
+from selenium.webdriver.support.ui import WebDriverWait             # For waiting for elements to appear on the page
+from selenium.webdriver.support import expected_conditions as EC    # For defining the expected conditions for elements
+from docx import Document                                           # For creating and modifying Word documents
+import os                                                           # For file and directory operations (e.g., working with paths, creating folders)
+import shutil                                                       # For file operations (e.g., moving, copying, and deleting files)
+                                                                    ################################################################################################
 
 ##################################################################################
 # Generic function to select an option from a dropdown
@@ -220,7 +222,7 @@ def main_open_website_with_chrome(website_url):
 # Call prompt_user_choice in the main entry point
 ##################################################################################
 def prompt_user_choice():
-    # Ask the user to choose between the two options
+    # Ask the user to choose between the options
     print("Choose an option:")
     print("1. Get Genesis Chapter for a specific number")
     print("2. Get Genesis Chapters 1-50")
@@ -243,7 +245,40 @@ def prompt_user_choice():
         prompt_user_choice()  # Recurse until a valid choice is made
 
 ##################################################################################
+# Move all the current word files in current directory to a specific folder. 
+##################################################################################
+def move_word_files_to_folder(destination_folder):
+    # Get the current directory
+    current_directory = os.getcwd()
+
+    # Ensure the destination folder exists, if not create it
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+
+    # Loop through all files in the current directory
+    for file_name in os.listdir(current_directory):
+        # Check if the file is a Word document (.docx)
+        if file_name.endswith('.docx'):
+            # Construct the full file path
+            source_file = os.path.join(current_directory, file_name)
+            destination_file = os.path.join(destination_folder, file_name)
+
+            # Move the file (replace if it already exists)
+            try:
+                shutil.move(source_file, destination_file)
+                print(f"Moved: {file_name}")
+            except Exception as e:
+                print(f"Error moving {file_name}: {e}")
+
+##################################################################################
 # Call prompt_user_choice in the main entry point
 ##################################################################################
 if __name__ == "__main__":
+    # Ask the user to choose between the options - retrieve data 
     prompt_user_choice()
+
+    # put the data in correct directory if needed
+    subfolder_name = 'bereshit_eng_files'  # Replace with your folder path
+    current_directory = os.getcwd()
+    destination_folder = os.path.join(current_directory, subfolder_name)
+    move_word_files_to_folder(destination_folder)
