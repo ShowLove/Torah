@@ -1,5 +1,8 @@
 
 # Python Virtual Environment Guide
+## TO PUSH
+```bash
+git push origin main
 
 ## TO ACTIVATE
 ```bash
