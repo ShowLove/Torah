@@ -11,7 +11,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from docx import Document  # Import the python-docx library
 
+##################################################################################
 # Generic function to select an option from a dropdown
+##################################################################################
 def select_option(driver, dropdown_name, option_text):
     try:
         dropdown = Select(driver.find_element(By.NAME, dropdown_name))
@@ -29,7 +31,9 @@ def click_link(driver, link_text):
     except Exception as e:
         print(f"An error occurred while clicking the link '{link_text}': {e}")
 
+##################################################################################
 # Function to click a submit button
+##################################################################################
 def click_submit_button(driver):
     try:
         submit_button = driver.find_element(By.XPATH, "//input[@type='submit' and @value='GO']")
@@ -48,6 +52,9 @@ def get_current_url(driver):
         print(f"An error occurred while retrieving the current URL: {e}")
         return None
 
+##################################################################################
+# Grabs all verses and their text from the web page.
+##################################################################################
 def grab_verses(driver):
     """
     Grabs all verses and their text from the web page.
@@ -94,7 +101,9 @@ def grab_verses(driver):
         print(f"An error occurred while grabbing verses: {e}")
         return []
 
+##################################################################################
 # Function to save verses to a Word document
+##################################################################################
 def save_to_word(verses, filename):
     """
     Save a list of verses to a Word document.
@@ -117,6 +126,9 @@ def save_to_word(verses, filename):
     doc.save(filename)
     print(f"Verses have been saved to {filename}")
 
+##################################################################################
+# Extract the full link string from book and chapter information
+##################################################################################
 def extract_full_string(html_content):
     # Parse the HTML with BeautifulSoup
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -134,7 +146,9 @@ def extract_full_string(html_content):
     
     return None  # Return None if the string is not found
 
+##################################################################################
 # Main process to get Genesis and feed the URL into the verse-grabbing function
+##################################################################################
 def get_Genesis_and_verses(chapter_number):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("http://www.mnemotrix.com/texis/vtx/chumash")  # Replace with your desired URL
@@ -167,7 +181,9 @@ def get_Genesis_and_verses(chapter_number):
         time.sleep(5)  # Wait for 5 seconds to observe the result
         driver.quit()
 
+##################################################################################
 # Encapsulated main function
+##################################################################################
 def main_get_gen_ch():
     # Prompt the user for the chapter number between 1 and 50
     chapter_number = input("Enter the chapter number (1-50): ").strip()
@@ -188,8 +204,9 @@ def main_get_gen():
         # Get the verses for the chapter
         get_Genesis_and_verses(chapter_number_str)
 
-
+##################################################################################
 # Function to open a website in Google Chrome on macOS
+##################################################################################
 def main_open_website_with_chrome(website_url):
     try:
         # Path to the Google Chrome executable on macOS
@@ -199,6 +216,9 @@ def main_open_website_with_chrome(website_url):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+##################################################################################
+# Call prompt_user_choice in the main entry point
+##################################################################################
 def prompt_user_choice():
     # Ask the user to choose between the two options
     print("Choose an option:")
@@ -222,6 +242,8 @@ def prompt_user_choice():
         print("Invalid choice. Please enter a number: 1 through 3.")
         prompt_user_choice()  # Recurse until a valid choice is made
 
+##################################################################################
 # Call prompt_user_choice in the main entry point
+##################################################################################
 if __name__ == "__main__":
     prompt_user_choice()
