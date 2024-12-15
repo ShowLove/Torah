@@ -94,7 +94,14 @@ def grab_verses(driver):
         return []
 
 # Function to save verses to a Word document
-def save_to_word(verses, filename="Genesis_Chapters.docx"):
+def save_to_word(verses, filename):
+    """
+    Save a list of verses to a Word document.
+
+    Parameters:
+        verses (list of tuples): Each tuple contains a verse number and verse text.
+        filename (str): The name of the Word file to save the verses.
+    """
     # Create a new Document
     doc = Document()
 
@@ -131,8 +138,9 @@ def get_Genesis_and_verses(chapter_number):
         driver.get(final_url)  # Navigate to the final URL
         verses = grab_verses(driver)
 
-        # Step 5: Save the verses to a Word document
-        save_to_word(verses)
+        # Step 5: Save the verses to a Word document with the specified filename format
+        filename = f"gen_{chapter_number}.docx"
+        save_to_word(verses, filename)
 
     finally:
         # Step Last: Wait and Quit
