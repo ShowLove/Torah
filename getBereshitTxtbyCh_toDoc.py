@@ -117,6 +117,23 @@ def save_to_word(verses, filename):
     doc.save(filename)
     print(f"Verses have been saved to {filename}")
 
+def extract_full_string(html_content):
+    # Parse the HTML with BeautifulSoup
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    # Find all links in the HTML content
+    links = soup.find_all('a', href=True)
+    
+    # Loop through all links to find the partial string "Bereishis/Genesis, Chapter 01"
+    for link in links:
+        # Check if the link text contains the partial string
+        if 'Bereishis/Genesis, Chapter' in link.get_text():
+            # Prepend "Bereishis: " to the found link text to get the full string
+            full_string = link.get_text().strip()
+            return full_string
+    
+    return None  # Return None if the string is not found
+
 # Main process to get Genesis and feed the URL into the verse-grabbing function
 def get_Genesis_and_verses(chapter_number):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -129,7 +146,9 @@ def get_Genesis_and_verses(chapter_number):
         click_submit_button(driver)  # Click the submit button
 
         # Step 2: Click the link on the second page
-        link_text = f"Bereishis: Bereishis/Genesis, Chapter {chapter_number}"  # Use chapter_number in the link text
+        html_content = driver.page_source
+        link_text = extract_full_string(html_content)
+        #link_text = f"Bereishis/Genesis, Chapter {chapter_number}"  # Use chapter_number in the link text
         click_link(driver, link_text)
 
         # Step 3: Retrieve and print the final URL
