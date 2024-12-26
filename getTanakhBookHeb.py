@@ -1,5 +1,19 @@
 import json
-import os
+                                                                    ################################################################################################
+from selenium import webdriver                                      # For automating and controlling the web browser
+from selenium.webdriver.common.by import By                         # For locating elements on the web page
+from selenium.webdriver.chrome.service import Service               # For initializing and configuring the ChromeDriver
+from webdriver_manager.chrome import ChromeDriverManager            # Manages downloading and setting up ChromeDriver
+from selenium.webdriver.support.ui import Select                    # For interacting with drop-down menus (select elements)
+import time                                                         # For pausing the execution of the program (e.g., sleep or wait)
+import subprocess                                                   # For running system commands and interacting with the system shell
+from bs4 import BeautifulSoup                                       # For parsing and navigating HTML or XML content
+from selenium.webdriver.support.ui import WebDriverWait             # For waiting for elements to appear on the page
+from selenium.webdriver.support import expected_conditions as EC    # For defining the expected conditions for elements
+from docx import Document                                           # For creating and modifying Word documents
+import os                                                           # For file and directory operations (e.g., working with paths, creating folders)
+import shutil                                                       # For file operations (e.g., moving, copying, and deleting files)
+                                                                    ################################################################################################
 
 # Load data from the external JSON file
 def load_data():
@@ -113,9 +127,58 @@ def get_chapter_and_verse_from_user(tanakh_division_name, book_name):
         print("Invalid chapter or verse choice.")
         return None, None  # Return None if invalid
 
+##################################################################################
+##################################################################################
+# Web scraper functions
+##################################################################################
+##################################################################################
+
+
+##################################################################################
+# Generic function to select an option from a dropdown
+##################################################################################
+def select_option(driver, dropdown_name, option_text):
+    try:
+        dropdown = Select(driver.find_element(By.NAME, dropdown_name))
+        dropdown.select_by_visible_text(option_text)
+        print(f"Option '{option_text}' selected from dropdown '{dropdown_name}'.")
+    except Exception as e:
+        print(f"Error selecting option '{option_text}' from dropdown '{dropdown_name}': {e}")
+
+##################################################################################
+# Function to click a specific link
+##################################################################################
+def click_link(driver, link_text):
+    try:
+        link = driver.find_element(By.LINK_TEXT, link_text)
+        link.click()
+        print(f"Link with text '{link_text}' clicked.")
+    except Exception as e:
+        print(f"An error occurred while clicking the link '{link_text}': {e}")
+
 if __name__ == "__main__":
     tanakh_division_name, book_choice_num, book_name = getTanakhBook()
     chapter_choice, verse_choice = get_chapter_and_verse_from_user(tanakh_division_name, book_name)
-
     print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{verse_choice} ")
 
+    # Open the website
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver.get("https://www.chabad.org/library/bible_cdo/aid/63255/jewish/The-Bible-with-Rashi.htm")  # Replace with your desired URL
+
+    # Step 1: Select the desired tanakh section
+    if tanakh_division_name == "Torah books":
+        tanakh_division_name = "Torah (Pentateuch)"
+    elif tanakh_division_name == "Prophets books":
+        tanakh_division_name = "Nevi'im (Prophets)"
+    elif tanakh_division_name == "Scriptures books":
+        tanakh_division_name = "Ketuvim (Scriptures)"
+    else:
+        print("Invalid choice. Exiting...")
+
+    select_option(driver, "Section", tanakh_division_name)
+
+    # Step 2: Select the book
+    select_option(driver, "Book", book_name)
+
+    # Step 3: Select the desired chapter
+    # TODO
