@@ -155,21 +155,50 @@ def click_link(driver, link_text):
         print(f"An error occurred while clicking the link '{link_text}': {e}")
 
 ##################################################################################
+# Function to click a specific chapter
+##################################################################################
+def choose_chapter_with_driver(driver, chapter_choice):
+    # Generate the chapter name dynamically
+    chapter_name = "Chapter " + str(chapter_choice)
+    print(f"Looking for: {chapter_name}")  # Debug
+    
+    # Wait for the dropdown to be available
+    dropdown = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "autoListChapter"))
+    )
+    
+    # Use Select class to interact with the dropdown
+    select = Select(dropdown)
+    
+    # Iterate through options to find the desired chapter
+    for option in select.options:
+        print(f"Checking option: {repr(option.text.strip())}")  # Debug
+        if chapter_name.lower() in option.text.strip().lower():
+            select.select_by_visible_text(option.text)
+            return None
+    
+    return None  # Return None if the chapter is not found
+
+##################################################################################
 ##################################################################################
 # Web scraper functions end
 ##################################################################################
 ##################################################################################
 
 if __name__ == "__main__":
+
+    # Step 1: Choose the desired Book
     tanakh_division_name, book_choice_num, book_name = getTanakhBook()
+
+    # Step 2: Choose the chapter and verse
     chapter_choice, verse_choice = get_chapter_and_verse_from_user(tanakh_division_name, book_name)
     print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{verse_choice} ")
 
-    # Open the website
+    # Step 3: Open the website
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("https://www.chabad.org/library/bible_cdo/aid/63255/jewish/The-Bible-with-Rashi.htm")  # Replace with your desired URL
 
-    # Step 1: Select the desired tanakh section
+    # Step 4: Select the desired tanakh section
     if tanakh_division_name == "Torah books":
         tanakh_division_name = "Torah (Pentateuch)"
     elif tanakh_division_name == "Prophets books":
@@ -181,8 +210,10 @@ if __name__ == "__main__":
 
     select_option(driver, "Section", tanakh_division_name)
 
-    # Step 2: Select the book
+    # Step 5: Select the book
     select_option(driver, "Book", book_name)
 
-    # Step 3: Select the desired chapter
-    # TODO
+    # Step 6: Select the desired chapter
+    chapter_value = choose_chapter_with_driver(driver, chapter_choice)
+    print("Current website:", driver.current_url)
+    print(f"chapter_value text: '{chapter_value}'")
