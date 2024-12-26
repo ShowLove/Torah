@@ -131,4 +131,5 @@ def getTanakhBook():
     return tanakh_division_name, book_choice_num, book_name
 
 if __name__ == "__main__":
-    getTanakhBook()
+    # Get the desired Tanakh book
+    tanakh_division_name, book_choice_num, book_name = getTanakhBook()
