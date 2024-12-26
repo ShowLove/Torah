@@ -130,6 +130,42 @@ def getTanakhBook():
     # Return the values if valid choices are made
     return tanakh_division_name, book_choice_num, book_name
 
+def validate_chapter_and_verse(tanakh_division_name, book_name, chapter_choice, verse_choice=None):
+
+    # First, validate if the chapter exists
+    is_valid_chapter = is_valid_chapter(tanakh_division_name, book_name, chapter_choice, verse_choice=None)
+    
+    if not is_valid_chapter:
+        print(f"Invalid chapter choice: {chapter_choice}")
+        return  # Exit after chapter validation failure
+    
+    # If chapter is valid, validate the verse
+    if verse_choice:
+        # Check if the verse is valid only if verse_choice is provided
+        is_valid_verse = is_valid_chapter(tanakh_division_name, book_name, chapter_choice, verse_choice)
+        if not is_valid_verse:
+            print(f"Invalid verse choice: {verse_choice} in chapter {chapter_choice}")
+            return
+    
+    print(f"Chapter {chapter_choice} and Verse {verse_choice if verse_choice else ''} are valid!")
+
+
 if __name__ == "__main__":
     # Get the desired Tanakh book
     tanakh_division_name, book_choice_num, book_name = getTanakhBook()
+
+    if tanakh_division_name and book_choice_num and book_name:
+        # After selecting the book, prompt for chapter and verse
+        chapter_choice = input("Enter the chapter number: ")
+        verse_choice = input("Enter the verse number (optional): ")
+        verse_choice = int(verse_choice) if verse_choice else None
+
+        # Validate chapter and verse using the is_valid_chapter function
+        is_valid = is_valid_chapter(tanakh_division_name, book_name, chapter_choice, verse_choice)
+
+        if is_valid:
+            print(f"Chapter {chapter_choice} and Verse {verse_choice if verse_choice else ''} are valid!")
+        else:
+            print("Invalid chapter or verse choice.")
+    else:
+        print("No valid selection was made. Exiting...")
