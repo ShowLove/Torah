@@ -1,0 +1,52 @@
+{
+    "sections": {
+        "1": "Torah (Pentateuch)",
+        "2": "Nevi'im (Prophets)",
+        "3": "Ketuvim (Scriptures)"
+    },
+    "Torah books": {
+        "1": "Bereshit (Genesis)",
+        "2": "Shemot (Exodus)",
+        "3": "Vayikra (Leviticus)",
+        "4": "Bamidbar (Numbers)",
+        "5": "Devarim (Deuteronomy)"
+    },
+    "Prophets books": {
+        "1": "Yehoshua (Joshua)",
+        "2": "Shoftim (Judges)",
+        "3": "Shmuel I (I Samuel)",
+        "4": "Shmuel II (II Samuel)",
+        "5": "Melachim I (I Kings)",
+        "6": "Melachim II (II Kings)",
+        "7": "Yeshayahu (Isaiah)",
+        "8": "Yirmiyahu (Jeremiah)",
+        "9": "Yechezkel (Ezekiel)",
+        "10": "Hoshea (Hosea)",
+        "11": "Yoel (Joel)",
+        "12": "Amos",
+        "13": "Ovadiah (Obadiah)",
+        "14": "Yonah (Jonah)",
+        "15": "Michah (Micah)",
+        "16": "Nachum (Nahum)",
+        "17": "Chavakuk (Habakkuk)",
+        "18": "Tzefaniah (Zephaniah)",
+        "19": "Chaggai (Haggai)",
+        "20": "Zechariah",
+        "21": "Malachi"
+    },
+    "Scriptures books": {
+        "1": "Tehillim (Psalms)",
+        "2": "Mishlei (Proverbs)",
+        "3": "Iyov (Job)",
+        "4": "Shir Hashirim (Song of Songs)",
+        "5": "Rut (Ruth)",
+        "6": "Eichah (Lamentations)",
+        "7": "Kohelet (Ecclesiastes)",
+        "8": "Esther",
+        "9": "Daniel",
+        "10": "Ezra",
+        "11": "Nechemiah (Nehemiah)",
+        "12": "Divrei Hayamim I (Chronicles I)",
+        "13": "Divrei Hayamim II (Chronicles II)"
+    }
+}
