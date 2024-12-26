@@ -48,7 +48,7 @@ def is_valid_chapter(tanakh_division_name, book_choice, chapter_choice, verse_ch
     elif tanakh_division_name == "Prophets books":
         file_name = "Prophets.json"
     elif tanakh_division_name == "Scriptures books":
-        file_name = "Scritpures.json"
+        file_name = "Scriptures.json"
     else:
         print("Invalid Tanakh division.")
         return False
