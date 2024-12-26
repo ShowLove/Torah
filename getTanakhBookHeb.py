@@ -1,5 +1,4 @@
-import json
-                                                                    ################################################################################################
+import json                                                         # For encoding and decoding JSON data.                                                             
 from selenium import webdriver                                      # For automating and controlling the web browser
 from selenium.webdriver.common.by import By                         # For locating elements on the web page
 from selenium.webdriver.chrome.service import Service               # For initializing and configuring the ChromeDriver
@@ -129,10 +128,9 @@ def get_chapter_and_verse_from_user(tanakh_division_name, book_name):
 
 ##################################################################################
 ##################################################################################
-# Web scraper functions
+# Web scraper functions start
 ##################################################################################
 ##################################################################################
-
 
 ##################################################################################
 # Generic function to select an option from a dropdown
@@ -155,6 +153,12 @@ def click_link(driver, link_text):
         print(f"Link with text '{link_text}' clicked.")
     except Exception as e:
         print(f"An error occurred while clicking the link '{link_text}': {e}")
+
+##################################################################################
+##################################################################################
+# Web scraper functions end
+##################################################################################
+##################################################################################
 
 if __name__ == "__main__":
     tanakh_division_name, book_choice_num, book_name = getTanakhBook()
