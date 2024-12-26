@@ -180,6 +180,21 @@ def choose_chapter_with_driver(driver, chapter_choice):
     return None  # Return None if the chapter is not found
 
 ##################################################################################
+# Click the go button
+##################################################################################
+def click_go_button(driver):
+    try:
+        # Wait for the "Go" button to be present
+        go_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//span[text()='Go']"))
+        )
+        # Click the button
+        go_button.click()
+        print("Clicked the 'Go' button successfully.")
+    except Exception as e:
+        print(f"Failed to click the 'Go' button: {e}")
+
+##################################################################################
 ##################################################################################
 # Web scraper functions end
 ##################################################################################
@@ -215,5 +230,10 @@ if __name__ == "__main__":
 
     # Step 6: Select the desired chapter
     chapter_value = choose_chapter_with_driver(driver, chapter_choice)
+    #print(f"chapter_value text: '{chapter_value}'")
+
+    # Step 7: Click the "go" button
+    click_go_button(driver)
+
     print("Current website:", driver.current_url)
-    print(f"chapter_value text: '{chapter_value}'")
+
