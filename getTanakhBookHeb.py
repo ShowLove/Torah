@@ -128,6 +128,32 @@ def get_chapter_and_verse_from_user(tanakh_division_name, book_name):
         print("Invalid chapter or verse choice.")
         return None, None, None  # Return None if invalid
 
+def get_tanakh_scraper_inputs():
+    """
+    Handles user input for Tanakh scraping: book selection, chapter, and verse range.
+    
+    Returns:
+        tuple: (tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice)
+               or None if any input is invalid.
+    """
+    # Step 1: Choose the desired Book
+    tanakh_division_name, book_choice_num, book_name = getTanakhBook()
+
+    # Exit if invalid input
+    if not tanakh_division_name or not book_choice_num or not book_name:
+        print("Invalid book choice. Exiting...")
+        return None
+
+    # Step 2: Choose the chapter and verse range
+    chapter_choice, start_verse_choice, end_verse_choice = get_chapter_and_verse_from_user(tanakh_division_name, book_name)
+    if not chapter_choice or not start_verse_choice or not end_verse_choice:
+        print("Invalid chapter or verse range. Exiting...")
+        return None
+
+    print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{start_verse_choice}-{end_verse_choice}")
+    return tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice
+
+
 ##################################################################################
 ##################################################################################
 # Web scraper functions start
@@ -258,23 +284,14 @@ def get_verse_texts(driver, N1, N):
 
 def run_tanakh_scraper_main():
     """
-    Function to interactively scrape Tanakh data based on user input.
+    Main function to scrape Tanakh data interactively based on user inputs.
     """
-    # Step 1: Choose the desired Book
-    tanakh_division_name, book_choice_num, book_name = getTanakhBook()
-
-    # Exit if invalid input
-    if not tanakh_division_name or not book_choice_num or not book_name:
-        print("Invalid book choice. Exiting...")
+    # Get user inputs
+    inputs = get_tanakh_scraper_inputs()
+    if not inputs:
         return
 
-    # Step 2: Choose the chapter and verse range
-    chapter_choice, start_verse_choice, end_verse_choice = get_chapter_and_verse_from_user(tanakh_division_name, book_name)
-    if not chapter_choice or not start_verse_choice or not end_verse_choice:
-        print("Invalid chapter or verse range. Exiting...")
-        return
-
-    print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{start_verse_choice}-{end_verse_choice}")
+    tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice = inputs
 
     # Step 3: Open the website
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
