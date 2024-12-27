@@ -113,7 +113,7 @@ def getTanakhBook():
 def get_chapter_and_verse_from_user(tanakh_division_name, book_name):
     # Prompt for chapter and verse input
     chapter_choice = input("Enter the chapter number: ")
-    verse_choice = input("Enter the verse number (optional): ")
+    verse_choice = input("Enter the verse number: ")
     verse_choice = int(verse_choice) if verse_choice else None
 
     # Validate chapter and verse using the is_valid_chapter function
@@ -221,6 +221,23 @@ def click_hebrew_toggle(driver):
         print(f"Failed to toggle the 'Hebrew' button: {e}")
         return False
 
+
+def get_verse_texts(driver, N):
+
+    verses = {}
+    
+    try:
+        for i in range(1, N + 1):
+            verse_id = f"v{i}"
+            # Locate the parent <td> with the class 'hebrew' and the specific ID
+            verse_element = driver.find_element(By.CSS_SELECTOR, f"td.hebrew a[id='{verse_id}'] + span.co_VerseText")
+            # Get the verse text
+            verses[verse_id] = verse_element.text
+    except Exception as e:
+        print(f"Error occurred while fetching verses: {e}")
+    
+    return verses
+
 ##################################################################################
 ##################################################################################
 # Web scraper functions end
@@ -266,4 +283,8 @@ if __name__ == "__main__":
     click_hebrew_toggle(driver)
 
     print("Current website:", driver.current_url)
+
+    # Step 8: get the text
+    verse_texts = get_verse_texts(driver, verse_choice)
+    print(verse_texts)  
 
