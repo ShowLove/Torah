@@ -113,18 +113,20 @@ def getTanakhBook():
 def get_chapter_and_verse_from_user(tanakh_division_name, book_name):
     # Prompt for chapter and verse input
     chapter_choice = input("Enter the chapter number: ")
-    verse_choice = input("Enter the verse number: ")
-    verse_choice = int(verse_choice) if verse_choice else None
+    start_verse_choice = input("Enter the start verse number: ")
+    end_verse_choice = input("Enter the end verse number: ")
+    start_verse_choice = int(start_verse_choice) if start_verse_choice else None
+    end_verse_choice = int(end_verse_choice) if end_verse_choice else None
 
     # Validate chapter and verse using the is_valid_chapter function
-    is_valid = is_valid_chapter(tanakh_division_name, book_name, chapter_choice, verse_choice)
+    is_valid = is_valid_chapter(tanakh_division_name, book_name, chapter_choice, end_verse_choice)
 
     if is_valid:
-        print(f"Chapter {chapter_choice} and Verse {verse_choice if verse_choice else ''} are valid!")
-        return chapter_choice, verse_choice  # Return the valid chapter and verse values
+        print(f"Chapter {chapter_choice} and Verse {end_verse_choice if end_verse_choice else ''} are valid!")
+        return chapter_choice, start_verse_choice, end_verse_choice  # Return the valid chapter and verse values
     else:
         print("Invalid chapter or verse choice.")
-        return None, None  # Return None if invalid
+        return None, None, None  # Return None if invalid
 
 ##################################################################################
 ##################################################################################
@@ -222,12 +224,22 @@ def click_hebrew_toggle(driver):
         return False
 
 
-def get_verse_texts(driver, N):
+def get_verse_texts(driver, N1, N):
+    """
+    Fetches the text of verses from N1 to N.
 
+    Args:
+        driver: Selenium WebDriver instance.
+        N1 (int): Start verse number.
+        N (int): End verse number.
+
+    Returns:
+        dict: A dictionary where keys are verse IDs (e.g., 'v1') and values are the verse texts.
+    """
     verses = {}
-    
+
     try:
-        for i in range(1, N + 1):
+        for i in range(N1, N + 1):
             verse_id = f"v{i}"
             # Locate the parent <td> with the class 'hebrew' and the specific ID
             verse_element = driver.find_element(By.CSS_SELECTOR, f"td.hebrew a[id='{verse_id}'] + span.co_VerseText")
@@ -235,7 +247,7 @@ def get_verse_texts(driver, N):
             verses[verse_id] = verse_element.text
     except Exception as e:
         print(f"Error occurred while fetching verses: {e}")
-    
+
     return verses
 
 ##################################################################################
@@ -247,7 +259,7 @@ def get_verse_texts(driver, N):
 def run_tanakh_scraper_main():
     """
     Function to interactively scrape Tanakh data based on user input.
-    """ 
+    """
     # Step 1: Choose the desired Book
     tanakh_division_name, book_choice_num, book_name = getTanakhBook()
 
@@ -256,13 +268,13 @@ def run_tanakh_scraper_main():
         print("Invalid book choice. Exiting...")
         return
 
-    # Step 2: Choose the chapter and verse
-    chapter_choice, verse_choice = get_chapter_and_verse_from_user(tanakh_division_name, book_name)
-    if not chapter_choice:
-        print("Invalid chapter choice. Exiting...")
+    # Step 2: Choose the chapter and verse range
+    chapter_choice, start_verse_choice, end_verse_choice = get_chapter_and_verse_from_user(tanakh_division_name, book_name)
+    if not chapter_choice or not start_verse_choice or not end_verse_choice:
+        print("Invalid chapter or verse range. Exiting...")
         return
 
-    print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{verse_choice}")
+    print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{start_verse_choice}-{end_verse_choice}")
 
     # Step 3: Open the website
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -296,9 +308,11 @@ def run_tanakh_scraper_main():
 
         print("Current website:", driver.current_url)
 
-        # Step 8: Get the text
-        verse_texts = get_verse_texts(driver, int(verse_choice))
-        print(verse_texts)
+        # Step 8: Get the text within the verse range
+        verse_texts = get_verse_texts(driver, int(start_verse_choice), int(end_verse_choice))
+        print("Fetched verses:")
+        for verse_id, verse_text in verse_texts.items():
+            print(f"{verse_id}: {verse_text}")
     except Exception as e:
         print(f"An error occurred during scraping: {e}")
     finally:
