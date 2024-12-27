@@ -194,6 +194,33 @@ def click_go_button(driver):
     except Exception as e:
         print(f"Failed to click the 'Go' button: {e}")
 
+def click_close_button(driver):
+    try:
+        # Wait for the close button to be clickable
+        close_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CLASS_NAME, "subscribe-popup-clmc__close-button"))
+        )
+        # Click the close button
+        close_button.click()
+        print("Clicked the close button successfully.")
+    except Exception as e:
+        print(f"Failed to click the close button: {e}")
+
+def click_hebrew_toggle(driver):
+    try:
+        # Wait for the "Hebrew" input element to be present
+        hebrew_input = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "ToggleButtonsContainer_Hebrew"))
+        )
+        
+        # Use JavaScript to click the element
+        driver.execute_script("arguments[0].click();", hebrew_input)
+        print("Successfully toggled the 'Hebrew' button.")
+        return True
+    except Exception as e:
+        print(f"Failed to toggle the 'Hebrew' button: {e}")
+        return False
+
 ##################################################################################
 ##################################################################################
 # Web scraper functions end
@@ -232,8 +259,11 @@ if __name__ == "__main__":
     chapter_value = choose_chapter_with_driver(driver, chapter_choice)
     #print(f"chapter_value text: '{chapter_value}'")
 
-    # Step 7: Click the "go" button
+    # Step 7: Click the "go" button and then the Hebrew button
     click_go_button(driver)
+    click_close_button(driver)
+    time.sleep(0.5)
+    click_hebrew_toggle(driver)
 
     print("Current website:", driver.current_url)
 
