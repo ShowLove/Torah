@@ -217,9 +217,17 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
             # Ensure RTL is applied at the XML level
             paragraph._p.set(qn('w:bidi'), '1')
 
-        # Save the document
-        save_path = os.path.join("tanakh_docs", f"{book_name}_Chapter_{chapter_choice}.docx")
+        # Define the file path
         os.makedirs("tanakh_docs", exist_ok=True)
+        save_path = os.path.join("tanakh_docs", f"{book_name}_Chapter_{chapter_choice}.docx")
+
+        # Delete the file if it exists
+        if os.path.exists(save_path):
+            if DEBUG:
+                print(f"File exists, deleting: {save_path}")
+            os.remove(save_path)
+
+        # Save the new document
         document.save(save_path)
 
         if DEBUG:
