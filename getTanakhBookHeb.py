@@ -15,9 +15,22 @@ import shutil                                                       # For file o
                                                                     ################################################################################################
 
 # Load data from the external JSON file
+# Function to load JSON data from a file in the 'data' directory
 def load_data():
-    with open('tanakhOutlineHeb.json', 'r', encoding='utf-8') as file:
-        return json.load(file)
+    # Path to the 'data' directory and the JSON file
+    data_folder = "data"
+    json_filename = "tanakhOutlineHeb.json"  # Adjust the file name if needed
+
+    # Construct the full file path
+    file_path = os.path.join(data_folder, json_filename)
+
+    # Load and return the data if the file exists
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    else:
+        print(f"Error: The file {json_filename} does not exist in the 'data' folder.")
+        return None
 
 def prompt_user_for_book(data):
     print("Please choose a section:")
