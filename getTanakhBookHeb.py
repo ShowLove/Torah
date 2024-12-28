@@ -16,10 +16,9 @@ import shutil                                                       # For file o
 
 # Load data from the external JSON file
 # Function to load JSON data from a file in the 'data' directory
-def load_data():
+def load_data(json_filename):
     # Path to the 'data' directory and the JSON file
     data_folder = "data"
-    json_filename = "tanakhOutlineHeb.json"  # Adjust the file name if needed
 
     # Construct the full file path
     file_path = os.path.join(data_folder, json_filename)
@@ -67,8 +66,6 @@ def prompt_user_for_book(data):
         return None, None, None
 
 def is_valid_chapter(tanakh_division_name, book_choice, chapter_choice, verse_choice=None):
-    data_directory = 'data'
-    
     if tanakh_division_name == "Torah books":
         file_name = "Pentateuch.json"
     elif tanakh_division_name == "Prophets books":
@@ -78,22 +75,18 @@ def is_valid_chapter(tanakh_division_name, book_choice, chapter_choice, verse_ch
     else:
         print("Invalid Tanakh division.")
         return False
-    
-    file_path = os.path.join(data_directory, file_name)
-    
-    if not os.path.isfile(file_path):
-        print(f"File {file_name} not found in {data_directory}.")
+
+    # Load the data using the load_data function
+    data = load_data(file_name)
+    if data is None:
         return False
-    
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-    
+
     if book_choice in data['books']:
         book_data = data['books'][book_choice]
     else:
         print("Invalid book choice.")
         return False
-    
+
     if chapter_choice in book_data['chapters']:
         total_verses = book_data['chapters'][chapter_choice]
         
@@ -110,7 +103,7 @@ def is_valid_chapter(tanakh_division_name, book_choice, chapter_choice, verse_ch
         return False
 
 def getTanakhBook():
-    data = load_data()
+    data = load_data("tanakhOutlineHeb.json")
     tanakh_division_name, book_choice_num, book_name = prompt_user_for_book(data)
 
     if not tanakh_division_name or not book_choice_num or not book_name:
