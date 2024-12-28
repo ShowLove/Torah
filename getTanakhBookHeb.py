@@ -164,12 +164,12 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
         start_verse_choice (int): The starting verse in the range.
         end_verse_choice (int): The ending verse in the range.
     """
-    # Step 3: Open the website
+    # Step 1: Open the website
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("https://www.chabad.org/library/bible_cdo/aid/63255/jewish/The-Bible-with-Rashi.htm")  # Replace with your desired URL
 
     try:
-        # Step 4: Select the desired Tanakh section
+        # Step 2: Select the desired Tanakh section
         if tanakh_division_name == "Torah books":
             tanakh_division_name = "Torah (Pentateuch)"
         elif tanakh_division_name == "Prophets books":
@@ -182,21 +182,21 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
 
         select_option(driver, "Section", tanakh_division_name)
 
-        # Step 5: Select the book
+        # Step 3: Select the book
         select_option(driver, "Book", book_name)
 
-        # Step 6: Select the desired chapter
+        # Step 4: Select the desired chapter
         choose_chapter_with_driver(driver, chapter_choice)
 
-        # Step 7: Click the "go" button and then the Hebrew toggle button
+        # Step 5: Click the "go" button and then the Hebrew toggle button
         click_go_button(driver)
         click_close_button(driver)
-        time.sleep(0.5)
+        #time.sleep(0.5)
         click_hebrew_toggle(driver)
 
         print("Current website:", driver.current_url)
 
-        # Step 8: Get the text within the verse range
+        # Step 6: Get the text within the verse range
         verse_texts = get_verse_texts(driver, int(start_verse_choice), int(end_verse_choice))
         print("Fetched verses:")
         for verse_id, verse_text in verse_texts.items():
