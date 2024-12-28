@@ -12,9 +12,10 @@ from selenium.webdriver.support import expected_conditions as EC    # For defini
 from docx import Document                                           # For creating and modifying Word documents
 import os                                                           # For file and directory operations (e.g., working with paths, creating folders)
 import shutil                                                       # For file operations (e.g., moving, copying, and deleting files)
-from docx.enum.text import WD_PARAGRAPH_ALIGNMENT                   #
-from docx.oxml.ns import qn                                         #
-from docx.oxml import OxmlElement                                   #
+from docx.shared import Pt
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml.ns import qn 
+from docx.oxml import OxmlElement                                   
                                                                     ################################################################################################
 
 
@@ -31,6 +32,7 @@ SCRAPER_URL = "https://www.chabad.org/library/bible_cdo/aid/63255/jewish/The-Bib
 TORAH_SECTION = "Torah (Pentateuch)"
 PROPHETS_SECTION = "Nevi'im (Prophets)"
 SCRIPTURES_SECTION = "Ketuvim (Scriptures)"
+DOCX_HEBREW_FONT = "Frank Ruehl" # Use Frank Ruehl for Hebrew text on Word
 
 # Load data from the external JSON file
 # Function to load JSON data from a file in the 'data' directory
@@ -201,6 +203,15 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
 
         # Create a Word document with Hebrew-friendly formatting
         document = Document()
+
+        # Set narrow margins
+        sections = document.sections
+        for section in sections:
+            section.left_margin = Pt(18)   # 18 points for narrow left margin
+            section.right_margin = Pt(18)  # 18 points for narrow right margin
+            section.top_margin = Pt(18)    # 18 points for narrow top margin
+            section.bottom_margin = Pt(18) # 18 points for narrow bottom margin
+
         document.add_heading(f"{book_name} - Chapter {chapter_choice} (Verses {start_verse_choice}-{end_verse_choice})", level=1)
 
         for verse_id, verse_text in verse_texts.items():
@@ -208,11 +219,12 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
             paragraph.text = f"{verse_id}: {verse_text}"
 
             # Right-to-left alignment
-            paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
 
-            # Add Hebrew-specific styling
+            # Add Hebrew-specific styling and font size 18
             run = paragraph.runs[0]
-            run.font.name = "David"  # Use a Hebrew-friendly font
+            run.font.name = DOCX_HEBREW_FONT
+            run.font.size = Pt(18)  # Set font size to 18
 
             # Ensure RTL is applied at the XML level
             paragraph._p.set(qn('w:bidi'), '1')
@@ -241,7 +253,6 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
             print(f"An error occurred during scraping: {e}")
     finally:
         driver.quit()
-
 
 ##################################################################################
 ##################################################################################
