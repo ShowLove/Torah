@@ -12,6 +12,9 @@ from selenium.webdriver.support import expected_conditions as EC    # For defini
 from docx import Document                                           # For creating and modifying Word documents
 import os                                                           # For file and directory operations (e.g., working with paths, creating folders)
 import shutil                                                       # For file operations (e.g., moving, copying, and deleting files)
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT                   #
+from docx.oxml.ns import qn                                         #
+from docx.oxml import OxmlElement                                   #
                                                                     ################################################################################################
 
 
@@ -168,6 +171,7 @@ def get_tanakh_scraper_inputs():
     return tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice
 
 def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice):
+    DEBUG = True  # Toggle for debug print statements
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get(SCRAPER_URL)
 
@@ -179,7 +183,8 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
         elif tanakh_division_name == SCRIPTURES_BOOKS:
             tanakh_division_name = SCRIPTURES_SECTION
         else:
-            print("Invalid choice. Exiting...")
+            if DEBUG:
+                print("Invalid choice. Exiting...")
             return
 
         select_option(driver, "Section", tanakh_division_name)
@@ -189,14 +194,40 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
         click_close_button(driver)
         click_hebrew_toggle(driver)
 
-        print("Current website:", driver.current_url)
+        if DEBUG:
+            print("Current website:", driver.current_url)
 
         verse_texts = get_verse_texts(driver, int(start_verse_choice), int(end_verse_choice))
-        print("Fetched verses:")
+
+        # Create a Word document with Hebrew-friendly formatting
+        document = Document()
+        document.add_heading(f"{book_name} - Chapter {chapter_choice}", level=1)
+
         for verse_id, verse_text in verse_texts.items():
-            print(f"{verse_id}: {verse_text}")
+            paragraph = document.add_paragraph()
+            paragraph.text = f"{verse_id}: {verse_text}"
+
+            # Right-to-left alignment
+            paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
+
+            # Add Hebrew-specific styling
+            run = paragraph.runs[0]
+            run.font.name = "David"  # Use a Hebrew-friendly font
+
+            # Ensure RTL is applied at the XML level
+            paragraph._p.set(qn('w:bidi'), '1')
+
+        # Save the document
+        save_path = os.path.join("tanakh_docs", f"{book_name}_Chapter_{chapter_choice}.docx")
+        os.makedirs("tanakh_docs", exist_ok=True)
+        document.save(save_path)
+
+        if DEBUG:
+            print(f"Saved Hebrew-friendly Word document: {save_path}")
+
     except Exception as e:
-        print(f"An error occurred during scraping: {e}")
+        if DEBUG:
+            print(f"An error occurred during scraping: {e}")
     finally:
         driver.quit()
 
