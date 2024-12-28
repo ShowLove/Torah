@@ -14,21 +14,30 @@ import os                                                           # For file a
 import shutil                                                       # For file operations (e.g., moving, copying, and deleting files)
                                                                     ################################################################################################
 
+
+# Global constants
+DATA_FOLDER = "data"
+TORAH_BOOKS = "Torah books"
+PROPHETS_BOOKS = "Prophets books"
+SCRIPTURES_BOOKS = "Scriptures books"
+PENTATEUCH_FILE = "Pentateuch.json"
+PROPHETS_FILE = "Prophets.json"
+SCRIPTURES_FILE = "Scriptures.json"
+TANAKH_OUTLINE_FILE = "tanakhOutlineHeb.json"
+SCRAPER_URL = "https://www.chabad.org/library/bible_cdo/aid/63255/jewish/The-Bible-with-Rashi.htm"
+TORAH_SECTION = "Torah (Pentateuch)"
+PROPHETS_SECTION = "Nevi'im (Prophets)"
+SCRIPTURES_SECTION = "Ketuvim (Scriptures)"
+
 # Load data from the external JSON file
 # Function to load JSON data from a file in the 'data' directory
 def load_data(json_filename):
-    # Path to the 'data' directory and the JSON file
-    data_folder = "data"
-
-    # Construct the full file path
-    file_path = os.path.join(data_folder, json_filename)
-
-    # Load and return the data if the file exists
+    file_path = os.path.join(DATA_FOLDER, json_filename)
     if os.path.exists(file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             return json.load(file)
     else:
-        print(f"Error: The file {json_filename} does not exist in the 'data' folder.")
+        print(f"Error: The file {json_filename} does not exist in the '{DATA_FOLDER}' folder.")
         return None
 
 def prompt_user_for_book(data):
@@ -66,17 +75,16 @@ def prompt_user_for_book(data):
         return None, None, None
 
 def is_valid_chapter(tanakh_division_name, book_choice, chapter_choice, verse_choice=None):
-    if tanakh_division_name == "Torah books":
-        file_name = "Pentateuch.json"
-    elif tanakh_division_name == "Prophets books":
-        file_name = "Prophets.json"
-    elif tanakh_division_name == "Scriptures books":
-        file_name = "Scriptures.json"
+    if tanakh_division_name == TORAH_BOOKS:
+        file_name = PENTATEUCH_FILE
+    elif tanakh_division_name == PROPHETS_BOOKS:
+        file_name = PROPHETS_FILE
+    elif tanakh_division_name == SCRIPTURES_BOOKS:
+        file_name = SCRIPTURES_FILE
     else:
         print("Invalid Tanakh division.")
         return False
 
-    # Load the data using the load_data function
     data = load_data(file_name)
     if data is None:
         return False
@@ -160,49 +168,29 @@ def get_tanakh_scraper_inputs():
     return tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice
 
 def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice):
-    """
-    Performs the scraping process given the Tanakh section, book, chapter, and verse range.
-    
-    Args:
-        tanakh_division_name (str): The division name (e.g., Torah books, Prophets books, etc.).
-        book_name (str): The name of the selected book.
-        chapter_choice (int): The chosen chapter.
-        start_verse_choice (int): The starting verse in the range.
-        end_verse_choice (int): The ending verse in the range.
-    """
-    # Step 1: Open the website
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    driver.get("https://www.chabad.org/library/bible_cdo/aid/63255/jewish/The-Bible-with-Rashi.htm")  # Replace with your desired URL
+    driver.get(SCRAPER_URL)
 
     try:
-        # Step 2: Select the desired Tanakh section
-        if tanakh_division_name == "Torah books":
-            tanakh_division_name = "Torah (Pentateuch)"
-        elif tanakh_division_name == "Prophets books":
-            tanakh_division_name = "Nevi'im (Prophets)"
-        elif tanakh_division_name == "Scriptures books":
-            tanakh_division_name = "Ketuvim (Scriptures)"
+        if tanakh_division_name == TORAH_BOOKS:
+            tanakh_division_name = TORAH_SECTION
+        elif tanakh_division_name == PROPHETS_BOOKS:
+            tanakh_division_name = PROPHETS_SECTION
+        elif tanakh_division_name == SCRIPTURES_BOOKS:
+            tanakh_division_name = SCRIPTURES_SECTION
         else:
             print("Invalid choice. Exiting...")
             return
 
         select_option(driver, "Section", tanakh_division_name)
-
-        # Step 3: Select the book
         select_option(driver, "Book", book_name)
-
-        # Step 4: Select the desired chapter
         choose_chapter_with_driver(driver, chapter_choice)
-
-        # Step 5: Click the "go" button and then the Hebrew toggle button
         click_go_button(driver)
         click_close_button(driver)
-        #time.sleep(0.5)
         click_hebrew_toggle(driver)
 
         print("Current website:", driver.current_url)
 
-        # Step 6: Get the text within the verse range
         verse_texts = get_verse_texts(driver, int(start_verse_choice), int(end_verse_choice))
         print("Fetched verses:")
         for verse_id, verse_text in verse_texts.items():
@@ -210,7 +198,6 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
     except Exception as e:
         print(f"An error occurred during scraping: {e}")
     finally:
-        # Ensure the browser is closed even if an error occurs
         driver.quit()
 
 ##################################################################################
