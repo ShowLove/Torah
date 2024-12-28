@@ -201,7 +201,7 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
 
         # Create a Word document with Hebrew-friendly formatting
         document = Document()
-        document.add_heading(f"{book_name} - Chapter {chapter_choice}", level=1)
+        document.add_heading(f"{book_name} - Chapter {chapter_choice} (Verses {start_verse_choice}-{end_verse_choice})", level=1)
 
         for verse_id, verse_text in verse_texts.items():
             paragraph = document.add_paragraph()
@@ -219,7 +219,10 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
 
         # Define the file path
         os.makedirs("tanakh_docs", exist_ok=True)
-        save_path = os.path.join("tanakh_docs", f"{book_name}_Chapter_{chapter_choice}.docx")
+        save_path = os.path.join(
+            "tanakh_docs", 
+            f"{book_name}_CH_{chapter_choice}_Verses_{start_verse_choice}_to_{end_verse_choice}.docx"
+        )
 
         # Delete the file if it exists
         if os.path.exists(save_path):
@@ -238,6 +241,7 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
             print(f"An error occurred during scraping: {e}")
     finally:
         driver.quit()
+
 
 ##################################################################################
 ##################################################################################
