@@ -234,7 +234,7 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
 
     for verse_id, verse_text in verse_texts.items():
         paragraph = document.add_paragraph()
-        paragraph.text = f"{verse_text}"
+        paragraph.text = f"({verse_id})  :{verse_text}"
 
         # Right-to-left alignment
         paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
