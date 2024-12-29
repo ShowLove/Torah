@@ -33,6 +33,8 @@ TORAH_SECTION = "Torah (Pentateuch)"
 PROPHETS_SECTION = "Nevi'im (Prophets)"
 SCRIPTURES_SECTION = "Ketuvim (Scriptures)"
 DOCX_HEBREW_FONT = "Frank Ruehl" # Use Frank Ruehl for Hebrew text on Word
+FONT_SIZE = 18  # Font size in points
+MARGIN_SIZE = Pt(18)  # Margin size in points
 
 # Load data from the external JSON file
 # Function to load JSON data from a file in the 'data' directory
@@ -207,10 +209,10 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
         # Set narrow margins
         sections = document.sections
         for section in sections:
-            section.left_margin = Pt(18)   # 18 points for narrow left margin
-            section.right_margin = Pt(18)  # 18 points for narrow right margin
-            section.top_margin = Pt(18)    # 18 points for narrow top margin
-            section.bottom_margin = Pt(18) # 18 points for narrow bottom margin
+            section.left_margin   = MARGIN_SIZE # Narrow left margin
+            section.right_margin  = MARGIN_SIZE # Narrow right margin
+            section.top_margin    = MARGIN_SIZE # Narrow top margin
+            section.bottom_margin = MARGIN_SIZE # Narrow bottom margin
 
         document.add_heading(f"{book_name} - Chapter {chapter_choice} (Verses {start_verse_choice}-{end_verse_choice})", level=1)
 
