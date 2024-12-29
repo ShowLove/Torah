@@ -180,6 +180,7 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
     driver.get(SCRAPER_URL)
 
     try:
+        # Map user-friendly names to scraper-specific names
         if tanakh_division_name == TORAH_BOOKS:
             tanakh_division_name = TORAH_SECTION
         elif tanakh_division_name == PROPHETS_BOOKS:
@@ -191,6 +192,7 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
                 print("Invalid choice. Exiting...")
             return
 
+        # Perform the scraping steps
         select_option(driver, "Section", tanakh_division_name)
         select_option(driver, "Book", book_name)
         choose_chapter_with_driver(driver, chapter_choice)
@@ -201,60 +203,65 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
         if DEBUG:
             print("Current website:", driver.current_url)
 
+        # Fetch verse texts
         verse_texts = get_verse_texts(driver, int(start_verse_choice), int(end_verse_choice))
 
-        # Create a Word document with Hebrew-friendly formatting
-        document = Document()
-
-        # Set narrow margins
-        sections = document.sections
-        for section in sections:
-            section.left_margin   = MARGIN_SIZE # Narrow left margin
-            section.right_margin  = MARGIN_SIZE # Narrow right margin
-            section.top_margin    = MARGIN_SIZE # Narrow top margin
-            section.bottom_margin = MARGIN_SIZE # Narrow bottom margin
-
-        document.add_heading(f"{book_name} - Chapter {chapter_choice} (Verses {start_verse_choice}-{end_verse_choice})", level=1)
-
-        for verse_id, verse_text in verse_texts.items():
-            paragraph = document.add_paragraph()
-            paragraph.text = f"{verse_id}: {verse_text}"
-
-            # Right-to-left alignment
-            paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-
-            # Add Hebrew-specific styling and font size 18
-            run = paragraph.runs[0]
-            run.font.name = DOCX_HEBREW_FONT
-            run.font.size = Pt(18)  # Set font size to 18
-
-            # Ensure RTL is applied at the XML level
-            paragraph._p.set(qn('w:bidi'), '1')
-
-        # Define the file path
-        os.makedirs("tanakh_docs", exist_ok=True)
-        save_path = os.path.join(
-            "tanakh_docs", 
-            f"{book_name}_CH_{chapter_choice}_Verses_{start_verse_choice}_to_{end_verse_choice}.docx"
-        )
-
-        # Delete the file if it exists
-        if os.path.exists(save_path):
-            if DEBUG:
-                print(f"File exists, deleting: {save_path}")
-            os.remove(save_path)
-
-        # Save the new document
-        document.save(save_path)
-
-        if DEBUG:
-            print(f"Saved Hebrew-friendly Word document: {save_path}")
+        # Pass variables dynamically to create the Word document
+        create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, end_verse_choice, verse_texts)
 
     except Exception as e:
         if DEBUG:
             print(f"An error occurred during scraping: {e}")
     finally:
         driver.quit()
+
+def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, end_verse_choice, verse_texts):
+    """
+    Create a Word document with Hebrew-friendly formatting.
+    """
+    document = Document()
+
+    # Set narrow margins
+    sections = document.sections
+    for section in sections:
+        section.left_margin   = MARGIN_SIZE
+        section.right_margin  = MARGIN_SIZE
+        section.top_margin    = MARGIN_SIZE
+        section.bottom_margin = MARGIN_SIZE
+
+    # Add heading with dynamic values
+    document.add_heading(f"{book_name} - Chapter {chapter_choice} (Verses {start_verse_choice}-{end_verse_choice})", level=1)
+
+    for verse_id, verse_text in verse_texts.items():
+        paragraph = document.add_paragraph()
+        paragraph.text = f"{verse_text}"
+
+        # Right-to-left alignment
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
+        # Add Hebrew-specific styling and font size 18
+        run = paragraph.runs[0]
+        run.font.name = DOCX_HEBREW_FONT
+        run.font.size = Pt(FONT_SIZE)
+
+        # Ensure RTL is applied at the XML level
+        paragraph._p.set(qn('w:bidi'), '1')
+
+    # Define the file path dynamically
+    os.makedirs("tanakh_docs", exist_ok=True)
+    save_path = os.path.join(
+        "tanakh_docs",
+        f"{book_name}_CH_{chapter_choice}_Verses_{start_verse_choice}_to_{end_verse_choice}.docx"
+    )
+
+    # Delete the file if it exists
+    if os.path.exists(save_path):
+        print(f"File exists, deleting: {save_path}")
+        os.remove(save_path)
+
+    # Save the new document
+    document.save(save_path)
+    print(f"Saved Hebrew-friendly Word document: {save_path}")
 
 ##################################################################################
 ##################################################################################
