@@ -230,19 +230,26 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
         section.bottom_margin = MARGIN_SIZE
 
     # Add heading with dynamic values
-    document.add_heading(f"{book_name} - Chapter {chapter_choice} (Verses {start_verse_choice}-{end_verse_choice})", level=1)
+    document.add_heading(
+        f"{book_name} - Chapter {chapter_choice} (Verses {start_verse_choice}-{end_verse_choice})",
+        level=1
+    )
 
     for verse_id, verse_text in verse_texts.items():
         paragraph = document.add_paragraph()
-        paragraph.text = f"({verse_id})  :{verse_text}"
+
+        # Add the verse ID with specific styling
+        run_id = paragraph.add_run(f"({verse_id}):")
+        run_id.font.name = DOCX_HEBREW_FONT
+        run_id.font.size = Pt(12)  # Smaller font size for the verse ID
+
+        # Add the verse text with default styling
+        run_text = paragraph.add_run(verse_text)
+        run_text.font.name = DOCX_HEBREW_FONT
+        run_text.font.size = Pt(FONT_SIZE)  # Standard font size for Hebrew text
 
         # Right-to-left alignment
         paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-
-        # Add Hebrew-specific styling and font size 18
-        run = paragraph.runs[0]
-        run.font.name = DOCX_HEBREW_FONT
-        run.font.size = Pt(FONT_SIZE)
 
         # Ensure RTL is applied at the XML level
         paragraph._p.set(qn('w:bidi'), '1')
@@ -262,6 +269,7 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     # Save the new document
     document.save(save_path)
     print(f"Saved Hebrew-friendly Word document: {save_path}")
+
 
 ##################################################################################
 ##################################################################################
