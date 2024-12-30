@@ -245,7 +245,7 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
         run_text.font.size = Pt(FONT_SIZE)  # Standard font size for Hebrew text
 
         # Add the verse ID with specific styling
-        run_id = paragraph.add_run(f"({verse_id}):")
+        run_id = paragraph.add_run(f"   ({verse_id})")
         run_id.font.name = DOCX_HEBREW_FONT
         run_id.font.size = Pt(12)  # Smaller font size for the verse ID
 
