@@ -175,6 +175,12 @@ def get_tanakh_scraper_inputs():
     print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{start_verse_choice}-{end_verse_choice}")
     return tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice
 
+##################################################################################
+##################################################################################
+# Web scraper functions start
+##################################################################################
+##################################################################################
+
 def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice):
     DEBUG = True  # Toggle for debug print statements
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -271,12 +277,35 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     document.save(save_path)
     print(f"Saved Hebrew-friendly Word document: {save_path}")
 
+    # Do post processing
+    docx_post_processing(save_path, save_path)
 
-##################################################################################
-##################################################################################
-# Web scraper functions start
-##################################################################################
-##################################################################################
+def docx_post_processing(input_path, output_path):
+    """
+    Removes all colons (:) from a Word document while preserving the formatting.
+    
+    :param input_path: Path to the input Word document.
+    :param output_path: Path to save the modified Word document.
+    """
+    # Load the document
+    doc = Document(input_path)
+    
+    # Process paragraphs
+    for paragraph in doc.paragraphs:
+        for run in paragraph.runs:
+            run.text = run.text.replace(":", "")  # Replace ":" in each run's text
+    
+    # Process tables
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        run.text = run.text.replace(":", "")  # Replace ":" in table cells
+    
+    # Save the modified document
+    doc.save(output_path)
+
 
 ##################################################################################
 # Generic function to select an option from a dropdown
