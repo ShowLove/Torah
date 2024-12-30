@@ -35,6 +35,7 @@ SCRIPTURES_SECTION = "Ketuvim (Scriptures)"
 DOCX_HEBREW_FONT = "Frank Ruehl" # Use Frank Ruehl for Hebrew text on Word
 FONT_SIZE = 18  # Font size in points
 MARGIN_SIZE = Pt(18)  # Margin size in points
+VERSE_ID_FONT_SIZE = 12  # Smaller font size for the verse ID
 
 # Load data from the external JSON file
 # Function to load JSON data from a file in the 'data' directory
