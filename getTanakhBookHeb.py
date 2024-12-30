@@ -278,15 +278,16 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     print(f"Saved Hebrew-friendly Word document: {save_path}")
 
     # Do post processing
+
+    # Removes all colons (:) from a Word document while preserving the formatting.
     docx_post_processing(save_path, save_path)
+    # Adds a colon at the end of each sentence in a Word document, 
+    #docx_post_processing2(save_path, save_path)
 
 def docx_post_processing(input_path, output_path):
-    """
-    Removes all colons (:) from a Word document while preserving the formatting.
-    
-    :param input_path: Path to the input Word document.
-    :param output_path: Path to save the modified Word document.
-    """
+
+    # Removes all colons (:) from a Word document while preserving the formatting.
+
     # Load the document
     doc = Document(input_path)
     
@@ -306,6 +307,32 @@ def docx_post_processing(input_path, output_path):
     # Save the modified document
     doc.save(output_path)
 
+def docx_post_processing2(input_path, output_path):
+
+    # Adds a colon at the end of each sentence in a Word document
+
+    # Load the document
+    doc = Document(input_path)
+
+    # Process paragraphs
+    for paragraph in doc.paragraphs:
+        for run in paragraph.runs:
+            # Check if a verse identifier exists at the end (e.g., "(v1)")
+            if "(" in run.text and ")" in run.text:
+                # Split sentence and verse identifier
+                parts = run.text.rsplit("(", 1)
+                sentence = parts[0].strip()  # The main sentence
+                verse_id = "(" + parts[1]  # Verse identifier with parentheses
+                
+                # Add a colon to the sentence if it doesn't already end with one
+                if not sentence.endswith(":"):
+                    sentence += ":"
+                
+                # Recombine the sentence with the verse identifier
+                run.text = sentence + " " + verse_id
+    
+    # Save the modified document
+    doc.save(output_path)
 
 ##################################################################################
 # Generic function to select an option from a dropdown
