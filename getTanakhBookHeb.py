@@ -15,7 +15,8 @@ import shutil                                                       # For file o
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn 
-from docx.oxml import OxmlElement                                   
+from docx.oxml import OxmlElement
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
                                                                     ################################################################################################
 
 
@@ -251,9 +252,9 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
         run_text.font.size = Pt(FONT_SIZE)  # Standard font size for Hebrew text
 
         # Add the verse ID with specific styling
-        run_id = paragraph.add_run(f"   ({verse_id})")
-        run_id.font.name = DOCX_HEBREW_FONT
-        run_id.font.size = Pt(12)  # Smaller font size for the verse ID
+        #run_id = paragraph.add_run(f"   ({verse_id})")
+        #run_id.font.name = DOCX_HEBREW_FONT
+        #run_id.font.size = Pt(12)  # Smaller font size for the verse ID
 
         # Right-to-left alignment
         paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -282,7 +283,7 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     # Removes all colons (:) from a Word document while preserving the formatting.
     docx_post_processing(save_path, save_path)
     # Adds a colon at the end of each sentence in a Word document, 
-    #docx_post_processing2(save_path, save_path)
+    docx_post_processing2(save_path, save_path)
 
 def docx_post_processing(input_path, output_path):
 
@@ -308,28 +309,29 @@ def docx_post_processing(input_path, output_path):
     doc.save(output_path)
 
 def docx_post_processing2(input_path, output_path):
-
-    # Adds a colon at the end of each sentence in a Word document
+    
+    # Adds a colon at the end of each Hebrew sentence in a Word document, ensuring proper placement for right-to-left text.
 
     # Load the document
     doc = Document(input_path)
 
     # Process paragraphs
     for paragraph in doc.paragraphs:
+        # Set paragraph alignment to Right-to-Left
+        paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
+        
         for run in paragraph.runs:
-            # Check if a verse identifier exists at the end (e.g., "(v1)")
-            if "(" in run.text and ")" in run.text:
-                # Split sentence and verse identifier
-                parts = run.text.rsplit("(", 1)
-                sentence = parts[0].strip()  # The main sentence
-                verse_id = "(" + parts[1]  # Verse identifier with parentheses
-                
-                # Add a colon to the sentence if it doesn't already end with one
-                if not sentence.endswith(":"):
-                    sentence += ":"
-                
-                # Recombine the sentence with the verse identifier
-                run.text = sentence + " " + verse_id
+            # Strip trailing spaces
+            text = run.text.strip()
+            
+            # Add a colon if the text doesn't already end with one
+            if text and not text.endswith(":"):
+                text += "‪:"  # Add a colon with an RTL marker
+            
+            # Apply Hebrew font and formatting
+            run.text = text
+            run.font.name = "David"  # Example Hebrew font
+            run._element.rPr.rFonts.set(qn("w:eastAsia"), "David")
     
     # Save the modified document
     doc.save(output_path)
