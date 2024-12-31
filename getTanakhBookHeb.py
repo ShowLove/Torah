@@ -285,23 +285,23 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     # Do post processing
 
     # Removes all colons (:) from a Word document while preserving the formatting.
-    docx_post_processing(save_path, save_path)
-    # Adds a colon at the end of each sentence in a Word document, 
-    docx_post_processing2(save_path, save_path)
+    docx_remove_colons(save_path, save_path)
+    # Adds a colon at the end of each sentence in a Word document according to the Heb format. 
+    docx_add_colons(save_path, save_path)
 
-def docx_post_processing(input_path, output_path):
+def docx_remove_colons(input_path, output_path):
 
     # Removes all colons (:) from a Word document while preserving the formatting.
 
     # Load the document
     doc = Document(input_path)
     
-    # Process paragraphs
+    # Remove all the ":" from the document
     for paragraph in doc.paragraphs:
         for run in paragraph.runs:
             run.text = run.text.replace(":", "")  # Replace ":" in each run's text
     
-    # Process tables
+    # Remove all the ":" from the document
     for table in doc.tables:
         for row in table.rows:
             for cell in row.cells:
@@ -312,7 +312,7 @@ def docx_post_processing(input_path, output_path):
     # Save the modified document
     doc.save(output_path)
 
-def docx_post_processing2(input_path, output_path):
+def docx_add_colons(input_path, output_path):
     
     # Adds a colon at the end of each Hebrew sentence in a Word document, ensuring proper placement for right-to-left text.
 
