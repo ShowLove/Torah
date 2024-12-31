@@ -23,6 +23,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 # Global constants
 DATA_FOLDER = "data"
 TANAKH_DOCX_FOLDER = "tanakh_docs"
+HEB_DOCX_FOLDER = "hebrew_docs"
 TORAH_BOOKS = "Torah books"
 PROPHETS_BOOKS = "Prophets books"
 SCRIPTURES_BOOKS = "Scriptures books"
@@ -53,6 +54,11 @@ def load_data(json_filename, return_path_only=False):
     else:
         print(f"Error: The file {json_filename} does not exist in the '{DATA_FOLDER}' folder.")
         return None
+
+# Load file path
+def load_tanakh_path(folder_name):
+    file_path = os.path.join(TANAKH_DOCX_FOLDER, folder_name)
+    return file_path
 
 def prompt_user_for_book(data):
     print("Please choose a section:")
@@ -291,9 +297,10 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
         paragraph._p.set(qn('w:bidi'), '1')
 
     # Define the file path dynamically
-    os.makedirs(TANAKH_DOCX_FOLDER, exist_ok=True)
+    heb_dir = load_tanakh_path(HEB_DOCX_FOLDER);
+    os.makedirs(heb_dir, exist_ok=True)
     save_path = os.path.join(
-        TANAKH_DOCX_FOLDER,
+        heb_dir,
         f"{book_name}_CH_{chapter_choice}_Verses_{start_verse_choice}_to_{end_verse_choice}.docx"
     )
 
