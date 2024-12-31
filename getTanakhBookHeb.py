@@ -243,7 +243,7 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     """
 
     # Toggle to include or exclude verse IDs
-    include_verse_id = False
+    include_verse_id = True
     document = Document()
 
     # Set narrow margins
@@ -264,8 +264,13 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
         paragraph = document.add_paragraph()
 
         if include_verse_id:
-            # Add the verse ID with specific styling
-            run_id = paragraph.add_run(f"   ({verse_id})")
+            # Extract verse number by removing the "v" and convert to Hebrew
+            # The verse_id is assumed to be in the format "v1", "v2", etc.
+            verse_number = int(verse_id.lstrip('v'))  # Remove "v" and convert to integer
+            verse_number_hebrew = number_to_hebrew(verse_number)  # Convert number to Hebrew
+            
+            # Add the Hebrew verse number at the beginning
+            run_id = paragraph.add_run(f"   ({verse_number_hebrew})")
             run_id.font.name = DOCX_HEBREW_FONT
             run_id.font.size = Pt(12)  # Smaller font size for the verse ID
 
@@ -297,10 +302,7 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     print(f"Saved Hebrew-friendly Word document: {save_path}")
 
     # Do post processing
-
-    # Removes all colons (:) from a Word document while preserving the formatting.
     docx_remove_colons(save_path, save_path)
-    # Adds a colon at the end of each sentence in a Word document according to the Heb format. 
     docx_add_colons(save_path, save_path)
 
 def docx_remove_colons(input_path, output_path):
