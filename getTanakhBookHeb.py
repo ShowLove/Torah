@@ -22,6 +22,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
 # Global constants
 DATA_FOLDER = "data"
+TANAKH_DOCX_FOLDER = "tanakh_docs"
 TORAH_BOOKS = "Torah books"
 PROPHETS_BOOKS = "Prophets books"
 SCRIPTURES_BOOKS = "Scriptures books"
@@ -290,9 +291,9 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
         paragraph._p.set(qn('w:bidi'), '1')
 
     # Define the file path dynamically
-    os.makedirs("tanakh_docs", exist_ok=True)
+    os.makedirs(TANAKH_DOCX_FOLDER, exist_ok=True)
     save_path = os.path.join(
-        "tanakh_docs",
+        TANAKH_DOCX_FOLDER,
         f"{book_name}_CH_{chapter_choice}_Verses_{start_verse_choice}_to_{end_verse_choice}.docx"
     )
 
