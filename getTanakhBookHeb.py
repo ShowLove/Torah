@@ -176,6 +176,20 @@ def get_tanakh_scraper_inputs():
     print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{start_verse_choice}-{end_verse_choice}")
     return tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice
 
+def number_to_hebrew(n):
+    units = ["", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט"]
+    tens = ["", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ"]
+    hundreds = ["", "ק", "ר", "ש", "ת"]
+
+    # Extract hundreds, tens, and units
+    u = n % 10
+    t = (n // 10) % 10
+    h = (n // 100) % 10
+
+    # Construct Hebrew number
+    result = hundreds[h] + tens[t] + units[u]
+    return result
+
 ##################################################################################
 ##################################################################################
 # Web scraper functions start
