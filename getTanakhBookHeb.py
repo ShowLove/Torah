@@ -227,6 +227,9 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     """
     Create a Word document with Hebrew-friendly formatting.
     """
+
+    # Toggle to include or exclude verse IDs
+    include_verse_id = False
     document = Document()
 
     # Set narrow margins
@@ -246,15 +249,16 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     for verse_id, verse_text in verse_texts.items():
         paragraph = document.add_paragraph()
 
+        if include_verse_id:
+            # Add the verse ID with specific styling
+            run_id = paragraph.add_run(f"   ({verse_id})")
+            run_id.font.name = DOCX_HEBREW_FONT
+            run_id.font.size = Pt(12)  # Smaller font size for the verse ID
+
         # Add the verse text with default styling
         run_text = paragraph.add_run(verse_text)
         run_text.font.name = DOCX_HEBREW_FONT
         run_text.font.size = Pt(FONT_SIZE)  # Standard font size for Hebrew text
-
-        # Add the verse ID with specific styling
-        #run_id = paragraph.add_run(f"   ({verse_id})")
-        #run_id.font.name = DOCX_HEBREW_FONT
-        #run_id.font.size = Pt(12)  # Smaller font size for the verse ID
 
         # Right-to-left alignment
         paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
