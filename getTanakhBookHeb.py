@@ -263,6 +263,11 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
     for verse_id, verse_text in verse_texts.items():
         paragraph = document.add_paragraph()
 
+        # Add the verse text with default styling
+        run_text = paragraph.add_run(verse_text)
+        run_text.font.name = DOCX_HEBREW_FONT
+        run_text.font.size = Pt(FONT_SIZE)  # Standard font size for Hebrew text
+
         if include_verse_id:
             # Extract verse number by removing the "v" and convert to Hebrew
             # The verse_id is assumed to be in the format "v1", "v2", etc.
@@ -270,14 +275,9 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
             verse_number_hebrew = number_to_hebrew(verse_number)  # Convert number to Hebrew
             
             # Add the Hebrew verse number at the beginning
-            run_id = paragraph.add_run(f"   ({verse_number_hebrew})")
+            run_id = paragraph.add_run(f"  ({verse_number_hebrew})")
             run_id.font.name = DOCX_HEBREW_FONT
-            run_id.font.size = Pt(12)  # Smaller font size for the verse ID
-
-        # Add the verse text with default styling
-        run_text = paragraph.add_run(verse_text)
-        run_text.font.name = DOCX_HEBREW_FONT
-        run_text.font.size = Pt(FONT_SIZE)  # Standard font size for Hebrew text
+            run_id.font.size = Pt(FONT_SIZE)  # Smaller font size for the verse ID
 
         # Right-to-left alignment
         paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
