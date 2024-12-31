@@ -207,7 +207,7 @@ def number_to_hebrew(n):
 ##################################################################################
 ##################################################################################
 
-def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice):
+def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice, file_path=load_tanakh_path(HEB_DOCX_FOLDER)):
     DEBUG = True  # Toggle for debug print statements
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get(SCRAPER_URL)
@@ -240,7 +240,7 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
         verse_texts = get_verse_texts(driver, int(start_verse_choice), int(end_verse_choice))
 
         # Pass variables dynamically to create the Word document
-        create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, end_verse_choice, verse_texts)
+        create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, end_verse_choice, verse_texts, file_path=file_path)
 
     except Exception as e:
         if DEBUG:
@@ -248,11 +248,11 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
     finally:
         driver.quit()
 
-def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, end_verse_choice, verse_texts):
+
+def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, end_verse_choice, verse_texts, file_path=load_tanakh_path(HEB_DOCX_FOLDER)):
     """
     Create a Word document with Hebrew-friendly formatting.
     """
-
     # Toggle to include or exclude verse IDs
     include_verse_id = True
     document = Document()
@@ -281,7 +281,6 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
 
         if include_verse_id:
             # Extract verse number by removing the "v" and convert to Hebrew
-            # The verse_id is assumed to be in the format "v1", "v2", etc.
             verse_number = int(verse_id.lstrip('v'))  # Remove "v" and convert to integer
             verse_number_hebrew = number_to_hebrew(verse_number)  # Convert number to Hebrew
             
@@ -297,10 +296,9 @@ def create_hebrew_word_document(book_name, chapter_choice, start_verse_choice, e
         paragraph._p.set(qn('w:bidi'), '1')
 
     # Define the file path dynamically
-    heb_dir = load_tanakh_path(HEB_DOCX_FOLDER);
-    os.makedirs(heb_dir, exist_ok=True)
+    os.makedirs(file_path, exist_ok=True)
     save_path = os.path.join(
-        heb_dir,
+        file_path,
         f"{book_name}_CH_{chapter_choice}_Verses_{start_verse_choice}_to_{end_verse_choice}.docx"
     )
 
