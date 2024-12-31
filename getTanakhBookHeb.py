@@ -29,6 +29,7 @@ PENTATEUCH_FILE = "Pentateuch.json"
 PROPHETS_FILE = "Prophets.json"
 SCRIPTURES_FILE = "Scriptures.json"
 TANAKH_OUTLINE_FILE = "tanakhOutlineHeb.json"
+PARASHOT_LIST_FILE = 'torah_parashot.json'
 SCRAPER_URL = "https://www.chabad.org/library/bible_cdo/aid/63255/jewish/The-Bible-with-Rashi.htm"
 TORAH_SECTION = "Torah (Pentateuch)"
 PROPHETS_SECTION = "Nevi'im (Prophets)"
@@ -40,8 +41,11 @@ VERSE_ID_FONT_SIZE = 12  # Smaller font size for the verse ID
 
 # Load data from the external JSON file
 # Function to load JSON data from a file in the 'data' directory
-def load_data(json_filename):
+def load_data(json_filename, return_path_only=False):
     file_path = os.path.join(DATA_FOLDER, json_filename)
+    if return_path_only:
+        return file_path
+    
     if os.path.exists(file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             return json.load(file)
@@ -490,7 +494,59 @@ def run_tanakh_scraper_main():
     # Perform the scraping process
     perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice)
 
+def print_parashah_info(file_name):
+    """
+    This function loads the JSON file containing Parashot information and prints the details
+    (Name, Book, Start, and End) for each Parashah.
+
+    :param file_name: Path to the JSON file containing Torah Parashot data.
+    """
+    try:
+        # Load the JSON data from the file
+        with open(file_name, 'r') as file:
+            data = json.load(file)
+
+        # Traverse through the Parashot list and print the details
+        for parashah in data['Parashot']:
+            name = parashah['Name']
+            book = parashah['Book']
+            start_chapter = parashah['Start']['Chapter']
+            start_verse = parashah['Start']['Verse']
+            end_chapter = parashah['End']['Chapter']
+            end_verse = parashah['End']['Verse']
+            
+            # Print the information in a readable format
+            print(f"Parashah: {name}")
+            print(f"Book: {book}")
+            print(f"Start: Chapter {start_chapter}, Verse {start_verse}")
+            print(f"End: Chapter {end_chapter}, Verse {end_verse}")
+            print("-" * 40)  # Separator for clarity
+
+    except FileNotFoundError:
+        print(f"Error: The file '{file_name}' was not found.")
+    except json.JSONDecodeError:
+        print(f"Error: There was an issue decoding the JSON data in the file '{file_name}'.")
+    except KeyError as e:
+        print(f"Error: Missing expected key {e} in the JSON data.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
 # Example of how to call the function
 if __name__ == "__main__":
-    run_tanakh_scraper_main()
+    # Prompt the user to choose the function to run
+    print("Choose an option:")
+    print("1. Run Tanakh Scraper")
+    print("2. Print Parashah Info")
 
+    # Get user input
+    choice = input("Enter 1 or 2: ")
+    file_name = load_data(PARASHOT_LIST_FILE, return_path_only=True)
+
+    if choice == '1':
+        # Call the Tanakh scraper function
+        run_tanakh_scraper_main()
+    elif choice == '2':
+        # Call the Parashah info printing function
+        print_parashah_info(file_name)
+    else:
+        print("Invalid choice. Please enter 1 or 2.")
