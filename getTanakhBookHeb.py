@@ -500,7 +500,7 @@ def run_tanakh_scraper_main():
     # Perform the scraping process
     perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice)
 
-def print_parashah_info(file_name):
+def print_parashah_info_main(file_name):
     """
     This function loads the JSON file containing Parashot information and prints the details
     (Name, Book, Tanakh Section, Start, and End) for each Parashah.
@@ -555,6 +555,6 @@ if __name__ == "__main__":
         run_tanakh_scraper_main()
     elif choice == '2':
         # Call the Parashah info printing function
-        print_parashah_info(file_name)
+        print_parashah_info_main(file_name)
     else:
         print("Invalid choice. Please enter 1 or 2.")
