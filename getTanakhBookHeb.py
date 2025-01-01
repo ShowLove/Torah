@@ -162,12 +162,15 @@ def get_chapter_and_verse_from_user(tanakh_division_name, book_name):
         print("Invalid chapter or verse choice.")
         return None, None, None  # Return None if invalid
 
-def get_tanakh_scraper_inputs():
+def get_tanakh_scraper_inputs(get_end_chapter=False):
     """
     Handles user input for Tanakh scraping: book selection, chapter, and verse range.
     
+    Parameters:
+        get_end_chapter (bool): Flag to enable input for end chapter choice.
+
     Returns:
-        tuple: (tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice)
+        tuple: (tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice, [end_chapter_choice if enabled])
                or None if any input is invalid.
     """
     # Step 1: Choose the desired Book
@@ -184,7 +187,26 @@ def get_tanakh_scraper_inputs():
         print("Invalid chapter or verse range. Exiting...")
         return None
 
+    # Step 3 (Optional): Get end chapter choice if flag is enabled
+    end_chapter_choice = chapter_choice  # Default to the same chapter if not provided
+    if get_end_chapter:
+        try:
+            end_chapter_choice = int(input("Enter the end chapter number: "))
+            if int(end_chapter_choice) < int(chapter_choice):
+                print("End chapter: {end_chapter_choice} cannot be less than the start chapter: {chapter_choice}. Exiting...")
+                return None
+        except ValueError:
+            print("Invalid input for end chapter. Exiting...")
+            return None
+
+    # Print details for debugging
     print(f"TANAKH: {tanakh_division_name}, {book_name}, {chapter_choice}:{start_verse_choice}-{end_verse_choice}")
+    if get_end_chapter:
+        print(f"End Chapter: {end_chapter_choice}")
+
+    # Return tuple including end_chapter_choice if enabled
+    if get_end_chapter:
+        return tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice, end_chapter_choice
     return tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice
 
 def number_to_hebrew(n):
@@ -200,6 +222,60 @@ def number_to_hebrew(n):
     # Construct Hebrew number
     result = hundreds[h] + tens[t] + units[u]
     return result
+
+def traverse_tanakh_scraper(tanakh_division_name, book_name=None, chapter_choice=None, end_chapter_choice=None, start_verse_choice=1, end_verse_choice=None, file_path=load_tanakh_path(HEB_DOCX_FOLDER)):
+    """
+    Traverses the Tanakh JSON structure and performs scraping for specified sections.
+    """
+    DEBUG = True  # Toggle for debug print statements
+
+    try:
+        # Load the JSON file
+        with open(os.path.join("data", "Pentateuch.json"), 'r', encoding='utf-8') as file:
+            tanakh_data = json.load(file)
+
+        books = tanakh_data.get("books", {})
+        
+        # Traverse books in the division
+        for current_book_name, book_data in books.items():
+            if book_name and current_book_name != book_name:
+                continue  # Skip if not the specified book
+            
+            chapters = book_data.get("chapters", {})
+            
+            for current_chapter, verse_count in chapters.items():
+                current_chapter = int(current_chapter)  # Convert chapter to integer for comparison
+                
+                if chapter_choice and current_chapter < int(chapter_choice):
+                    continue  # Skip chapters before the starting chapter
+                
+                if end_chapter_choice and current_chapter > int(end_chapter_choice):
+                    break  # Stop processing beyond the ending chapter
+                
+                # Set the start and end verse ranges
+                start_verse = start_verse_choice if current_chapter == chapter_choice else 1
+                end_verse = end_verse_choice if current_chapter == end_chapter_choice else verse_count
+
+                if DEBUG:
+                    print(f"Processing {current_book_name}, Chapter {current_chapter}, Verses {start_verse}-{end_verse}")
+
+                # Perform scraping for the current range
+                perform_tanakh_scraping(
+                    tanakh_division_name=tanakh_division_name,
+                    book_name=current_book_name,
+                    chapter_choice=current_chapter,
+                    start_verse_choice=start_verse,
+                    end_verse_choice=end_verse,
+                    file_path=file_path
+                )
+                
+    except FileNotFoundError:
+        print(f"Error: The file 'Pentateuch.json' was not found in the 'data' folder.")
+    except json.JSONDecodeError:
+        print("Error: Failed to decode JSON from 'Pentateuch.json'.")
+    except Exception as e:
+        if DEBUG:
+            print(f"An unexpected error occurred: {e}")
 
 ##################################################################################
 ##################################################################################
@@ -539,15 +615,34 @@ def print_parashah_info_main(file_name):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
+def get_tanakh_range_from_input():
+
+    inputs = get_tanakh_scraper_inputs(get_end_chapter=True)
+    if not inputs:
+        print("Error: no inputs in get_tanakh_scraper_inputs")
+
+    tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice, end_chapter_choice = inputs
+
+    # Traverse and scrape Genesis, chapters 1 through 3
+    traverse_tanakh_scraper(
+        tanakh_division_name=tanakh_division_name,
+        book_name=book_name,
+        chapter_choice=chapter_choice,
+        end_chapter_choice=end_chapter_choice,
+        start_verse_choice=start_verse_choice,
+        end_verse_choice=end_verse_choice  # End at verse 25 in the final chapter
+    )
+
 # Example of how to call the function
 if __name__ == "__main__":
     # Prompt the user to choose the function to run
     print("Choose an option:")
     print("1. Run Tanakh Scraper")
     print("2. Print Parashah Info")
+    print("3. Traverse Tanakh Scraper from a start to an end point")
 
     # Get user input
-    choice = input("Enter 1 or 2: ")
+    choice = input("Enter 1 through 3: ")
     file_name = load_data(PARASHOT_LIST_FILE, return_path_only=True)
 
     if choice == '1':
@@ -556,5 +651,8 @@ if __name__ == "__main__":
     elif choice == '2':
         # Call the Parashah info printing function
         print_parashah_info_main(file_name)
+    elif choice == '3':
+        # Scrape range of tanakh from user input
+        get_tanakh_range_from_input()
     else:
         print("Invalid choice. Please enter 1 or 2.")
