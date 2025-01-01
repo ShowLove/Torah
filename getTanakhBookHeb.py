@@ -17,6 +17,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn 
 from docx.oxml import OxmlElement
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+import inspect
                                                                     ################################################################################################
 
 
@@ -74,7 +75,7 @@ def prompt_user_for_book(data):
     elif tanakh_divisions == "3":
         tanakh_division_name = "Scriptures books"
     else:
-        print("Invalid choice. Exiting...")
+        print(f"Invalid choice. line: {inspect.currentframe().f_lineno}: Exiting...")
         return None, None, None
     
     print(f"\nYou selected: {data['sections'][tanakh_divisions]}")
@@ -91,7 +92,7 @@ def prompt_user_for_book(data):
         print(f"\nYou selected: {book_name}")
         return tanakh_division_name, book_choice, book_name
     else:
-        print("Invalid choice. Exiting...")
+        print(f"Invalid choice. line: {inspect.currentframe().f_lineno}: Exiting...")
         return None, None, None
 
 def is_valid_chapter(tanakh_division_name, book_choice, chapter_choice, verse_choice=None):
@@ -298,7 +299,7 @@ def perform_tanakh_scraping(tanakh_division_name, book_name, chapter_choice, sta
             tanakh_division_name = SCRIPTURES_SECTION
         else:
             if DEBUG:
-                print("Invalid choice. Exiting...")
+                print(f"Invalid choice: {tanakh_division_name}, line: {inspect.currentframe().f_lineno}: Exiting...")
             return
 
         # Perform the scraping steps
@@ -623,15 +624,72 @@ def get_tanakh_range_from_input():
 
     tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice, end_chapter_choice = inputs
 
-    # Traverse and scrape Genesis, chapters 1 through 3
+    # Traverse and scrape Genesis
     traverse_tanakh_scraper(
         tanakh_division_name=tanakh_division_name,
         book_name=book_name,
         chapter_choice=chapter_choice,
         end_chapter_choice=end_chapter_choice,
         start_verse_choice=start_verse_choice,
-        end_verse_choice=end_verse_choice  # End at verse 25 in the final chapter
+        end_verse_choice=end_verse_choice
     )
+
+def get_tanakh_range_from_json(parasha_name, file_path="data/torah_parashot.json"):
+    """
+    Gets the Tanakh range based on the specified parasha name from torah_parashot.json.
+
+    :param parasha_name: Name of the Torah portion (e.g., "Bereshit", "Noach").
+    :param file_path: Path to the torah_parashot.json file.
+    """
+    try:
+        # Load the parasha data from the JSON file
+        with open(file_path, 'r', encoding='utf-8') as file:
+            parasha_data = json.load(file)
+        
+        # Find the specified parasha
+        parasha = next((p for p in parasha_data["Parashot"] if p["Name"] == parasha_name), None)
+        
+        if not parasha:
+            print(f"Error: Parasha '{parasha_name}' not found in the data.")
+            return
+        
+        # Extract range information
+        tanakh_division_name = parasha["Tanakh Section"]
+        book_name = parasha["Book"]
+        start_chapter = parasha["Start"]["Chapter"]
+        start_verse = parasha["Start"]["Verse"]
+        end_chapter = parasha["End"]["Chapter"]
+        end_verse = parasha["End"]["Verse"]
+
+        if tanakh_division_name == "Torah (Pentateuch)":
+            tanakh_division_name = "Torah books"
+        elif tanakh_divisions == "Nevi'im (Prophets)":
+            tanakh_division_name = "Prophets books"
+        elif tanakh_divisions == "Ketuvim (Scriptures)":
+            tanakh_division_name = "Scriptures books"
+        else:
+            print(f"Invalid choice. line: {inspect.currentframe().f_lineno}: Exiting...")
+            return None, None, None
+        
+        # Traverse and scrape using the extracted range
+        folder_path=load_tanakh_path(HEB_DOCX_FOLDER)
+        folder_path = os.path.join(folder_path, parasha_name)
+        traverse_tanakh_scraper(
+            tanakh_division_name=tanakh_division_name,
+            book_name=book_name,
+            chapter_choice=start_chapter,
+            end_chapter_choice=end_chapter,
+            start_verse_choice=start_verse,
+            end_verse_choice=end_verse,
+            file_path=folder_path
+        )
+    
+    except FileNotFoundError:
+        print(f"Error: The file '{file_path}' was not found.")
+    except json.JSONDecodeError:
+        print(f"Error: Failed to decode JSON from '{file_path}'.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 # Example of how to call the function
 if __name__ == "__main__":
@@ -640,9 +698,10 @@ if __name__ == "__main__":
     print("1. Run Tanakh Scraper")
     print("2. Print Parashah Info")
     print("3. Traverse Tanakh Scraper from a start to an end point")
+    print("4. Get all the hebrew text from a single parasha portion")
 
     # Get user input
-    choice = input("Enter 1 through 3: ")
+    choice = input("Enter 1 through 4: ")
     file_name = load_data(PARASHOT_LIST_FILE, return_path_only=True)
 
     if choice == '1':
@@ -654,5 +713,10 @@ if __name__ == "__main__":
     elif choice == '3':
         # Scrape range of tanakh from user input
         get_tanakh_range_from_input()
+    elif choice == '4':
+        # Scrape the docx for a single parasha
+        print_parashah_info_main(file_name)
+        parasha_choice = input("Enter a parasha choice: ")
+        get_tanakh_range_from_json(parasha_choice)
     else:
         print("Invalid choice. Please enter 1 or 2.")
