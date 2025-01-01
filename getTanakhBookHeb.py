@@ -503,7 +503,7 @@ def run_tanakh_scraper_main():
 def print_parashah_info(file_name):
     """
     This function loads the JSON file containing Parashot information and prints the details
-    (Name, Book, Start, and End) for each Parashah.
+    (Name, Book, Tanakh Section, Start, and End) for each Parashah.
 
     :param file_name: Path to the JSON file containing Torah Parashot data.
     """
@@ -516,6 +516,7 @@ def print_parashah_info(file_name):
         for parashah in data['Parashot']:
             name = parashah['Name']
             book = parashah['Book']
+            tanakh_section = parashah['Tanakh Section']
             start_chapter = parashah['Start']['Chapter']
             start_verse = parashah['Start']['Verse']
             end_chapter = parashah['End']['Chapter']
@@ -524,6 +525,7 @@ def print_parashah_info(file_name):
             # Print the information in a readable format
             print(f"Parashah: {name}")
             print(f"Book: {book}")
+            print(f"Tanakh Section: {tanakh_section}")
             print(f"Start: Chapter {start_chapter}, Verse {start_verse}")
             print(f"End: Chapter {end_chapter}, Verse {end_verse}")
             print("-" * 40)  # Separator for clarity
