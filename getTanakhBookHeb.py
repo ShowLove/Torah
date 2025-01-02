@@ -616,7 +616,7 @@ def print_parashah_info_main(file_name):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-def get_tanakh_range_from_input():
+def get_tanakh_range_from_input_main():
 
     inputs = get_tanakh_scraper_inputs(get_end_chapter=True)
     if not inputs:
@@ -634,7 +634,7 @@ def get_tanakh_range_from_input():
         end_verse_choice=end_verse_choice
     )
 
-def get_tanakh_range_from_json(parasha_name, file_path="data/torah_parashot.json"):
+def get_tanakh_range_from_json_main(parasha_name, file_path="data/torah_parashot.json"):
     """
     Gets the Tanakh range based on the specified parasha name from torah_parashot.json.
 
@@ -691,6 +691,34 @@ def get_tanakh_range_from_json(parasha_name, file_path="data/torah_parashot.json
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
+def process_all_parashot_main(file_path="data/torah_parashot.json"):
+    """
+    Processes all the parashot in the torah_parashot.json file by passing their names to
+    the get_tanakh_range_from_json_main function.
+
+    :param file_path: Path to the torah_parashot.json file.
+    """
+    try:
+        # Load the parasha data from the JSON file
+        with open(file_path, 'r', encoding='utf-8') as file:
+            parasha_data = json.load(file)
+        
+        # Loop through all the "Name" fields and process each parasha
+        for parasha in parasha_data.get("Parashot", []):
+            parasha_name = parasha.get("Name")
+            if parasha_name:
+                print(f"Processing parasha: {parasha_name}")
+                get_tanakh_range_from_json_main(parasha_name, file_path)
+            else:
+                print("Skipping a parasha with missing 'Name' field.")
+    
+    except FileNotFoundError:
+        print(f"Error: The file '{file_path}' was not found.")
+    except json.JSONDecodeError:
+        print(f"Error: Failed to decode JSON from '{file_path}'.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
 # Example of how to call the function
 if __name__ == "__main__":
     # Prompt the user to choose the function to run
@@ -699,9 +727,10 @@ if __name__ == "__main__":
     print("2. Print Parashah Info")
     print("3. Traverse Tanakh Scraper from a start to an end point")
     print("4. Get all the hebrew text from a single parasha portion")
+    print("5. Get all the Parashot")
 
     # Get user input
-    choice = input("Enter 1 through 4: ")
+    choice = input("Enter 1 through 5: ")
     file_name = load_data(PARASHOT_LIST_FILE, return_path_only=True)
 
     if choice == '1':
@@ -712,11 +741,13 @@ if __name__ == "__main__":
         print_parashah_info_main(file_name)
     elif choice == '3':
         # Scrape range of tanakh from user input
-        get_tanakh_range_from_input()
+        get_tanakh_range_from_input_main()
     elif choice == '4':
         # Scrape the docx for a single parasha
         print_parashah_info_main(file_name)
         parasha_choice = input("Enter a parasha choice: ")
-        get_tanakh_range_from_json(parasha_choice)
+        get_tanakh_range_from_json_main(parasha_choice)
+    elif choice == '5':
+        process_all_parashot_main("data/torah_parashot.json")
     else:
-        print("Invalid choice. Please enter 1 or 2.")
+        print("Invalid choice. Please enter 1 through 5.")
