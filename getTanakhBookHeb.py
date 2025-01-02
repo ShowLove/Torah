@@ -260,6 +260,7 @@ def traverse_tanakh_scraper(tanakh_division_name, book_name=None, chapter_choice
                 if DEBUG:
                     print(f"Processing {current_book_name}, Chapter {current_chapter}, Verses {start_verse}-{end_verse}")
 
+                time.sleep(1)
                 # Perform scraping for the current range
                 perform_tanakh_scraping(
                     tanakh_division_name=tanakh_division_name,
@@ -708,6 +709,7 @@ def process_all_parashot_main(file_path="data/torah_parashot.json"):
             parasha_name = parasha.get("Name")
             if parasha_name:
                 print(f"Processing parasha: {parasha_name}")
+                time.sleep(20)
                 get_tanakh_range_from_json_main(parasha_name, file_path)
             else:
                 print("Skipping a parasha with missing 'Name' field.")
