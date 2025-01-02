@@ -260,7 +260,7 @@ def traverse_tanakh_scraper(tanakh_division_name, book_name=None, chapter_choice
                 if DEBUG:
                     print(f"Processing {current_book_name}, Chapter {current_chapter}, Verses {start_verse}-{end_verse}")
 
-                time.sleep(1)
+                time.sleep(1) 
                 # Perform scraping for the current range
                 perform_tanakh_scraping(
                     tanakh_division_name=tanakh_division_name,
@@ -721,6 +721,28 @@ def process_all_parashot_main(file_path="data/torah_parashot.json"):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
+def rename_folders_by_timestamp_main(directory_path):
+    try:
+        # Get all folders in the directory
+        folders = [f for f in os.listdir(directory_path) if os.path.isdir(os.path.join(directory_path, f))]
+        
+        # Get folders with their creation timestamps
+        folders_with_timestamps = [(folder, os.path.getctime(os.path.join(directory_path, folder))) for folder in folders]
+        
+        # Sort folders by timestamp (oldest first)
+        folders_with_timestamps.sort(key=lambda x: x[1])
+        
+        # Rename folders with prefix numbers
+        for i, (folder, _) in enumerate(folders_with_timestamps, start=1):
+            old_path = os.path.join(directory_path, folder)
+            new_folder_name = f"{i:02d}_{folder}"  # Add zero-padded number as prefix
+            new_path = os.path.join(directory_path, new_folder_name)
+            os.rename(old_path, new_path)
+            print(f"Renamed '{folder}' to '{new_folder_name}'")
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 # Example of how to call the function
 if __name__ == "__main__":
     # Prompt the user to choose the function to run
@@ -730,9 +752,10 @@ if __name__ == "__main__":
     print("3. Traverse Tanakh Scraper from a start to an end point")
     print("4. Get all the hebrew text from a single parasha portion")
     print("5. Get all the Parashot")
+    print("6. Define folder names in a directory by time-stamp")
 
     # Get user input
-    choice = input("Enter 1 through 5: ")
+    choice = input("Enter 1 through 6: ")
     file_name = load_data(PARASHOT_LIST_FILE, return_path_only=True)
 
     if choice == '1':
@@ -751,5 +774,7 @@ if __name__ == "__main__":
         get_tanakh_range_from_json_main(parasha_choice)
     elif choice == '5':
         process_all_parashot_main("data/torah_parashot.json")
+    elif choice == '6':
+        rename_folders_by_timestamp_main("tanakh_docs/hebrew_docs")
     else:
         print("Invalid choice. Please enter 1 through 5.")
