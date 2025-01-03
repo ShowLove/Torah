@@ -314,69 +314,6 @@ def save_to_word(verses, filename):
     print(f"Verses have been saved to {filename}")
 
 ##################################################################################
-# Extract the full link string from book and chapter information
-##################################################################################
-def extract_full_string(html_content):
-    # Parse the HTML with BeautifulSoup
-    soup = BeautifulSoup(html_content, 'html.parser')
-    
-    # Find all links in the HTML content
-    links = soup.find_all('a', href=True)
-    
-    # Loop through all links to find the partial string "Bereishis/Genesis, Chapter 01"
-    for link in links:
-        # Check if the link text contains the partial string
-        if 'Bereishis/Genesis, Chapter' in link.get_text():
-            # Prepend "Bereishis: " to the found link text to get the full string
-            full_string = link.get_text().strip()
-            return full_string
-    
-    return None  # Return None if the string is not found
-
-##################################################################################
-# Main process to get Genesis and feed the URL into the verse-grabbing function
-##################################################################################
-def get_Genesis_and_verses(chapter_number):
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    driver.get("http://www.mnemotrix.com/texis/vtx/chumash")  # Replace with your desired URL
-
-    try:
-        # Step 1: Select options to get to the next page
-        select_option(driver, "bookq", "Genesis")         # Select "Genesis" from the "bookq" dropdown
-        select_option(driver, "chapterq", f"Chapter {chapter_number}")  # Use chapter_number as a string
-        click_submit_button(driver)  # Click the submit button
-
-        # Step 2: Click the link on the second page
-        html_content = driver.page_source
-        link_text = extract_full_string(html_content)
-        #link_text = f"Bereishis/Genesis, Chapter {chapter_number}"  # Use chapter_number in the link text
-        click_link(driver, link_text)
-
-        # Step 3: Retrieve and print the final URL
-        final_url = get_current_url(driver)
-
-        # Step 4: Grab all verses from the page using the final URL
-        driver.get(final_url)  # Navigate to the final URL
-        verses = grab_verses(driver)
-
-        # Step 5: Save the verses to a Word document with the specified filename format
-        filename = f"gen_{chapter_number}.docx"
-        save_to_word(verses, filename)
-
-    finally:
-        # Step Last: Wait and Quit
-        time.sleep(5)  # Wait for 5 seconds to observe the result
-        driver.quit()
-
-def main_get_gen():
-    # Iterate through chapters 1 to 50
-    for chapter_number in range(1, 51):
-        # Convert the chapter number to a two-digit string if necessary
-        chapter_number_str = str(chapter_number).zfill(2)
-        # Get the verses for the chapter
-        get_Genesis_and_verses(chapter_number_str)
-
-##################################################################################
 # Function to open a website in Google Chrome on macOS
 ##################################################################################
 def main_open_website_with_chrome(website_url):
@@ -417,21 +354,8 @@ def move_word_files_to_folder(destination_folder):
                 print(f"Error moving {file_name}: {e}")
 
 ##################################################################################
-# Encapsulated main function
+# Get any chapter from any book. 
 ##################################################################################
-def main_get_gen_ch():
-    # Prompt the user for the chapter number between 1 and 50
-    chapter_number = input("Enter the chapter number (1-50): ").strip()
-
-    # Validate the chapter number input
-    if chapter_number.isdigit() and 1 <= int(chapter_number) <= 50:
-        # Convert to two-digit string if necessary
-        chapter_number = chapter_number.zfill(2)
-        get_Genesis_and_verses(chapter_number)  # Pass the chapter number to the function
-    else:
-        print("Invalid chapter number. Please enter a number between 1 and 50.")
-###################################################################################################
-
 def main_tanakh_ch():
     # Get user inputs
     inputs = get_tanakh_scraper_inputs()
@@ -443,6 +367,9 @@ def main_tanakh_ch():
     chapter_number = chapter_choice.zfill(2)
     get_Tanakh_and_verses(chapter_number, book_name)  # Pass the chapter number to the function
 
+##################################################################################
+# Click links and scrape to get text to a word document based on parameters. 
+##################################################################################
 def get_Tanakh_and_verses(chapter_number, book_name):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("http://www.mnemotrix.com/texis/vtx/chumash")  # Replace with your desired URL
@@ -495,28 +422,26 @@ def get_partial_text(book_name):
 def prompt_user_choice():
     # Ask the user to choose between the options
     print("Choose an option:")
-    print("1. Get Genesis Chapter for a specific number")
-    print("2. Get Genesis Chapters 1-50")
-    print("3. Open english Torah Site")
-    print("4. New stuff")
+    print("1. Open english Torah Site")
+    print("2. Get any chapter of any book in the Torah")
+    print("3. TODO")
+    print("4. TODO")
 
     choice = input("Please enter a number: 1 through 3.: ").strip()
 
     if choice == "1":
-        # Call the function to get a specific Genesis chapter
-        main_get_gen_ch()
-    elif choice == "2":
-        # Call the function to get all Genesis chapters from 1 to 50
-        main_get_gen()
-    elif choice == "3":
         # Call the function to get all Genesis chapters from 1 to 50
         eng_website_url = "http://www.mnemotrix.com/texis/vtx/chumash"
         main_open_website_with_chrome(eng_website_url)
-    if choice == "4":
+    elif choice == "2":
         # Call the function to get a specific Genesis chapter
         main_tanakh_ch()
+    elif choice == "3":
+        print("TODO")
+    if choice == "4":
+        print("TODO")
     else:
-        print("Invalid choice. Please enter a number: 1 through 3.")
+        print("Invalid choice. Please enter a number: 1 through 4.")
         prompt_user_choice()  # Recurse until a valid choice is made
 
 ##################################################################################
