@@ -517,7 +517,7 @@ def main_torah_book_eng():
     except ValueError as e:
         print(f"Error: {e}. Please restart and enter a valid number.")
 
-def process_all_parashot_main(file_path="data/torah_parashot.json"):
+def process_all_parashot_main(file_path="data/torah_parashot_eng.json"):
     """
     Processes all the parashot in the torah_parashot.json file by passing their names to
     the get_tanakh_range_from_json_main function.
@@ -572,6 +572,9 @@ def get_tanakh_range_from_json_main(parasha_name, file_path="data/torah_parashot
         start_verse = parasha["Start"]["Verse"]
         end_chapter = parasha["End"]["Chapter"]
         end_verse = parasha["End"]["Verse"]
+
+        start_chapter = str(start_chapter).zfill(2)
+        end_chapter = str(end_chapter).zfill(2)
         
         # Traverse and scrape using the extracted range
         folder_path=load_tanakh_path(ENG_DOCX_FOLDER)
@@ -631,7 +634,7 @@ def traverse_tanakh_scraper(parasha_name, book_name=None, chapter_choice=None, e
 
                 time.sleep(1) 
                 # Perform scraping for the current range
-                get_Tanakh_Parashot(parasha_name, chapter_number, book_name)
+                get_Tanakh_Parashot(parasha_name, current_chapter, book_name)
                 
     except FileNotFoundError:
         print(f"Error: The file 'Pentateuch.json' was not found in the 'data' folder.")
@@ -675,7 +678,7 @@ def get_Tanakh_Parashot(parasha_name, chapter_number, book_name):
         # Step 5: Save the verses to a Word document with the specified filename format
         filename = f"{book_name}_{chapter_number}.docx"
         folder_path=load_tanakh_path(ENG_DOCX_FOLDER)
-        folder_path = os.path.join(folder_path, book_name)
+        folder_path = os.path.join(folder_path, parasha_name)
         save_to_word(verses, filename, book_name, chapter_number, file_path=folder_path)
 
     finally:
@@ -697,7 +700,7 @@ def prompt_user_choice():
     print("6. Print all parashot of the Torah")
 
     choice = input("Please enter a number: 1 through 3.: ").strip()
-    file_name = load_data(PARASHOT_LIST_ENG_FILE, return_path_only=True)
+    file_path = load_data(PARASHOT_LIST_ENG_FILE, return_path_only=True)
 
     if choice == "1":
         # Call the function to get all Genesis chapters from 1 to 50
@@ -717,14 +720,13 @@ def prompt_user_choice():
 
         #print_parashah_info_main(file_name)
         chapter_number = chapter_choice.zfill(2)
-        #parasha_name = input("Enter a parasha name from the list above: ")
         parasha_name = "Breishit"
         get_Tanakh_Parashot(parasha_name, chapter_number, book_name)
     elif choice == "5":
-        process_all_parashot_main("data/torah_parashot_eng.json")
+        process_all_parashot_main(file_path)
     if choice == "6":
         # Call the Parashah info printing function
-        print_parashah_info_main(file_name)
+        print_parashah_info_main(file_path)
     else:
         print("Invalid choice. Please enter a number: 1 through 4.")
 
