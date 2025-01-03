@@ -449,14 +449,23 @@ def get_Tanakh_and_verses(chapter_number, book_name):
 
     try:
         # Step 1: Select options to get to the next page
-        select_option(driver, "bookq", {book_name})         # Select "Genesis" from the "bookq" dropdown
+        select_option(driver, "bookq", book_name)         # Select "Genesis" from the "bookq" dropdown
         select_option(driver, "chapterq", f"Chapter {chapter_number}")  # Use chapter_number as a string
+        time.sleep(2)
         click_submit_button(driver)  # Click the submit button
+
+        # Step 2 click the link to the second page
+        # Locate and click the first link with the specified text
+        links = driver.find_elements(By.PARTIAL_LINK_TEXT, "Shemos/Exodus, Chapter")
+        if links:  # Check if any links were found
+            links[0].click()  # Click the first matching link
+        else:
+            print("No matching link found.")
 
         # Step 2: Click the link on the second page
         #link_text = f"Bereishis/Genesis, Chapter {chapter_number}"  # Use chapter_number in the link text
         # Step 2: Navigate to the chapter link
-        final_url = navigate_to_chapter_link(driver, chapter_number, book_name)
+        #final_url = navigate_to_chapter_link(driver, chapter_number, book_name)
 
         # Step 3: Retrieve and print the final URL
         final_url = get_current_url(driver)
@@ -466,7 +475,7 @@ def get_Tanakh_and_verses(chapter_number, book_name):
         verses = grab_verses(driver)
 
         # Step 5: Save the verses to a Word document with the specified filename format
-        filename = f"gen_{chapter_number}.docx"
+        filename = f"{book_name}_{chapter_number}.docx"
         save_to_word(verses, filename)
 
     finally:
@@ -476,6 +485,7 @@ def get_Tanakh_and_verses(chapter_number, book_name):
 
 def navigate_to_chapter_link(driver, chapter_number, book_name):
     """
+    TODO - DELETE
     Navigates to the link for the specified chapter on the second page.
     
     Parameters:
@@ -487,11 +497,47 @@ def navigate_to_chapter_link(driver, chapter_number, book_name):
     """
     # Extract the link text and click the link
     html_content = driver.page_source
-    link_text = extract_full_string(html_content)
+    link_text = extract_full_string(html_content, book_name)
     click_link(driver, link_text)
 
     # Retrieve and return the final URL
     return get_current_url(driver)
+
+##################################################################################
+# Extract the full link string from book and chapter information
+##################################################################################
+def extract_full_string(html_content, book_name):
+    # Parse the HTML with BeautifulSoup
+    # TODO Delete
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    # Find all links in the HTML content
+    links = soup.find_all('a', href=True)
+    
+    # Loop through all links to find the partial string "Bereishis/Genesis, Chapter 01"
+    for link in links:
+        # Check if the link text contains the partial string
+        # Prepend "Parasha: " to the found link text to get the full string
+        if 'Bereishis/Genesis, Chapter' in link.get_text():
+            full_string = link.get_text().strip()
+            return full_string
+        elif  'Shemos/Exodus, Chapter' in link.get_text():
+            full_string = link.get_text().strip()
+            return full_string
+        elif  'Vayikro/Leviticus, Chapter' in link.get_text():
+            full_string = link.get_text().strip()
+            return full_string
+        elif  'Bamidbar/Numbers, Chapter' in link.get_text():
+            full_string = link.get_text().strip()
+            return full_string        
+        if  'Devarim/Deuteronomy, Chapter ' in link.get_text():
+            full_string = link.get_text().strip()
+            return full_string
+        else:
+            print("Did not find link: E.g:*Bereishis/Genesis, Chapter*")
+            return None       
+
+    return None  # Return None if the string is not found
 
 ##################################################################################
 # Call prompt_user_choice in the main entry point
