@@ -22,6 +22,8 @@ SCRIPTURES_FILE_ENG = "Scriptures_eng.json"
 TORAH_BOOKS = "Torah books"
 PROPHETS_BOOKS = "Prophets books"
 SCRIPTURES_BOOKS = "Scriptures books"
+TANAKH_DOCX_FOLDER = "tanakh_docs"
+ENG_DOCX_FOLDER = "eng_docs"
 
 # Load data from the external JSON file
 # Function to load JSON data from a file in the 'data' directory
@@ -36,6 +38,10 @@ def load_data(json_filename, return_path_only=False):
     else:
         print(f"Error: The file {json_filename} does not exist in the '{DATA_FOLDER}' folder.")
         return None
+
+def load_tanakh_path(folder_name):
+    file_path = os.path.join(TANAKH_DOCX_FOLDER, folder_name)
+    return file_path
 
 def get_tanakh_scraper_inputs(get_end_chapter=False):
     """
@@ -291,27 +297,45 @@ def grab_verses(driver):
 ##################################################################################
 # Function to save verses to a Word document
 ##################################################################################
-def save_to_word(verses, filename):
+def save_to_word(verses, filename, book_name, chapter_number, file_path="."):
     """
     Save a list of verses to a Word document.
 
     Parameters:
         verses (list of tuples): Each tuple contains a verse number and verse text.
-        filename (str): The name of the Word file to save the verses.
+        filename (str): The base name of the Word file to save the verses.
+        book_name (str): Name of the book (e.g., "Genesis").
+        chapter_choice (int): Chapter number.
+        start_verse_choice (int): Starting verse number.
+        end_verse_choice (int): Ending verse number.
+        file_path (str): Directory path to save the file. Default is the current directory.
     """
-    # Create a new Document
+    # Define the file path dynamically
+    os.makedirs(file_path, exist_ok=True)
+    save_path = os.path.join(
+        file_path,
+        f"{filename}.docx"
+    )
+
+    # Delete the file if it exists
+    if os.path.exists(save_path):
+        print(f"File exists, deleting: {save_path}")
+        os.remove(save_path)
+
+    # Create a new Word Document
     doc = Document()
 
     # Add a title to the document
-    doc.add_heading('Genesis - Verses', 0)
+    doc.add_heading(f'{filename} - Chapter {chapter_number}', 0)
 
     # Add each verse to the document
     for verse_number, verse_text in verses:
         doc.add_paragraph(f"{verse_number}: {verse_text}")
 
     # Save the document
-    doc.save(filename)
-    print(f"Verses have been saved to {filename}")
+    doc.save(save_path)
+    print(f"Saved Hebrew-friendly Word document: {save_path}")
+
 
 ##################################################################################
 # Function to open a website in Google Chrome on macOS
@@ -324,34 +348,6 @@ def main_open_website_with_chrome(website_url):
         print(f"Website {website_url} opened in Google Chrome successfully.")
     except Exception as e:
         print(f"An error occurred: {e}")
-
-
-
-##################################################################################
-# Move all the current word files in current directory to a specific folder. 
-##################################################################################
-def move_word_files_to_folder(destination_folder):
-    # Get the current directory
-    current_directory = os.getcwd()
-
-    # Ensure the destination folder exists, if not create it
-    if not os.path.exists(destination_folder):
-        os.makedirs(destination_folder)
-
-    # Loop through all files in the current directory
-    for file_name in os.listdir(current_directory):
-        # Check if the file is a Word document (.docx)
-        if file_name.endswith('.docx'):
-            # Construct the full file path
-            source_file = os.path.join(current_directory, file_name)
-            destination_file = os.path.join(destination_folder, file_name)
-
-            # Move the file (replace if it already exists)
-            try:
-                shutil.move(source_file, destination_file)
-                print(f"Moved: {file_name}")
-            except Exception as e:
-                print(f"Error moving {file_name}: {e}")
 
 ##################################################################################
 # Get any chapter from any book. 
@@ -399,7 +395,9 @@ def get_Tanakh_and_verses(chapter_number, book_name):
 
         # Step 5: Save the verses to a Word document with the specified filename format
         filename = f"{book_name}_{chapter_number}.docx"
-        save_to_word(verses, filename)
+        folder_path=load_tanakh_path(ENG_DOCX_FOLDER)
+        folder_path = os.path.join(folder_path, book_name)
+        save_to_word(verses, filename, book_name, chapter_number, file_path=folder_path)
 
     finally:
         # Step Last: Wait and Quit
@@ -411,10 +409,41 @@ def get_partial_text(book_name):
         "Genesis": "Bereishis/Genesis, Chapter",
         "Exodus": "Shemos/Exodus, Chapter",
         "Leviticus": "Vayikro/Leviticus, Chapter",
-        "Numbers": "Bamidbar/Numbers, Chapter",
+        "Numbßers": "Bamidbar/Numbers, Chapter",
         "Deuteronomy": "Devarim/Deuteronomy, Chapter",
     }
     return book_mapping.get(book_name, "Error: Invalid book input")
+
+def main_all_tanakh_eng():
+    for chapter_number in range(1, 51):
+        # Convert the chapter number to a two-digit string if necessary
+        chapter_number_str = str(chapter_number).zfill(2)
+        # Get the verses for the chapter
+        get_Tanakh_and_verses(chapter_number_str, "Genesis")
+
+    for chapter_number in range(1, 40):
+        # Convert the chapter number to a two-digit string if necessary
+        chapter_number_str = str(chapter_number).zfill(2)
+        # Get the verses for the chapter
+        get_Tanakh_and_verses(chapter_number_str, "Exodus")
+
+    for chapter_number in range(1, 27):
+        # Convert the chapter number to a two-digit string if necessary
+        chapter_number_str = str(chapter_number).zfill(2)
+        # Get the verses for the chapter
+        get_Tanakh_and_verses(chapter_number_str, "Leviticus")
+
+    for chapter_number in range(1, 36):
+        # Convert the chapter number to a two-digit string if necessary
+        chapter_number_str = str(chapter_number).zfill(2)
+        # Get the verses for the chapter
+        get_Tanakh_and_verses(chapter_number_str, "Numbers")
+
+    for chapter_number in range(1, 34):
+        # Convert the chapter number to a two-digit string if necessary
+        chapter_number_str = str(chapter_number).zfill(2)
+        # Get the verses for the chapter
+        get_Tanakh_and_verses(chapter_number_str, "Deuteronomy")
 
 ##################################################################################
 # Call prompt_user_choice in the main entry point
@@ -424,7 +453,7 @@ def prompt_user_choice():
     print("Choose an option:")
     print("1. Open english Torah Site")
     print("2. Get any chapter of any book in the Torah")
-    print("3. TODO")
+    print("3. Get all the chapters of the Tanakh")
     print("4. TODO")
 
     choice = input("Please enter a number: 1 through 3.: ").strip()
@@ -437,7 +466,7 @@ def prompt_user_choice():
         # Call the function to get a specific Genesis chapter
         main_tanakh_ch()
     elif choice == "3":
-        print("TODO")
+        main_all_tanakh_eng()
     if choice == "4":
         print("TODO")
     else:
@@ -449,9 +478,3 @@ def prompt_user_choice():
 if __name__ == "__main__":
     # Ask the user to choose between the options - retrieve data 
     prompt_user_choice()
-
-    # put the data in correct directory if needed
-    subfolder_name = 'bereshit_eng_files'  # Replace with your folder path
-    current_directory = os.getcwd()
-    destination_folder = os.path.join(current_directory, subfolder_name)
-    move_word_files_to_folder(destination_folder)
