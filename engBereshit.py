@@ -409,41 +409,46 @@ def get_partial_text(book_name):
         "Genesis": "Bereishis/Genesis, Chapter",
         "Exodus": "Shemos/Exodus, Chapter",
         "Leviticus": "Vayikro/Leviticus, Chapter",
-        "Numbßers": "Bamidbar/Numbers, Chapter",
+        "Numbers": "Bamidbar/Numbers, Chapter",
         "Deuteronomy": "Devarim/Deuteronomy, Chapter",
     }
     return book_mapping.get(book_name, "Error: Invalid book input")
 
 def main_all_tanakh_eng():
-    for chapter_number in range(1, 51):
-        # Convert the chapter number to a two-digit string if necessary
-        chapter_number_str = str(chapter_number).zfill(2)
-        # Get the verses for the chapter
-        get_Tanakh_and_verses(chapter_number_str, "Genesis")
+    # Map books to their chapter ranges
+    books = {
+        "Genesis": 51,
+        "Exodus": 40,
+        "Leviticus": 27,
+        "Numbers": 36,
+        "Deuteronomy": 34,
+    }
 
-    for chapter_number in range(1, 40):
-        # Convert the chapter number to a two-digit string if necessary
-        chapter_number_str = str(chapter_number).zfill(2)
-        # Get the verses for the chapter
-        get_Tanakh_and_verses(chapter_number_str, "Exodus")
+    # Prompt the user for input
+    print("Choose a book of the Torah to process:")
+    for i, book in enumerate(books.keys(), 1):
+        print(f"{i}. {book}")
+    
+    try:
+        choice = int(input("Enter the number corresponding to your choice: "))
+        if choice < 1 or choice > len(books):
+            raise ValueError("Invalid choice. Please choose a number from the list.")
 
-    for chapter_number in range(1, 27):
-        # Convert the chapter number to a two-digit string if necessary
-        chapter_number_str = str(chapter_number).zfill(2)
-        # Get the verses for the chapter
-        get_Tanakh_and_verses(chapter_number_str, "Leviticus")
+        # Get the selected book and its chapter range
+        selected_book = list(books.keys())[choice - 1]
+        chapter_range = books[selected_book]
 
-    for chapter_number in range(1, 36):
-        # Convert the chapter number to a two-digit string if necessary
-        chapter_number_str = str(chapter_number).zfill(2)
-        # Get the verses for the chapter
-        get_Tanakh_and_verses(chapter_number_str, "Numbers")
+        print(f"Processing {selected_book}...")
+        for chapter_number in range(1, chapter_range + 1):
+            # Convert the chapter number to a two-digit string if necessary
+            chapter_number_str = str(chapter_number).zfill(2)
+            # Get the verses for the chapter
+            get_Tanakh_and_verses(chapter_number_str, selected_book)
+        
+        print(f"Finished processing {selected_book}.")
 
-    for chapter_number in range(1, 34):
-        # Convert the chapter number to a two-digit string if necessary
-        chapter_number_str = str(chapter_number).zfill(2)
-        # Get the verses for the chapter
-        get_Tanakh_and_verses(chapter_number_str, "Deuteronomy")
+    except ValueError as e:
+        print(f"Error: {e}. Please restart and enter a valid number.")
 
 ##################################################################################
 # Call prompt_user_choice in the main entry point
