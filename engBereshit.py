@@ -374,18 +374,19 @@ def get_Tanakh_and_verses(chapter_number, book_name):
         # Step 1: Select options to get to the next page
         select_option(driver, "bookq", book_name)         # Select "Genesis" from the "bookq" dropdown
         select_option(driver, "chapterq", f"Chapter {chapter_number}")  # Use chapter_number as a string
-        time.sleep(2)
+        time.sleep(3)
         click_submit_button(driver)  # Click the submit button
 
         # Step 2 click the link to the second page
         # Locate and click the first link with the specified text
+        time.sleep(2)
         partial_text = get_partial_text(book_name)
         links = driver.find_elements(By.PARTIAL_LINK_TEXT, partial_text)
         if links:  # Check if any links were found
             links[0].click()  # Click the first matching link
         else:
-            print("No matching link found.")
-
+            print(f"----> No matching link found for {book_name} ch: {chapter_number}")
+        time.sleep(2)
         # Step 3: Retrieve and print the final URL
         final_url = get_current_url(driver)
 
@@ -401,7 +402,7 @@ def get_Tanakh_and_verses(chapter_number, book_name):
 
     finally:
         # Step Last: Wait and Quit
-        time.sleep(5)  # Wait for 5 seconds to observe the result
+        time.sleep(3)  # Wait for 5 seconds to observe the result
         driver.quit()
 
 def get_partial_text(book_name):
@@ -440,7 +441,7 @@ def main_all_tanakh_eng():
 
         print(f"Processing {selected_book}...")
         for chapter_number in range(1, chapter_range + 1):
-            time.sleep(5)
+            time.sleep(3)
             # Convert the chapter number to a two-digit string if necessary
             chapter_number_str = str(chapter_number).zfill(2)
             # Get the verses for the chapter
