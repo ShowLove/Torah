@@ -454,10 +454,9 @@ def get_Tanakh_and_verses(chapter_number, book_name):
         click_submit_button(driver)  # Click the submit button
 
         # Step 2: Click the link on the second page
-        html_content = driver.page_source
-        link_text = extract_full_string(html_content)
         #link_text = f"Bereishis/Genesis, Chapter {chapter_number}"  # Use chapter_number in the link text
-        click_link(driver, link_text)
+        # Step 2: Navigate to the chapter link
+        final_url = navigate_to_chapter_link(driver, chapter_number, book_name)
 
         # Step 3: Retrieve and print the final URL
         final_url = get_current_url(driver)
@@ -474,6 +473,25 @@ def get_Tanakh_and_verses(chapter_number, book_name):
         # Step Last: Wait and Quit
         time.sleep(5)  # Wait for 5 seconds to observe the result
         driver.quit()
+
+def navigate_to_chapter_link(driver, chapter_number, book_name):
+    """
+    Navigates to the link for the specified chapter on the second page.
+    
+    Parameters:
+        driver (WebDriver): The Selenium WebDriver instance.
+        chapter_number (int): The chapter number to navigate to.
+
+    Returns:
+        str: The final URL after clicking the chapter link.
+    """
+    # Extract the link text and click the link
+    html_content = driver.page_source
+    link_text = extract_full_string(html_content)
+    click_link(driver, link_text)
+
+    # Retrieve and return the final URL
+    return get_current_url(driver)
 
 ##################################################################################
 # Call prompt_user_choice in the main entry point
