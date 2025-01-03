@@ -440,6 +440,7 @@ def main_all_tanakh_eng():
 
         print(f"Processing {selected_book}...")
         for chapter_number in range(1, chapter_range + 1):
+            time.sleep(5)
             # Convert the chapter number to a two-digit string if necessary
             chapter_number_str = str(chapter_number).zfill(2)
             # Get the verses for the chapter
@@ -457,8 +458,8 @@ def prompt_user_choice():
     # Ask the user to choose between the options
     print("Choose an option:")
     print("1. Open english Torah Site")
-    print("2. Get any chapter of any book in the Torah")
-    print("3. Get all the chapters of the Tanakh")
+    print("2. Get any chapter in the Torah")
+    print("3. Get any book of the Torah")
     print("4. TODO")
 
     choice = input("Please enter a number: 1 through 3.: ").strip()
