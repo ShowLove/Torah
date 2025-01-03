@@ -442,7 +442,6 @@ def prompt_user_choice():
         print("TODO")
     else:
         print("Invalid choice. Please enter a number: 1 through 4.")
-        prompt_user_choice()  # Recurse until a valid choice is made
 
 ##################################################################################
 # Call prompt_user_choice in the main entry point
