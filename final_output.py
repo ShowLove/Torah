@@ -11,8 +11,9 @@ OUTPUT_DOCX_FOLDER = "output_docs"
 # Configurable constants for formatting
 DOCX_HEBREW_FONT = "Frank Ruehl"  # Use Frank Ruehl for Hebrew text on Word
 DOCX_ENGLISH_FONT = "Times New Roman"  # Use Times New Roman for English text
-FONT_SIZE = 18  # Font size in points
-MARGIN_SIZE = Pt(18)  # Margin size in points
+FONT_SIZE_HEB = 14  # Font size in points
+FONT_SIZE_ENG = 12  # Font size in points
+MARGIN_SIZE = Pt(12)  # Margin size in points
 
 def load_tanakh_path(folder_name):
     file_path = os.path.join(TANAKH_DOCX_FOLDER, folder_name)
@@ -145,10 +146,12 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
             run_new.italic = run.italic
             run_new.underline = run.underline
             run_new.font.name = DOCX_HEBREW_FONT
-            run_new.font.size = Pt(FONT_SIZE)
+            run_new.font.size = Pt(FONT_SIZE_HEB)
 
-        # Align Hebrew text to the right
+        # Align Hebrew text to the right (Right-to-left alignment)
         output_paragraph.alignment = 2  # Right-aligned (2 corresponds to right in python-docx)
+        # Ensure the text direction is right-to-left for Hebrew
+        output_paragraph.paragraph_format.bidi = True  # This forces the direction to be right-to-left for Hebrew
 
         hebrew_index += 1
 
@@ -164,10 +167,12 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
                 run_new.italic = run.italic
                 run_new.underline = run.underline
                 run_new.font.name = DOCX_ENGLISH_FONT
-                run_new.font.size = Pt(FONT_SIZE)
+                run_new.font.size = Pt(FONT_SIZE_ENG)
 
-            # Align English text to the left
+            # Align English text to the left (Left-to-right alignment)
             output_paragraph.alignment = 0  # Left-aligned (0 corresponds to left in python-docx)
+            # Ensure the text direction is left-to-right for English
+            output_paragraph.paragraph_format.bidi = False  # This forces the direction to be left-to-right for English
 
             english_index += 1
 
