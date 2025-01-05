@@ -13,6 +13,13 @@ import os                                                           # For file a
 import shutil                                                       # For file operations (e.g., moving, copying, and deleting files)
 import json
                                                                     ################################################################################################
+from docx.shared import Pt
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml.ns import qn 
+from docx.oxml import OxmlElement
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+import inspect
+
 
 TANAKH_OUTLINE_ENG = "tanakhOutlineEng.json"
 DATA_FOLDER = "data"
@@ -25,6 +32,10 @@ SCRIPTURES_BOOKS = "Scriptures books"
 TANAKH_DOCX_FOLDER = "tanakh_docs"
 ENG_DOCX_FOLDER = "eng_docs"
 PARASHOT_LIST_ENG_FILE = 'torah_parashot_eng.json'
+DOCX_HEBREW_FONT = "Frank Ruehl" # Use Frank Ruehl for Hebrew text on Word
+FONT_SIZE = 18  # Font size in points
+MARGIN_SIZE = Pt(18)  # Margin size in points
+VERSE_ID_FONT_SIZE = 12  # Smaller font size for the verse ID
 
 # Load data from the external JSON file
 # Function to load JSON data from a file in the 'data' directory
@@ -390,6 +401,14 @@ def save_to_word(verses, filename, book_name, chapter_number, file_path="."):
     # Create a new Word Document
     doc = Document()
 
+    # Set narrow margins
+    sections = doc.sections
+    for section in sections:
+        section.left_margin   = MARGIN_SIZE
+        section.right_margin  = MARGIN_SIZE
+        section.top_margin    = MARGIN_SIZE
+        section.bottom_margin = MARGIN_SIZE
+
     # Add a title to the document
     doc.add_heading(f'{filename} - Chapter {chapter_number}', 0)
 
@@ -517,138 +536,28 @@ def main_torah_book_eng():
     except ValueError as e:
         print(f"Error: {e}. Please restart and enter a valid number.")
 
-def process_all_parashot_main(file_path="data/torah_parashot_eng.json"):
-    """
-    Processes all the parashot in the torah_parashot.json file by passing their names to
-    the get_tanakh_range_from_json_main function.
-
-    :param file_path: Path to the torah_parashot.json file.
-    """
-    try:
-        # Load the parasha data from the JSON file
-        with open(file_path, 'r', encoding='utf-8') as file:
-            parasha_data = json.load(file)
-        
-        # Loop through all the "Name" fields and process each parasha
-        for parasha in parasha_data.get("Parashot", []):
-            parasha_name = parasha.get("Name")
-            if parasha_name:
-                print(f"Processing parasha: {parasha_name}")
-                time.sleep(20)
-                get_tanakh_range_from_json_main(parasha_name, file_path)
-            else:
-                print("Skipping a parasha with missing 'Name' field.")
+def process_parashot_main(file_path="data/torah_parashot_eng.json"):
+    # Load the JSON file
+    with open(file_path, 'r') as file:
+        parashot_data = json.load(file)
     
-    except FileNotFoundError:
-        print(f"Error: The file '{file_path}' was not found.")
-    except json.JSONDecodeError:
-        print(f"Error: Failed to decode JSON from '{file_path}'.")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-
-def get_tanakh_range_from_json_main(parasha_name, file_path="data/torah_parashot.json"):
-    """
-    Gets the Tanakh range based on the specified parasha name from torah_parashot.json.
-
-    :param parasha_name: Name of the Torah portion (e.g., "Bereshit", "Noach").
-    :param file_path: Path to the torah_parashot.json file.
-    """
-    try:
-        # Load the parasha data from the JSON file
-        with open(file_path, 'r', encoding='utf-8') as file:
-            parasha_data = json.load(file)
+    # Iterate through each parasha in the JSON file
+    for parasha in parashot_data["Parashot"]:
+        parasha_name = parasha["Name"]
+        parasha_book = parasha["Book"]
+        start_chapter = int(parasha["Start"]["Chapter"])
+        end_chapter = int(parasha["End"]["Chapter"])
         
-        # Find the specified parasha
-        parasha = next((p for p in parasha_data["Parashot"] if p["Name"] == parasha_name), None)
-        
-        if not parasha:
-            print(f"Error: Parasha '{parasha_name}' not found in the data.")
-            return
-        
-        # Extract range information
-        tanakh_division_name = parasha["Tanakh Section"]
-        book_name = parasha["Book"]
-        start_chapter = parasha["Start"]["Chapter"]
-        start_verse = parasha["Start"]["Verse"]
-        end_chapter = parasha["End"]["Chapter"]
-        end_verse = parasha["End"]["Verse"]
-
-        start_chapter = str(start_chapter).zfill(2)
-        end_chapter = str(end_chapter).zfill(2)
-        
-        # Traverse and scrape using the extracted range
-        folder_path=load_tanakh_path(ENG_DOCX_FOLDER)
-        folder_path = os.path.join(folder_path, book_name)
-        traverse_tanakh_scraper(
-            parasha_name=parasha_name,
-            book_name=book_name,
-            chapter_choice=start_chapter,
-            end_chapter_choice=end_chapter,
-            start_verse_choice=start_verse,
-            end_verse_choice=end_verse,
-            file_path=folder_path
-        )
-    
-    except FileNotFoundError:
-        print(f"Error: The file '{file_path}' was not found.")
-    except json.JSONDecodeError:
-        print(f"Error: Failed to decode JSON from '{file_path}'.")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-
-def traverse_tanakh_scraper(parasha_name, book_name=None, chapter_choice=None, end_chapter_choice=None, start_verse_choice=1, end_verse_choice=None, file_path=load_tanakh_path(ENG_DOCX_FOLDER)):
-    """
-    Traverses the Tanakh JSON structure and performs scraping for specified sections.
-    """
-    DEBUG = True  # Toggle for debug print statements
-
-    try:
-        # Load the JSON file
-        with open(os.path.join("data", "Pentateuch.json"), 'r', encoding='utf-8') as file:
-            tanakh_data = json.load(file)
-
-        books = tanakh_data.get("books", {})
-        
-        # Traverse books in the division
-        for current_book_name, book_data in books.items():
-            if book_name and current_book_name != book_name:
-                continue  # Skip if not the specified book
-            
-            chapters = book_data.get("chapters", {})
-            
-            for current_chapter, verse_count in chapters.items():
-                current_chapter = int(current_chapter)  # Convert chapter to integer for comparison
-                
-                if chapter_choice and current_chapter < int(chapter_choice):
-                    continue  # Skip chapters before the starting chapter
-                
-                if end_chapter_choice and current_chapter > int(end_chapter_choice):
-                    break  # Stop processing beyond the ending chapter
-                
-                # Set the start and end verse ranges
-                start_verse = start_verse_choice if current_chapter == chapter_choice else 1
-                end_verse = end_verse_choice if current_chapter == end_chapter_choice else verse_count
-
-                if DEBUG:
-                    print(f"Processing {current_book_name}, Chapter {current_chapter}, Verses {start_verse}-{end_verse}")
-
-                time.sleep(1) 
-                # Perform scraping for the current range
-                get_Tanakh_Parashot(parasha_name, current_chapter, book_name)
-                
-    except FileNotFoundError:
-        print(f"Error: The file 'Pentateuch.json' was not found in the 'data' folder.")
-    except json.JSONDecodeError:
-        print("Error: Failed to decode JSON from 'Pentateuch.json'.")
-    except Exception as e:
-        if DEBUG:
-            print(f"An unexpected error occurred: {e}")
+        # Traverse from start_chapter to end_chapter
+        for current_chapter in range(start_chapter, end_chapter + 1):
+            # Call the get_Tanakh_Parashot function for each chapter
+            get_Tanakh_Parashot(parasha_name, str(current_chapter).zfill(2), parasha_book)
 
 def get_Tanakh_Parashot(parasha_name, chapter_number, book_name):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("http://www.mnemotrix.com/texis/vtx/chumash")  # Replace with your desired URL
 
-    print(f"Parasha name: {parasha_name}")
+    print(f"Processing Parasha: {parasha_name}, Chapter: {chapter_number}, Book: {book_name}")
 
     try:
         # Step 1: Select options to get to the next page
@@ -686,6 +595,68 @@ def get_Tanakh_Parashot(parasha_name, chapter_number, book_name):
         time.sleep(3)  # Wait for 5 seconds to observe the result
         driver.quit()
 
+def getChFromLink(parasha_link):
+
+    # Get user inputs
+    inputs = get_tanakh_scraper_inputs()
+    if not inputs:
+        return
+    tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice = inputs
+
+    #Step 1 get driver
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver.get(parasha_link)  # Replace with your desired URL
+    # Step 2 grab verses
+    verses = grab_verses(driver)
+
+    # Step 3: Save the verses to a Word document with the specified filename format
+    filename = f"{book_name}_{chapter_choice}.docx"
+    folder_path=load_tanakh_path(ENG_DOCX_FOLDER)
+    #folder_path = os.path.join(folder_path, parasha_name)
+    save_to_word(verses, filename, book_name, chapter_choice, file_path=folder_path)
+
+def process_specific_parasha(parasha_name, file_path="data/torah_parashot_eng.json"):
+    # Load the JSON file
+    with open(file_path, 'r') as file:
+        parashot_data = json.load(file)
+    
+    # Find the specific parasha
+    for parasha in parashot_data["Parashot"]:
+        if parasha["Name"] == parasha_name:
+            parasha_book = parasha["Book"]
+            start_chapter = int(parasha["Start"]["Chapter"])
+            end_chapter = int(parasha["End"]["Chapter"])
+            
+            # Traverse from start_chapter to end_chapter
+            for current_chapter in range(start_chapter, end_chapter + 1):
+                # Call the get_Tanakh_Parashot function for each chapter
+                get_Tanakh_Parashot(parasha_name, str(current_chapter).zfill(2), parasha_book)
+            return  # Exit once the specific parasha is processed
+    
+    print(f"Parasha '{parasha_name}' not found in the file.")
+
+def get_parasha_details(parasha_name, file_path="data/torah_parashot_eng.json"):
+    # Load the JSON file
+    with open(file_path, 'r') as file:
+        parashot_data = json.load(file)
+    
+    # Search for the specific parasha
+    for parasha in parashot_data["Parashot"]:
+        if parasha["Name"] == parasha_name:
+            # Return the parasha details
+            return {
+                "Name": parasha["Name"],
+                "Book": parasha["Book"],
+                "Start_Chapter": parasha["Start"]["Chapter"],
+                "Start_Verse": parasha["Start"]["Verse"],
+                "End_Chapter": parasha["End"]["Chapter"],
+                "End_Verse": parasha["End"]["Verse"]
+            }
+    
+    # If parasha not found
+    print(f"Parasha '{parasha_name}' not found in the file.")
+    return None
+
 ##################################################################################
 # Call prompt_user_choice in the main entry point
 ##################################################################################
@@ -698,6 +669,8 @@ def prompt_user_choice():
     print("4. Get any parasha of the Torah")
     print("5. Get all parashot of the Torah")
     print("6. Print all parashot of the Torah")
+    print("7. Get the parasha from a link")
+    print("8. Get specific parasha details")
 
     choice = input("Please enter a number: 1 through 3.: ").strip()
     file_path = load_data(PARASHOT_LIST_ENG_FILE, return_path_only=True)
@@ -712,21 +685,18 @@ def prompt_user_choice():
     elif choice == "3":
         main_torah_book_eng()
     elif choice == "4":
-    # Get user inputs
-        inputs = get_tanakh_scraper_inputs()
-        if not inputs:
-            return
-        tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice = inputs
-
-        #print_parashah_info_main(file_name)
-        chapter_number = chapter_choice.zfill(2)
-        parasha_name = "Breishit"
-        get_Tanakh_Parashot(parasha_name, chapter_number, book_name)
+        process_specific_parasha("Vayechi")
     elif choice == "5":
-        process_all_parashot_main(file_path)
-    if choice == "6":
-        # Call the Parashah info printing function
+        process_parashot_main(file_path)
+    elif choice == "6":
         print_parashah_info_main(file_path)
+    elif choice == "7":
+        link = "http://www.mnemotrix.com/texis/vtx/chumash/+_wwBme-J+he5RfxwwxFqoFGno5roBqFqwmFqAgrwpBnGaX+nFqwtzmxwww/article.html"
+        getChFromLink(link)
+    if choice == "8":
+        details = get_parasha_details("Vayechi")
+        if details:
+            print(details)
     else:
         print("Invalid choice. Please enter a number: 1 through 4.")
 

@@ -2,378 +2,378 @@
   "Parashot": [
     {
       "Name": "Breishit",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 1, "Verse": 1},
       "End": {"Chapter": 6, "Verse": 8}
     },
     {
       "Name": "Noach",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 6, "Verse": 9},
       "End": {"Chapter": 11, "Verse": 32}
     },
     {
       "Name": "Lech Lecha",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 12, "Verse": 1},
       "End": {"Chapter": 17, "Verse": 27}
     },
     {
       "Name": "Vayera",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 18, "Verse": 1},
       "End": {"Chapter": 22, "Verse": 24}
     },
     {
       "Name": "Chayei Sarah",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 23, "Verse": 1},
       "End": {"Chapter": 25, "Verse": 18}
     },
     {
       "Name": "Toldot",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 25, "Verse": 19},
       "End": {"Chapter": 28, "Verse": 9}
     },
     {
       "Name": "Vayetze",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 28, "Verse": 10},
       "End": {"Chapter": 32, "Verse": 3}
     },
     {
       "Name": "Vayishlach",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 32, "Verse": 4},
       "End": {"Chapter": 36, "Verse": 43}
     },
     {
       "Name": "Vayeshev",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 37, "Verse": 1},
       "End": {"Chapter": 40, "Verse": 23}
     },
     {
       "Name": "Miketz",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 41, "Verse": 1},
       "End": {"Chapter": 44, "Verse": 17}
     },
     {
       "Name": "Vayigash",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 44, "Verse": 18},
       "End": {"Chapter": 47, "Verse": 27}
     },
     {
       "Name": "Vayechi",
-      "Book": "Bereshit (Genesis)",
+      "Book": "Genesis",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 47, "Verse": 28},
       "End": {"Chapter": 50, "Verse": 26}
     },
     {
       "Name": "Shemot",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 1, "Verse": 1},
       "End": {"Chapter": 6, "Verse": 1}
     },
     {
       "Name": "Vaera",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 6, "Verse": 2},
       "End": {"Chapter": 9, "Verse": 35}
     },
     {
       "Name": "Bo",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 10, "Verse": 1},
       "End": {"Chapter": 13, "Verse": 16}
     },
     {
       "Name": "Beshalach",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 13, "Verse": 17},
       "End": {"Chapter": 17, "Verse": 16}
     },
     {
       "Name": "Yitro",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 18, "Verse": 1},
       "End": {"Chapter": 20, "Verse": 23}
     },
     {
       "Name": "Mishpatim",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 21, "Verse": 1},
       "End": {"Chapter": 24, "Verse": 18}
     },
     {
       "Name": "Terumah",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 25, "Verse": 1},
       "End": {"Chapter": 27, "Verse": 19}
     },
     {
       "Name": "Tetzaveh",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 27, "Verse": 20},
       "End": {"Chapter": 30, "Verse": 10}
     },
     {
       "Name": "Ki Tisa",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 30, "Verse": 11},
       "End": {"Chapter": 34, "Verse": 35}
     },
     {
       "Name": "Vayakhel",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 35, "Verse": 1},
       "End": {"Chapter": 38, "Verse": 20}
     },
     {
       "Name": "Pekudei",
-      "Book": "Shemot (Exodus)",
+      "Book": "Exodus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 38, "Verse": 21},
       "End": {"Chapter": 40, "Verse": 38}
     },
     {
       "Name": "Vayikra",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 1, "Verse": 1},
       "End": {"Chapter": 5, "Verse": 26}
     },
     {
       "Name": "Tzav",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 6, "Verse": 1},
       "End": {"Chapter": 8, "Verse": 36}
     },
     {
       "Name": "Shemini",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 9, "Verse": 1},
       "End": {"Chapter": 11, "Verse": 47}
     },
     {
       "Name": "Tazria",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 12, "Verse": 1},
       "End": {"Chapter": 13, "Verse": 59}
     },
     {
       "Name": "Metzora",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 14, "Verse": 1},
       "End": {"Chapter": 15, "Verse": 33}
     },
     {
       "Name": "Acharei Mot",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 16, "Verse": 1},
       "End": {"Chapter": 18, "Verse": 30}
     },
     {
       "Name": "Kedoshim",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 19, "Verse": 1},
       "End": {"Chapter": 20, "Verse": 27}
     },
     {
       "Name": "Emor",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 21, "Verse": 1},
       "End": {"Chapter": 24, "Verse": 23}
     },
     {
       "Name": "Behar",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 25, "Verse": 1},
       "End": {"Chapter": 25, "Verse": 38}
     },
     {
       "Name": "Bechukotai",
-      "Book": "Vayikra (Leviticus)",
+      "Book": "Leviticus",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 26, "Verse": 3},
       "End": {"Chapter": 27, "Verse": 34}
     },
     {
       "Name": "Bamidbar",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 1, "Verse": 1},
       "End": {"Chapter": 4, "Verse": 20}
     },
     {
       "Name": "Nasso",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 4, "Verse": 21},
       "End": {"Chapter": 7, "Verse": 89}
     },
     {
       "Name": "Behaalotecha",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 8, "Verse": 1},
       "End": {"Chapter": 12, "Verse": 16}
     },
     {
       "Name": "Shelach",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 13, "Verse": 1},
       "End": {"Chapter": 15, "Verse": 41}
     },
     {
       "Name": "Korach",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 16, "Verse": 1},
       "End": {"Chapter": 18, "Verse": 32}
     },
     {
       "Name": "Chukat",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 19, "Verse": 1},
       "End": {"Chapter": 22, "Verse": 1}
     },
     {
       "Name": "Balak",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 22, "Verse": 2},
       "End": {"Chapter": 25, "Verse": 9}
     },
     {
       "Name": "Pinchas",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 25, "Verse": 10},
       "End": {"Chapter": 30, "Verse": 1}
     },
     {
       "Name": "Matot",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 30, "Verse": 2},
       "End": {"Chapter": 32, "Verse": 42}
     },
     {
       "Name": "Masei",
-      "Book": "Bamidbar (Numbers)",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 33, "Verse": 1},
       "End": {"Chapter": 36, "Verse": 13}
     },
     {
       "Name": "Devarim",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 1, "Verse": 1},
       "End": {"Chapter": 3, "Verse": 22}
     },
     {
       "Name": "Vaetchanan",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 3, "Verse": 23},
       "End": {"Chapter": 7, "Verse": 11}
     },
     {
       "Name": "Ekev",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 7, "Verse": 12},
       "End": {"Chapter": 11, "Verse": 25}
     },
     {
       "Name": "Re'eh",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 11, "Verse": 26},
       "End": {"Chapter": 16, "Verse": 17}
     },
     {
       "Name": "Shoftim",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 16, "Verse": 18},
       "End": {"Chapter": 21, "Verse": 9}
     },
     {
       "Name": "Ki Tetzei",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 21, "Verse": 10},
       "End": {"Chapter": 25, "Verse": 19}
     },
     {
       "Name": "Ki Tavo",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 26, "Verse": 1},
       "End": {"Chapter": 29, "Verse": 8}
     },
     {
       "Name": "Nitzavim",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 29, "Verse": 9},
       "End": {"Chapter": 30, "Verse": 20}
     },
     {
       "Name": "VaYelech",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 31, "Verse": 1},
       "End": {"Chapter": 31, "Verse": 30}
     },
     {
       "Name": "Ha'azinu",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 32, "Verse": 1},
       "End": {"Chapter": 32, "Verse": 52}
     },
     {
       "Name": "Vezot HaBerachah",
-      "Book": "Devarim (Deuteronomy)",
+      "Book": "Deuteronomy",
       "Tanakh Section": "Torah (Pentateuch)",
       "Start": {"Chapter": 33, "Verse": 1},
       "End": {"Chapter": 34, "Verse": 12}
