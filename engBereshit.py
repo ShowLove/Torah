@@ -691,7 +691,7 @@ def prompt_user_choice():
     elif choice == "6":
         print_parashah_info_main(file_path)
     elif choice == "7":
-        link = "http://www.mnemotrix.com/texis/vtx/chumash/+_wwBme-J+he5RfxwwxFqoFGno5roBqFqwmFqAgrwpBnGaX+nFqwtzmxwww/article.html"
+        link = "http://www.mnemotrix.com/texis/vtx/chumash/+IwwBmeHJ+he5V3wwwxFqrUwjnqroqFqrHnDn5o5mFqAgrwpBnGa6snFqwtzmxwww/article.html"
         getChFromLink(link)
     if choice == "8":
         details = get_parasha_details("Vayechi")
