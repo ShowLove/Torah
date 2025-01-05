@@ -213,7 +213,7 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
 def add_notes_to_verses(file_path):
     """
     Adds a notes section to each verse in a .docx file while preserving formatting 
-    and replaces the original file.
+    and replaces the original file. The output file has narrow margins.
 
     Args:
         file_path (str): Path to the .docx file to process.
@@ -233,6 +233,13 @@ def add_notes_to_verses(file_path):
     
     # Create a new document to rewrite the content
     new_doc = Document()
+
+    # Set narrow margins for the new document
+    section = new_doc.sections[0]
+    section.left_margin = Inches(0.5)   # 0.5 inches left margin
+    section.right_margin = Inches(0.5)  # 0.5 inches right margin
+    section.top_margin = Inches(0.5)    # 0.5 inches top margin
+    section.bottom_margin = Inches(0.5) # 0.5 inches bottom margin
 
     for para in doc.paragraphs:
         para_text = para.text.strip()
