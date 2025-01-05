@@ -211,8 +211,9 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
 
 def add_notes_to_verses(file_path):
     """
-    Adds a notes section to each verse in a .docx file and replaces the original file.
-    
+    Adds a notes section to each verse in a .docx file while preserving formatting 
+    and replaces the original file.
+
     Args:
         file_path (str): Path to the .docx file to process.
     """
@@ -235,20 +236,30 @@ def add_notes_to_verses(file_path):
     for para in doc.paragraphs:
         para_text = para.text.strip()
         
+        # Copy the paragraph while preserving formatting
+        new_paragraph = new_doc.add_paragraph()
+        for run in para.runs:
+            new_run = new_paragraph.add_run(run.text)
+            new_run.bold = run.bold
+            new_run.italic = run.italic
+            new_run.underline = run.underline
+            new_run.font.name = run.font.name
+            new_run.font.size = run.font.size
+            new_run.font.color.rgb = run.font.color.rgb
+        
         # Check if the paragraph is a verse
         if para_text.startswith("Verse"):
             # Extract the verse number using regex
             match = re.match(r"Verse (\d+)", para_text)
             if match:
                 verse_number = match.group(1)
-                # Add the verse paragraph to the new document
-                new_doc.add_paragraph(para_text)
                 # Add the notes paragraph for the verse
+                notes_paragraph = new_doc.add_paragraph()
                 notes = f"[notes]( {header_text} Verse {verse_number} )[end_notes]"
-                new_doc.add_paragraph(notes)
-        else:
-            # Add non-verse text as-is
-            new_doc.add_paragraph(para_text)
+                notes_run = notes_paragraph.add_run(notes)
+                # Optional: Style the notes text (customize if needed)
+                notes_run.italic = True
+                notes_run.font.color.rgb = para.runs[0].font.color.rgb  # Use the same color as the verse text
     
     # Delete the original file if it exists
     if os.path.exists(file_path):
