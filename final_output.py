@@ -1,5 +1,6 @@
 from docx import Document
 from docx.shared import Pt
+from docx.shared import Inches
 import os
 
 # File Paths
@@ -129,6 +130,13 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
 
     # Prepare the output Word document
     output_doc = Document()
+
+    # Set narrow margins
+    section = output_doc.sections[0]
+    section.left_margin = Inches(0.5)   # 0.5 inches left margin
+    section.right_margin = Inches(0.5)  # 0.5 inches right margin
+    section.top_margin = Inches(0.5)    # 0.5 inches top margin
+    section.bottom_margin = Inches(0.5) # 0.5 inches bottom margin
 
     hebrew_index = 0
     english_index = 0
