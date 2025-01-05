@@ -1,6 +1,7 @@
 from docx import Document
 from docx.shared import Pt
 from docx.shared import Inches
+import re
 import os
 
 # File Paths
@@ -12,7 +13,7 @@ OUTPUT_DOCX_FOLDER = "output_docs"
 # Configurable constants for formatting
 DOCX_HEBREW_FONT = "Frank Ruehl"  # Use Frank Ruehl for Hebrew text on Word
 DOCX_ENGLISH_FONT = "Times New Roman"  # Use Times New Roman for English text
-FONT_SIZE_HEB = 14  # Font size in points
+FONT_SIZE_HEB = 16  # Font size in points
 FONT_SIZE_ENG = 12  # Font size in points
 MARGIN_SIZE = Pt(12)  # Margin size in points
 
@@ -208,10 +209,62 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
     output_doc.save(final_path_result)
     print(f"Combined document saved as: {final_path_result}")
 
+def add_notes_to_verses(file_path):
+    """
+    Adds a notes section to each verse in a .docx file and replaces the original file.
+    
+    Args:
+        file_path (str): Path to the .docx file to process.
+    """
+    # Load the document
+    doc = Document(file_path)
+    
+    # Extract the header (assumes it's the first paragraph with the chapter name)
+    header_text = None
+    for para in doc.paragraphs:
+        if "Chapter" in para.text:
+            header_text = para.text.strip()
+            break
+    
+    if not header_text:
+        raise ValueError("No header containing 'Chapter' found in the document.")
+    
+    # Create a new document to rewrite the content
+    new_doc = Document()
+
+    for para in doc.paragraphs:
+        para_text = para.text.strip()
+        
+        # Check if the paragraph is a verse
+        if para_text.startswith("Verse"):
+            # Extract the verse number using regex
+            match = re.match(r"Verse (\d+)", para_text)
+            if match:
+                verse_number = match.group(1)
+                # Add the verse paragraph to the new document
+                new_doc.add_paragraph(para_text)
+                # Add the notes paragraph for the verse
+                notes = f"[notes]( {header_text} Verse {verse_number} )[end_notes]"
+                new_doc.add_paragraph(notes)
+        else:
+            # Add non-verse text as-is
+            new_doc.add_paragraph(para_text)
+    
+    # Delete the original file if it exists
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f"Existing file deleted: {file_path}")
+    
+    # Save the reformatted content back to the original file
+    new_doc.save(file_path)
+    print(f"Formatted document saved as: {file_path}")
+
 if __name__ == "__main__":
     # Example usage
     # Replace 'hebrew.docx', 'english.docx', and 'output.docx' with the actual file paths.
-    eng_folder_path =load_tanakh_path(ENG_DOCX_FOLDER)
+
+    # Step 1: get the paths
+    eng_folder_path = load_tanakh_path(ENG_DOCX_FOLDER)
     heb_folder_path = load_tanakh_path(HEB_DOCX_FOLDER)
     output_folder_path = load_tanakh_path(OUTPUT_DOCX_FOLDER)
     hebrew_file_path = "hebrew_text.docx"
@@ -230,5 +283,14 @@ if __name__ == "__main__":
     if heb_file:
         print(f"\nSelected File: {heb_file}")
 
-    # 
+    # Step 2: weave heb_file and english_file
     weave_torah_files(heb_file, english_file, output_folder_path)
+
+    # Step 3 do post processing
+    final_output_file = pick_filename_from_folder(output_folder_path)
+    if final_output_file:
+        print(f"\nSelected File: {final_output_file}")
+
+    add_notes_to_verses(final_output_file)
+
+
