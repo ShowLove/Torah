@@ -280,6 +280,17 @@ def add_notes_to_verses(file_path):
     new_doc.save(file_path)
     print(f"Formatted document saved as: {file_path}")
 
+def remove_second_colon(para_text, paragraph):
+    # This regex will match ": (כח):" and remove the second colon at the end
+    para_text = re.sub(r"(:\((\D+)\)‪):", r" (\2)‪:", para_text)
+    
+    # Now we return the modified paragraph with the second colon removed
+    new_paragraph = paragraph
+    new_paragraph.clear()  # Clear previous runs
+    new_paragraph.add_run(para_text)  # Add the modified text without the second colon
+    
+    return new_paragraph
+
 if __name__ == "__main__":
     # Example usage
     # Replace 'hebrew.docx', 'english.docx', and 'output.docx' with the actual file paths.
@@ -312,6 +323,13 @@ if __name__ == "__main__":
     if final_output_file:
         print(f"\nSelected File: {final_output_file}")
 
-    add_notes_to_verses(final_output_file)
+    #add_notes_to_verses(final_output_file)
+    doc = Document(final_output_file)
 
+    # Iterate over paragraphs and remove second colon where necessary
+    for para in doc.paragraphs:
+        para_text = para.text.strip()
+        new_paragraph = remove_second_colon(para_text, para)
 
+    # Save the modified document
+    doc.save(final_output_file)
