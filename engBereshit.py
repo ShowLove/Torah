@@ -94,6 +94,56 @@ def print_parashah_info_main(file_name):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
+def reformat_eng_docx(file_path):
+    """
+    Reformat the DOCX file so that each 'Verse' paragraph is on its own line,
+    and other paragraphs under the same verse are merged into a single string (removing newlines).
+
+    Args:
+        file_path (str): Path to the DOCX file to reformat.
+    """
+    # Load the document
+    doc = Document(file_path)
+
+    # Create a list to hold the reformatted verses
+    new_paragraphs = []
+    current_verse = ""
+
+    for para in doc.paragraphs:
+        para_text = para.text.strip()
+
+        # If the paragraph starts with "Verse", it should be the start of a new verse
+        if para_text.startswith("Verse"):
+            # If there's an accumulated verse, add it to the list
+            if current_verse:
+                new_paragraphs.append(current_verse)
+            # Start a new verse and remove newlines from the text
+            current_verse = para_text.replace("\n", " ")
+        else:
+            # Append non-"Verse" text to the current verse and remove any newlines
+            if para_text:  # Avoid adding empty lines
+                current_verse += " " + para_text.replace("\n", " ")
+
+    # Add the last accumulated verse if it exists
+    if current_verse:
+        new_paragraphs.append(current_verse)
+
+    # Create a new document and add the formatted paragraphs
+    new_doc = Document()
+    for para in new_paragraphs:
+        new_doc.add_paragraph(para)
+
+    # Save the new document with the same name, appending "_formatted"
+    formatted_file_path = file_path.replace(".docx", "_formatted.docx")
+    
+    # Remove the existing file if it already exists
+    if os.path.exists(formatted_file_path):
+        os.remove(formatted_file_path)
+        print(f"Existing file found and removed: {formatted_file_path}")
+    
+    new_doc.save(formatted_file_path)
+    print(f"Formatted document saved as: {formatted_file_path}")
+
 def get_tanakh_scraper_inputs(get_end_chapter=False):
     """
     Handles user input for Tanakh scraping: book selection, chapter, and verse range.

@@ -105,7 +105,7 @@ def pick_filename_from_folder(folder_path):
             print("Invalid choice. Please try again.")
 
 
-def reformat_docx(file_path):
+def reformat_eng_docx(file_path):
     """
     Reformat the DOCX file so that each 'Verse' paragraph is on its own line,
     and other paragraphs under the same verse are merged into a single string (removing newlines).
@@ -145,15 +145,15 @@ def reformat_docx(file_path):
         new_doc.add_paragraph(para)
 
     # Save the new document with the same name, appending "_formatted"
-    formatted_file_path = file_path.replace(".docx", "_formatted.docx")
+    #formatted_file_path = file_path.replace(".docx", "_formatted.docx")
     
     # Remove the existing file if it already exists
-    if os.path.exists(formatted_file_path):
-        os.remove(formatted_file_path)
-        print(f"Existing file found and removed: {formatted_file_path}")
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f"Existing file found and removed: {file_path}")
     
-    new_doc.save(formatted_file_path)
-    print(f"Formatted document saved as: {formatted_file_path}")
+    new_doc.save(file_path)
+    print(f"Formatted document saved as: {file_path}")
 
 
 if __name__ == "__main__":
@@ -168,4 +168,4 @@ if __name__ == "__main__":
     if english_file:
         print(f"\nSelected File: {english_file}")
 
-    reformat_docx(english_file)
+    reformat_eng_docx(english_file)
