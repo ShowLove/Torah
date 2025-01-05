@@ -3,6 +3,7 @@ from docx.shared import Pt
 from docx.shared import Inches
 import re
 import os
+from docx.shared import RGBColor
 
 # File Paths
 TANAKH_DOCX_FOLDER = "tanakh_docs"
@@ -259,7 +260,8 @@ def add_notes_to_verses(file_path):
                 notes_run = notes_paragraph.add_run(notes)
                 # Optional: Style the notes text (customize if needed)
                 notes_run.italic = True
-                notes_run.font.color.rgb = para.runs[0].font.color.rgb  # Use the same color as the verse text
+                #para.runs[0].font.color.rgb  # To use the same color as the verse text
+                notes_run.font.color.rgb = RGBColor(211, 211, 211)  # Set the notes text to light grey
     
     # Delete the original file if it exists
     if os.path.exists(file_path):
