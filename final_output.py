@@ -239,6 +239,7 @@ def add_notes_to_verses(file_path):
         
         # Copy the paragraph while preserving formatting
         new_paragraph = new_doc.add_paragraph()
+        new_paragraph.alignment = para.alignment  # Preserve alignment
         for run in para.runs:
             new_run = new_paragraph.add_run(run.text)
             new_run.bold = run.bold
@@ -257,10 +258,10 @@ def add_notes_to_verses(file_path):
                 # Add the notes paragraph for the verse
                 notes_paragraph = new_doc.add_paragraph()
                 notes = f"[notes]( {header_text} Verse {verse_number} )[end_notes]"
+                notes_paragraph.alignment = 0  # Align notes to the left (customize if needed)
                 notes_run = notes_paragraph.add_run(notes)
                 # Optional: Style the notes text (customize if needed)
                 notes_run.italic = True
-                #para.runs[0].font.color.rgb  # To use the same color as the verse text
                 notes_run.font.color.rgb = RGBColor(211, 211, 211)  # Set the notes text to light grey
     
     # Delete the original file if it exists
