@@ -149,7 +149,7 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
             run_new.font.size = Pt(FONT_SIZE_HEB)
 
         # Align Hebrew text to the right (Right-to-left alignment)
-        output_paragraph.alignment = 2  # Right-aligned (2 corresponds to right in python-docx)
+        output_paragraph.alignment = 1  # Center-aligned (Note: 2 corresponds to right in python-docx)
         # Ensure the text direction is right-to-left for Hebrew
         output_paragraph.paragraph_format.bidi = True  # This forces the direction to be right-to-left for Hebrew
 
