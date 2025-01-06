@@ -291,6 +291,64 @@ def remove_second_colon(para_text, paragraph):
     
     return new_paragraph
 
+def format_docx_file(file_path):
+    """
+    Formats the content of a .docx file, applies consistent formatting while preserving
+    the content as-is, and replaces the original file.
+
+    Args:
+        file_path (str): Path to the .docx file to process.
+    """
+    # Load the document
+    doc = Document(file_path)
+    
+    # Create a new document to rewrite the content
+    new_doc = Document()
+
+    # Set narrow margins for the new document
+    section = new_doc.sections[0]
+    section.left_margin = Inches(0.5)   # 0.5 inches left margin
+    section.right_margin = Inches(0.5)  # 0.5 inches right margin
+    section.top_margin = Inches(0.5)    # 0.5 inches top margin
+    section.bottom_margin = Inches(0.5) # 0.5 inches bottom margin
+
+    # Regex to detect Hebrew characters
+    hebrew_range = r"[\u0590-\u05FF]"
+
+    for para in doc.paragraphs:
+        para_text = para.text.strip()
+        
+        # Create a new paragraph in the formatted document
+        new_paragraph = new_doc.add_paragraph()
+        new_paragraph.alignment = para.alignment  # Preserve alignment
+        
+        # Loop through the runs in the original paragraph and reapply formatting
+        for run in para.runs:
+            new_run = new_paragraph.add_run(run.text)
+            
+            # Preserve original run formatting
+            new_run.bold = run.bold
+            new_run.italic = run.italic
+            new_run.underline = run.underline
+            new_run.font.color.rgb = run.font.color.rgb
+
+            # Apply consistent font and size based on content
+            if re.search(hebrew_range, run.text):  # If the text contains Hebrew characters
+                new_run.font.name = DOCX_HEBREW_FONT
+                new_run.font.size = Pt(FONT_SIZE_HEB)
+            else:  # Non-Hebrew text
+                new_run.font.name = DOCX_ENGLISH_FONT
+                new_run.font.size = Pt(FONT_SIZE_ENG)
+
+    # Delete the original file if it exists
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f"Existing file deleted: {file_path}")
+    
+    # Save the reformatted content back to the original file
+    new_doc.save(file_path)
+    print(f"Formatted document saved as: {file_path}")
+
 if __name__ == "__main__":
     # Example usage
     # Replace 'hebrew.docx', 'english.docx', and 'output.docx' with the actual file paths.
@@ -333,3 +391,6 @@ if __name__ == "__main__":
 
     # Save the modified document
     doc.save(final_output_file)
+
+    format_docx_file(final_output_file)
+
