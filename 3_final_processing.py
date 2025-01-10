@@ -188,8 +188,12 @@ def move_verse_number_to_start(text):
         # Remove the verse number from its original position
         modified_text = re.sub(r"‪\s?\(.*?\)\s?‪", "", text).strip()  # Strip any unwanted spaces
         
-        # Build the new text with the verse number at the start without using f-string
-        new_text = modified_text + f" ‪({verse_number})‪ "
+        # Remove any trailing colon (:) from the text
+        if modified_text.endswith(":"):
+            modified_text = modified_text[:-1]
+        
+        # Build the new text with the verse number at the start
+        new_text = f"‪({verse_number})‪ " + modified_text
         print(f"New text after modification: {new_text}")  # Debug: Show the modified text
         
         return new_text
