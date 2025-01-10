@@ -4,6 +4,8 @@ from docx.shared import Inches
 import re
 import os
 from docx.shared import RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml.ns import qn
 
 # File Paths
 TANAKH_DOCX_FOLDER = "tanakh_docs"
@@ -99,18 +101,66 @@ def process_paragraph(paragraph):
             run.text = ""  # Clear existing text
         paragraph.add_run(updated_text)  # Add updated text back
 
+def update_second_line(document):
+    """
+    Update the second line of the document by removing everything before 'Chapter'.
+
+    Parameters:
+    - document (docx.Document): The document object to process.
+    """
+    # Ensure the document has at least two paragraphs
+    if len(document.paragraphs) >= 2:
+        second_paragraph = document.paragraphs[1]
+        if "Chapter" in second_paragraph.text:
+            # Find the position of the word "Chapter" and update the text
+            chapter_index = second_paragraph.text.find("Chapter")
+            updated_text = second_paragraph.text[chapter_index:]
+            second_paragraph.text = updated_text
+
+def format_hebrew_paragraph(document):
+    """
+    TODO - THIS Still doesn't work
+    Format the Hebrew text in a document by aligning it to right-to-left (RTL)
+    and ensuring the correct XML-level settings are applied.
+
+    Parameters:
+    - document (docx.Document): The document object to process.
+    """
+    for paragraph in document.paragraphs:
+        # Check if the paragraph contains Hebrew characters
+        if any("\u0590" <= char <= "\u05FF" for char in paragraph.text):
+            # Apply right-to-left alignment
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
+            # Ensure RTL is applied at the XML level
+            paragraph._p.set(qn('w:bidi'), '1')
+
+            # Format the Hebrew verse by moving the verse number to the beginning
+            # Example: "(כח)‪ וַיְחִ֤י ..." instead of "וַיְחִ֤י ... ‪(כח)"
+            if "‪(" in paragraph.text and ")‪" in paragraph.text:
+                match = re.search(r"‪\((.*?)\)‪", paragraph.text)
+                if match:
+                    verse_number = match.group(1)
+                    paragraph.text = f"‪({verse_number})‪ " + re.sub(r"‪\(.*?\)‪", "", paragraph.text).strip()
+
+
 if __name__ == "__main__":
     eng_folder_path = load_tanakh_path(ENG_DOCX_FOLDER)
     heb_folder_path = load_tanakh_path(HEB_DOCX_FOLDER)
     output_folder_path = load_tanakh_path(OUTPUT_DOCX_FOLDER)
 
-    # Step 3 do post processing
+    # Step 3: Do post-processing
     final_output_file = pick_filename_from_folder(output_folder_path)
     if final_output_file:
         print(f"\nSelected File: {final_output_file}")
 
-    #add_notes_to_verses(final_output_file)
     doc = Document(final_output_file)
+
+    # Update the header
+    update_second_line(doc)
+
+    # Format the Hebrew text
+    format_hebrew_paragraph(doc)
 
     # Iterate over paragraphs and process each one
     for para in doc.paragraphs:
