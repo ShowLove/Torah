@@ -193,7 +193,7 @@ def move_verse_number_to_start(text):
             modified_text = modified_text[:-1]
         
         # Build the new text with the verse number at the start
-        new_text = f"‪({verse_number})‪ " + modified_text
+        new_text =  modified_text + f"‪({verse_number})‪" + " " + ":"
         print(f"New text after modification: {new_text}")  # Debug: Show the modified text
         
         return new_text
