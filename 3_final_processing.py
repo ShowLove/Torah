@@ -185,8 +185,11 @@ def move_verse_number_to_start(text):
         verse_number = match.group(1)
         print(f"Verse number found: {verse_number}")  # Debug: Show the found verse number
         
-        # Remove the verse number from its original position and prepend it to the paragraph text
-        new_text = f"‪({verse_number})‪ " + re.sub(r"‪\s?\(.*?\)\s?‪", "", text).strip()  # Strip any unwanted spaces
+        # Remove the verse number from its original position
+        modified_text = re.sub(r"‪\s?\(.*?\)\s?‪", "", text).strip()  # Strip any unwanted spaces
+        
+        # Build the new text with the verse number at the start without using f-string
+        new_text = modified_text + f" ‪({verse_number})‪ "
         print(f"New text after modification: {new_text}")  # Debug: Show the modified text
         
         return new_text
