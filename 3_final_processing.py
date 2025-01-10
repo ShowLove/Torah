@@ -119,30 +119,93 @@ def update_second_line(document):
 
 def format_hebrew_paragraph(document):
     """
-    TODO - THIS Still doesn't work
-    Format the Hebrew text in a document by aligning it to right-to-left (RTL)
-    and ensuring the correct XML-level settings are applied.
+    Format Hebrew text in a Word document:
+    - Align the text to the right (RTL).
+    - Move the verse number to the beginning of the paragraph.
+    - Apply specific fonts and font sizes.
 
     Parameters:
-    - document (docx.Document): The document object to process.
+    - document (docx.Document): The document to be formatted.
     """
+    
     for paragraph in document.paragraphs:
-        # Check if the paragraph contains Hebrew characters
-        if any("\u0590" <= char <= "\u05FF" for char in paragraph.text):
-            # Apply right-to-left alignment
-            paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+        # Step 1: Check if the paragraph contains any Hebrew characters
+        if contains_hebrew(paragraph.text):
+            # Step 2: Apply right-to-left (RTL) alignment
+            apply_rtl_alignment(paragraph)
+            
+            # Step 3: Move the verse number (if present) to the beginning of the paragraph
+            paragraph.text = move_verse_number_to_start(paragraph.text)
+            
+            # Step 4: Apply the Hebrew font and size to the paragraph
+            apply_hebrew_font(paragraph)
 
-            # Ensure RTL is applied at the XML level
-            paragraph._p.set(qn('w:bidi'), '1')
+def contains_hebrew(text):
+    """
+    Check if the provided text contains Hebrew characters.
 
-            # Format the Hebrew verse by moving the verse number to the beginning
-            # Example: "(כח)‪ וַיְחִ֤י ..." instead of "וַיְחִ֤י ... ‪(כח)"
-            if "‪(" in paragraph.text and ")‪" in paragraph.text:
-                match = re.search(r"‪\((.*?)\)‪", paragraph.text)
-                if match:
-                    verse_number = match.group(1)
-                    paragraph.text = f"‪({verse_number})‪ " + re.sub(r"‪\(.*?\)‪", "", paragraph.text).strip()
+    Parameters:
+    - text (str): The text to check.
 
+    Returns:
+    - bool: True if the text contains Hebrew characters, False otherwise.
+    """
+    # Hebrew characters range from Unicode 0x0590 to 0x05FF
+    return any("\u0590" <= char <= "\u05FF" for char in text)
+
+def apply_rtl_alignment(paragraph):
+    """
+    Apply right-to-left alignment to the paragraph and ensure it is set at the XML level.
+    
+    Parameters:
+    - paragraph (docx.text.Paragraph): The paragraph to format.
+    """
+    # Align paragraph text to the right
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    # Ensure the XML-level setting for RTL is applied
+    paragraph._p.set(qn('w:bidi'), '1')
+
+def move_verse_number_to_start(text):
+    """
+    Move the verse number (if present) to the start of the paragraph.
+    
+    Parameters:
+    - text (str): The paragraph text.
+    
+    Returns:
+    - str: The modified text with the verse number moved to the beginning.
+    """
+    print(f"Original text: {text}")  # Debug: Show the original text
+    
+    # Regular expression to match verse numbers inside parentheses, including special characters like ‪
+    match = re.search(r"‪\s?\(([^)]+)\)\s?‪", text)  # Match "(כח)", "(כט)", "(לא)", etc. allowing for spaces or special characters
+    
+    if match:
+        # Extract the verse number (e.g., "כח", "כט")
+        verse_number = match.group(1)
+        print(f"Verse number found: {verse_number}")  # Debug: Show the found verse number
+        
+        # Remove the verse number from its original position and prepend it to the paragraph text
+        new_text = f"‪({verse_number})‪ " + re.sub(r"‪\s?\(.*?\)\s?‪", "", text).strip()  # Strip any unwanted spaces
+        print(f"New text after modification: {new_text}")  # Debug: Show the modified text
+        
+        return new_text
+    else:
+        print("No verse number found.")  # Debug: Inform when no verse number is found
+        # If no verse number is found, return the original text
+        return text
+
+def apply_hebrew_font(paragraph):
+    """
+    Apply the specific Hebrew font and size to the paragraph text.
+    
+    Parameters:
+    - paragraph (docx.text.Paragraph): The paragraph to format.
+    """
+    for run in paragraph.runs:
+        # Apply Hebrew font and size
+        run.font.name = DOCX_HEBREW_FONT
+        run.font.size = Pt(FONT_SIZE_HEB)
 
 if __name__ == "__main__":
     eng_folder_path = load_tanakh_path(ENG_DOCX_FOLDER)
