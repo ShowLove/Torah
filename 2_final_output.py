@@ -350,8 +350,6 @@ def format_docx_file(file_path):
     print(f"Formatted document saved as: {file_path}")
 
 if __name__ == "__main__":
-    # Example usage
-    # Replace 'hebrew.docx', 'english.docx', and 'output.docx' with the actual file paths.
 
     # Step 1: get the paths
     eng_folder_path = load_tanakh_path(ENG_DOCX_FOLDER)
@@ -376,7 +374,7 @@ if __name__ == "__main__":
     # Step 2: weave heb_file and english_file
     weave_torah_files(heb_file, english_file, output_folder_path)
 
-    # Step 3 do post processing
+    # Step 3 do post processing on the weaved together output
     final_output_file = pick_filename_from_folder(output_folder_path)
     if final_output_file:
         print(f"\nSelected File: {final_output_file}")
@@ -384,7 +382,7 @@ if __name__ == "__main__":
     #add_notes_to_verses(final_output_file)
     doc = Document(final_output_file)
 
-    # Iterate over paragraphs and remove second colon where necessary
+    # Iterate over paragraphs and remove second Heb verse number colon
     for para in doc.paragraphs:
         para_text = para.text.strip()
         new_paragraph = remove_second_colon(para_text, para)
