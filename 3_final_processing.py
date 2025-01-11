@@ -216,6 +216,26 @@ def apply_hebrew_font(paragraph):
         run.font.name = DOCX_HEBREW_FONT
         run.font.size = Pt(FONT_SIZE_HEB)
 
+def extract_info_from_filename(file_path):
+    """
+    Extract NUM and parasha_name from the filename in a given file path.
+    Args: file_path (str): The full file path.
+    Returns: tuple: A tuple containing NUM (int) and parasha_name (str).
+    """
+    # Extract the file name from the path
+    file_name = os.path.basename(file_path)
+    
+    # Split the file name by underscores
+    parts = file_name.split("_")
+    
+    # Extract the first part as NUM
+    num = int(parts[0])  # Convert to integer
+    
+    # Extract the second part as parasha_name
+    parasha_name = parts[1]
+    
+    return num, parasha_name
+
 if __name__ == "__main__":
     eng_folder_path = load_tanakh_path(ENG_DOCX_FOLDER)
     heb_folder_path = load_tanakh_path(HEB_DOCX_FOLDER)
@@ -223,8 +243,10 @@ if __name__ == "__main__":
 
     # Step 1: Get the final output file from the last script 
     final_output_file = pick_filename_from_folder(output_folder_path)
+    parasha_num, parasha_name = extract_info_from_filename(final_output_file)
     if final_output_file:
-        print(f"\nSelected File: {final_output_file}")
+        print(f"\nSelected Final Output File: {final_output_file}")
+        print(f"\nParasha Name: {parasha_name}, Parasha Number:{parasha_num}")
 
     doc = Document(final_output_file)
 
