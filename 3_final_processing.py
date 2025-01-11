@@ -194,7 +194,7 @@ def move_verse_number_to_start(text):
         
         # Build the new text with the verse number at the start
         modified_text = modified_text + "\u200F"
-        verse_number = f"\u200F ){verse_number}(\u200F"
+        verse_number = f"\u200F{verse_number}  \u200F"
         new_text = verse_number + " \u200F" + modified_text + ":\u200F"
         print(f"New text after modification: {new_text}")  # Debug: Show the modified text
         
