@@ -381,6 +381,9 @@ def format_docx_file(file_path):
 
 if __name__ == "__main__":
 
+    # Step 4: Ask the user whether to add notes to verses
+    add_notes = input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
+
     # Step 1: get the paths
     eng_folder_path = load_tanakh_path(ENG_DOCX_FOLDER)
     heb_folder_path = load_tanakh_path(HEB_DOCX_FOLDER)
@@ -406,12 +409,16 @@ if __name__ == "__main__":
     # Step 2: weave heb_file and english_file
     weave_torah_files(parasha_name, heb_file, english_file, output_folder_path)
 
-    # Step 3 do post processing on the weaved together output
+    # Step 3: do post-processing on the weaved together output
     final_output_file = pick_filename_from_folder(output_folder_path)
     if final_output_file:
         print(f"\nSelected File: {final_output_file}")
 
-    #add_notes_to_verses(final_output_file)
+    # Step 4: Toggle add_notes_to_verses based on user input
+    if add_notes == 'yes':
+        add_notes_to_verses(final_output_file)
+        print("\nNotes have been added to the verses.")
+
     doc = Document(final_output_file)
 
     # Iterate over paragraphs and remove second Heb verse number colon
@@ -422,5 +429,7 @@ if __name__ == "__main__":
     # Save the modified document
     doc.save(final_output_file)
 
+    # Format the document (you can add your specific formatting logic here)
     format_docx_file(final_output_file)
+    print(f"\nDocument saved and formatted: {final_output_file}")
 
