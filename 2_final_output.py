@@ -116,7 +116,7 @@ def pick_filename_from_folder(folder_path):
         else:
             print("Invalid choice. Please try again.")
 
-def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
+def weave_torah_files(parasha_name, hebrew_file_path, english_file_path, output_file_path):
     """
     Combine Hebrew and English texts from Word documents into a single Word file.
     Preserve original formatting of Hebrew and English documents.
@@ -199,7 +199,9 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
         os.makedirs(output_file_path)
 
     # Define the output file path using the cleaned Hebrew text
-    final_path_result = os.path.join(output_file_path, f"combined_{safe_first_line_hebrew}.docx")
+    docx_name = f"{parasha_name}_{safe_first_line_hebrew}.docx"
+    docx_name = clean_hebrew_filename(docx_name)
+    final_path_result = os.path.join(output_file_path, docx_name)
 
     # Remove the existing file if it already exists
     if os.path.exists(final_path_result):
@@ -209,6 +211,34 @@ def weave_torah_files(hebrew_file_path, english_file_path, output_file_path):
     # Save the combined document
     output_doc.save(final_path_result)
     print(f"Combined document saved as: {final_path_result}")
+
+def clean_hebrew_filename(filename):
+    """
+    Clean a Hebrew filename string to a consistent format.
+    
+    Args:
+        filename (str): The original filename string.
+        
+    Returns:
+        str: The cleaned filename string.
+    """
+    # Replace spaces with underscores
+    cleaned_string = re.sub(r"\s+", "_", filename)
+    # Replace multiple underscores with a single underscore
+    cleaned_string = re.sub(r"_{2,}", "_", cleaned_string)
+    # Ensure proper format for "Chapter"
+    cleaned_string = re.sub(r"_Chapter_", " Chapter_", cleaned_string)
+    # Ensure proper format for "Verses"
+    cleaned_string = re.sub(r"_Verses_", " Verses_", cleaned_string)
+    # Remove extra underscores after "Chapter" and "Verses"
+    cleaned_string = re.sub(r"(?<=Chapter)_+", "_", cleaned_string)
+    cleaned_string = re.sub(r"(?<=Verses)_+", "_", cleaned_string)
+    # Remove trailing underscores
+    cleaned_string = re.sub(r"_+$", "", cleaned_string)
+    # Handle dangling underscores before ".docx"
+    cleaned_string = re.sub(r"_\.docx$", ".docx", cleaned_string)
+    
+    return cleaned_string
 
 def add_notes_to_verses(file_path):
     """
@@ -368,11 +398,13 @@ if __name__ == "__main__":
     final_heb_path = navigate_folders_from_cwd(heb_folder_path)
     print(f"\nHeb - Final Path: {final_heb_path}")
     heb_file = pick_filename_from_folder(final_heb_path)
+    parasha_name = os.path.basename(final_heb_path)
     if heb_file:
         print(f"\nSelected File: {heb_file}")
+        print(f"\nParasha Name: {parasha_name}")
 
     # Step 2: weave heb_file and english_file
-    weave_torah_files(heb_file, english_file, output_folder_path)
+    weave_torah_files(parasha_name, heb_file, english_file, output_folder_path)
 
     # Step 3 do post processing on the weaved together output
     final_output_file = pick_filename_from_folder(output_folder_path)
