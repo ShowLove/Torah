@@ -101,12 +101,13 @@ def format_eng_paragraph(paragraph):
             run.text = ""  # Clear existing text
         paragraph.add_run(updated_text)  # Add updated text back
 
-def update_second_line(document):
+def update_second_line(document, parasha_name):
     """
-    Update the second line of the document by removing everything before 'Chapter'.
-
+    Update the second line of the document by removing everything before 'Chapter' 
+    and appending the parasha_name.
     Parameters:
     - document (docx.Document): The document object to process.
+    - parasha_name (str): The name of the parasha to append to the second line.
     """
     # Ensure the document has at least two paragraphs
     if len(document.paragraphs) >= 2:
@@ -114,7 +115,7 @@ def update_second_line(document):
         if "Chapter" in second_paragraph.text:
             # Find the position of the word "Chapter" and update the text
             chapter_index = second_paragraph.text.find("Chapter")
-            updated_text = second_paragraph.text[chapter_index:]
+            updated_text = second_paragraph.text[chapter_index:] + f" - {parasha_name}"
             second_paragraph.text = updated_text
 
 def format_hebrew_paragraph(document):
@@ -251,7 +252,7 @@ if __name__ == "__main__":
     doc = Document(final_output_file)
 
     # Setp 2: Update the line after the header
-    update_second_line(doc)
+    update_second_line(doc,parasha_name)
 
     # Step 3: Format the Hebrew text in Word
     #    - Align the Heb text to the right (RTL).
