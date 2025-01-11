@@ -82,7 +82,7 @@ def remove_second_colon_eng(para_text):
     # Replace all occurrences of "::" with ":"
     return re.sub(r"::", r":", para_text)
 
-def process_paragraph(paragraph):
+def format_eng_paragraph(paragraph):
     """
     Process the paragraph to replace "::" with ":" while preserving formatting.
 
@@ -221,23 +221,27 @@ if __name__ == "__main__":
     heb_folder_path = load_tanakh_path(HEB_DOCX_FOLDER)
     output_folder_path = load_tanakh_path(OUTPUT_DOCX_FOLDER)
 
-    # Step 3: Do post-processing
+    # Step 1: Get the final output file from the last script 
     final_output_file = pick_filename_from_folder(output_folder_path)
     if final_output_file:
         print(f"\nSelected File: {final_output_file}")
 
     doc = Document(final_output_file)
 
-    # Update the header
+    # Setp 2: Update the line after the header
     update_second_line(doc)
 
-    # Format the Hebrew text
+    # Step 3: Format the Hebrew text in Word
+    #    - Align the Heb text to the right (RTL).
+    #    - Move the verse number to the beginning of the paragraph.
+    #    - Apply specific fonts and font sizes.
     format_hebrew_paragraph(doc)
 
-    # Iterate over paragraphs and process each one
+    # Step 4: Format the Eng text in Word
+    #    - replace "::" with ":" in the Engs
     for para in doc.paragraphs:
-        process_paragraph(para)
+        format_eng_paragraph(para)
 
-    # Save the updated document
+    # Step 5: Save the updated document
     doc.save(final_output_file)
     print("File has been updated and saved.")
