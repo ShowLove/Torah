@@ -102,7 +102,7 @@ def save_to_word(verses, filename, book_name, chapter_number, file_path="."):
     print(f"Saved Word document: {save_path}")
 
 
-def get_Tanakh_and_verses(chapter_number, book_name):
+def get_Tanakh_and_verses(chapter_number, book_name, parasha_name):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("http://www.mnemotrix.com/texis/vtx/chumash")
 
@@ -127,7 +127,7 @@ def get_Tanakh_and_verses(chapter_number, book_name):
 
         filename = f"{book_name}_{chapter_number}.docx"
         folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
-        folder_path = os.path.join(folder_path, book_name)
+        folder_path = os.path.join(folder_path, parasha_name)
         save_to_word(verses, filename, book_name, chapter_number, file_path=folder_path)
 
     finally:
@@ -157,7 +157,7 @@ def process_specific_parasha(parasha_name, file_path="data/torah_parashot_eng.js
             end_chapter = int(parasha["End"]["Chapter"])
 
             for current_chapter in range(start_chapter, end_chapter + 1):
-                get_Tanakh_and_verses(str(current_chapter).zfill(2), parasha_book)
+                get_Tanakh_and_verses(str(current_chapter).zfill(2), parasha_book, parasha_name)
             return
 
     print(f"Parasha '{parasha_name}' not found in the file.")
