@@ -6,6 +6,7 @@ import json
 import time
 import shutil
 import subprocess
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -13,12 +14,63 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
+
 from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+
+def reformat_eng_docx(file_path):
+    """
+    Reformat the DOCX file so that each 'Verse' paragraph is on its own line,
+    and other paragraphs under the same verse are merged into a single string (removing newlines).
+
+    Args:
+        file_path (str): Path to the DOCX file to reformat.
+    """
+    # Load the document
+    doc = Document(file_path)
+
+    # Create a list to hold the reformatted verses
+    new_paragraphs = []
+    current_verse = ""
+
+    for para in doc.paragraphs:
+        para_text = para.text.strip()
+
+        # If the paragraph starts with "Verse", it should be the start of a new verse
+        if para_text.startswith("Verse"):
+            # If there's an accumulated verse, add it to the list
+            if current_verse:
+                new_paragraphs.append(current_verse)
+            # Start a new verse and remove newlines from the text
+            current_verse = para_text.replace("\n", " ")
+        else:
+            # Append non-"Verse" text to the current verse and remove any newlines
+            if para_text:  # Avoid adding empty lines
+                current_verse += " " + para_text.replace("\n", " ")
+
+    # Add the last accumulated verse if it exists
+    if current_verse:
+        new_paragraphs.append(current_verse)
+
+    # Create a new document and add the formatted paragraphs
+    new_doc = Document()
+    for para in new_paragraphs:
+        new_doc.add_paragraph(para)
+
+    # Save the new document with the same name, appending "_formatted"
+    #formatted_file_path = file_path.replace(".docx", "_formatted.docx")
+    
+    # Remove the existing file if it already exists
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f"Existing file found and removed: {file_path}")
+    
+    new_doc.save(file_path)
+    print(f"Formatted document saved as: {file_path}")
 
 def select_option(driver, dropdown_name, option_text):
     try:
@@ -129,6 +181,12 @@ def get_Tanakh_and_verses(chapter_number, book_name, parasha_name):
         folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
         folder_path = os.path.join(folder_path, parasha_name)
         save_to_word(verses, filename, book_name, chapter_number, file_path=folder_path)
+
+        # Now format the document
+        folder_path = os.path.join(folder_path, filename)
+        # TODO FIX BUG .docx twice
+        folder_path = folder_path + ".docx"
+        reformat_eng_docx(folder_path)
 
     finally:
         time.sleep(3)
