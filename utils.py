@@ -273,4 +273,34 @@ def is_valid_chapter(tanakh_division_name, book_choice, chapter_choice, verse_ch
     else:
         print(f"Invalid chapter choice. line: {inspect.currentframe().f_lineno}: Exiting...")
         return False
+
+def get_parasha_details(file_path):
+    """
+    Extracts Parasha details from a JSON file.
+
+    Args:
+        file_path (str): Path to the JSON file.
+
+    Returns:
+        list: A list of dictionaries with Parasha details (Parasha, Book, Start, End).
+    """
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+
+        parasha_details = []
+        for parasha in data.get("Parashot", []):
+            details = {
+                "Parasha": parasha.get("Parasha"),
+                "Book": parasha.get("Book"),
+                "Start": parasha.get("Start"),
+                "End": parasha.get("End"),
+            }
+            parasha_details.append(details)
+
+        return parasha_details
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
 # Additional utility functions can be added as needed for specific tasks.
