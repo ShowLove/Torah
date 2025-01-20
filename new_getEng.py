@@ -257,33 +257,25 @@ def prompt_user_choice():
     choice = input("Please enter a number: 1 through 5.: ").strip()
     file_path = utils.load_data(utils.PARASHOT_LIST_ENG_FILE, return_path_only=True)
 
-    # Get the current parasha
+    # Extract the first parasha's details into individual variables
     now_parasha_path = utils.load_data(utils.PARASHOT_NOW, return_path_only=True)
     details = get_parasha_details(now_parasha_path)
-
-    # Extract the first parasha's details into individual variables
     if details:
         first_parasha = details[0]
         Parasha = first_parasha["Parasha"]
         Book = first_parasha["Book"]
         Start = first_parasha["Start"]
         End = first_parasha["End"]
-
-        print(f"Parasha: {Parasha}")
-        print(f"Book: {Book}")
-        print(f"Start: {Start}")
-        print(f"End: {End}")
     else:
         print("No parasha details found.")
-
-    return None
+        return None
 
     if choice == "1":
         # Call the function to get all Genesis chapters from 1 to 50
         eng_website_url = "http://www.mnemotrix.com/texis/vtx/chumash"
         main_open_website_with_chrome(eng_website_url)
     elif choice == "2":
-        process_specific_parasha("Beshalach")
+        process_specific_parasha(Parasha)
     elif choice == "3":
         link = "http://www.mnemotrix.com/texis/vtx/chumash/+3wwBme4J+he5z5xwwxFqhUw0GwqFqt0Ldm15mFqAgrwpBnGaX_nFqwtzmxwww/article.html"
         getChFromLink(link)
