@@ -217,16 +217,6 @@ def main_open_website_with_chrome(website_url):
 # Call prompt_user_choice in the main entry point
 ##################################################################################
 def prompt_user_choice():
-    # Ask the user to choose between the options
-    print("Choose an option:")
-    print("1. Open english Torah Site")
-    print("2. Get a parasha of the Torah")
-    print("3. Get the chapter from a link")
-    print("4. Get specific parasha details")
-
-    choice = input("Please enter a number: 1 through 5.: ").strip()
-    file_path = utils.load_data(utils.PARASHOT_LIST_ENG_FILE, return_path_only=True)
-
     # Extract the first parasha's details into individual variables
     now_parasha_path = utils.load_data(utils.PARASHOT_NOW, return_path_only=True)
     details = utils.get_parasha_details(now_parasha_path)
@@ -239,6 +229,16 @@ def prompt_user_choice():
     else:
         print("No parasha details found.")
         return None
+
+    # Ask the user to choose between the options
+    print("Choose an option:")
+    print("1. Open english Torah Site")
+    print("2. Get parasha: " + Parasha)
+    print("3. Get the chapter from a link")
+    print("4. Get specific parasha details")
+
+    choice = input("Please enter a number: 1 through 5.: ").strip()
+    file_path = utils.load_data(utils.PARASHOT_LIST_ENG_FILE, return_path_only=True)
 
     if choice == "1":
         # Call the function to get all Genesis chapters from 1 to 50
