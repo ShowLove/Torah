@@ -220,13 +220,7 @@ def process_specific_parasha(parasha_name, file_path="data/torah_parashot_eng.js
 
     print(f"Parasha '{parasha_name}' not found in the file.")
 
-def getChFromLink(parasha_link):
-
-    # Get user inputs
-    inputs = utils.get_tanakh_scraper_inputs()
-    if not inputs:
-        return
-    tanakh_division_name, book_name, chapter_choice, start_verse_choice, end_verse_choice = inputs
+def getChFromLink(parasha_link, book_name, chapter_choice):
 
     #Step 1 get driver
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -236,9 +230,15 @@ def getChFromLink(parasha_link):
 
     # Step 3: Save the verses to a Word document with the specified filename format
     filename = f"{book_name}_{chapter_choice}.docx"
-    folder_path=load_tanakh_path(ENG_DOCX_FOLDER)
+    folder_path=utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
     #folder_path = os.path.join(folder_path, parasha_name)
     save_to_word(verses, filename, book_name, chapter_choice, file_path=folder_path)
+
+    # Now format the document
+    folder_path = os.path.join(folder_path, filename)
+    # TODO FIX BUG .docx twice
+    folder_path = folder_path + ".docx"
+    reformat_eng_docx(folder_path)
 
 def get_parasha_details(parasha_name, file_path="data/torah_parashot_eng.json"):
     # Load the JSON file
@@ -305,8 +305,9 @@ def prompt_user_choice():
     elif choice == "2":
         process_specific_parasha(Parasha)
     elif choice == "3":
-        link = "http://www.mnemotrix.com/texis/vtx/chumash/+3wwBme4J+he5z5xwwxFqhUw0GwqFqt0Ldm15mFqAgrwpBnGaX_nFqwtzmxwww/article.html"
-        getChFromLink(link)
+        # Will only name first chapter of now parasha, but the link can be anything
+        link = "http://www.mnemotrix.com/texis/vtx/chumash/+9wwBme4J+he5VixwwxFqwqFqt0Ldm15mFqAgrwpBnGaWvnFqwtzmxwww/article.html"
+        getChFromLink(link, Book, Start)
     if choice == "4":
         details = get_parasha_details("Vayechi")
         if details:
