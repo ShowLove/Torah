@@ -18,6 +18,7 @@ from docx.oxml import OxmlElement
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
 # Constants
+PARASHOT_NOW = "now_parasha.json"
 TANAKH_OUTLINE_ENG = "tanakhOutlineEng.json"
 DATA_FOLDER = "data"
 PENTATEUCH_FILE_ENG = "Pentateuch_eng.json"

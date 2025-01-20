@@ -213,6 +213,36 @@ def main_open_website_with_chrome(website_url):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def get_parasha_details(file_path):
+    """
+    Extracts Parasha details from a JSON file.
+
+    Args:
+        file_path (str): Path to the JSON file.
+
+    Returns:
+        list: A list of dictionaries with Parasha details (Parasha, Book, Start, End).
+    """
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+
+        parasha_details = []
+        for parasha in data.get("Parashot", []):
+            details = {
+                "Parasha": parasha.get("Parasha"),
+                "Book": parasha.get("Book"),
+                "Start": parasha.get("Start"),
+                "End": parasha.get("End"),
+            }
+            parasha_details.append(details)
+
+        return parasha_details
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
+
 ##################################################################################
 # Call prompt_user_choice in the main entry point
 ##################################################################################
@@ -226,6 +256,27 @@ def prompt_user_choice():
 
     choice = input("Please enter a number: 1 through 5.: ").strip()
     file_path = utils.load_data(utils.PARASHOT_LIST_ENG_FILE, return_path_only=True)
+
+    # Get the current parasha
+    now_parasha_path = utils.load_data(utils.PARASHOT_NOW, return_path_only=True)
+    details = get_parasha_details(now_parasha_path)
+
+    # Extract the first parasha's details into individual variables
+    if details:
+        first_parasha = details[0]
+        Parasha = first_parasha["Parasha"]
+        Book = first_parasha["Book"]
+        Start = first_parasha["Start"]
+        End = first_parasha["End"]
+
+        print(f"Parasha: {Parasha}")
+        print(f"Book: {Book}")
+        print(f"Start: {Start}")
+        print(f"End: {End}")
+    else:
+        print("No parasha details found.")
+
+    return None
 
     if choice == "1":
         # Call the function to get all Genesis chapters from 1 to 50
