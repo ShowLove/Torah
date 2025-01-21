@@ -26,16 +26,13 @@ if __name__ == "__main__":
         tanakh_section = first_parasha["tanakh_section"]
 
         # Print the details
-        print(f"Parasha Name: {parasha_name}")
-        print(f"Book Name: {book_name}")
-        print(f"Start Chapter: {start_chapter}, Start Verse: {start_verse}")
+        print(f"Parasha Name:\t\t {parasha_name}")
+        print(f"Book Name:\t\t {book_name}")
+        print(f"Start Chapter:\t\t {start_chapter}, Start Verse: {start_verse}")
         print(f"End Chapter: {end_chapter}, End Verse: {end_verse}")
-        print(f"Tanakh Section: {tanakh_section}")
+        print(f"Tanakh Section:\t\t {tanakh_section}")
     else:
         print("No parasha details found.")
-
-    # Step 4: Ask the user whether to add notes to verses
-    add_notes = input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
 
     # Step 1: get the paths
     eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
@@ -45,6 +42,12 @@ if __name__ == "__main__":
     english_file_path = "english_text.docx"
     output_file_path = "combined_output.docx"
 
-    filename = f"{book_name}_{start_chapter}.docx"
-    folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
-    folder_path = os.path.join(folder_path, parasha_name)
+    eng_filename = f"{book_name}_{start_chapter}.docx"
+    eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
+    eng_folder_path = os.path.join(eng_folder_path, parasha_name)
+    print(f"English filename:\t {eng_filename}")
+    print(f"English folder name:\t {eng_folder_path}")
+
+    # Step 4: Ask the user whether to add notes to verses
+    add_notes = input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
+
