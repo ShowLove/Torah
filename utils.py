@@ -17,7 +17,7 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
-# Constants
+# Eng Constants
 PARASHOT_NOW = "now_parasha.json"
 TANAKH_OUTLINE_ENG = "tanakhOutlineEng.json"
 DATA_FOLDER = "data"
@@ -34,6 +34,56 @@ DOCX_HEBREW_FONT = "Frank Ruehl" # Use Frank Ruehl for Hebrew text on Word
 FONT_SIZE = 18  # Font size in points
 MARGIN_SIZE = Pt(18)  # Margin size in points
 VERSE_ID_FONT_SIZE = 12  # Smaller font size for the verse ID
+
+# Heb Constants
+TANAKH_DOCX_FOLDER = "tanakh_docs"
+ENG_DOCX_FOLDER = "eng_docs"
+HEB_DOCX_FOLDER = "hebrew_docs"
+OUTPUT_DOCX_FOLDER = "output_docs"
+
+# Heb Constants
+DOCX_HEBREW_FONT = "Frank Ruehl"  # Use Frank Ruehl for Hebrew text on Word
+DOCX_ENGLISH_FONT = "Times New Roman"  # Use Times New Roman for English text
+FONT_SIZE_HEB = 16  # Font size in points
+FONT_SIZE_ENG = 12  # Font size in points
+MARGIN_SIZE = Pt(12)  # Margin size in points
+
+
+
+def get_parasha_details_heb(file_path):
+    """
+    Extracts Parasha details from a JSON file.
+
+    Args:
+        file_path (str): Path to the JSON file.
+
+    Returns:
+        list: A list of dictionaries with Parasha details.
+    """
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+
+        parasha_details = []
+        for parasha in data.get("Parashot", []):
+            details = {
+                "parasha_name": parasha.get("Parasha"),
+                "book_name": parasha.get("Book"),
+                "start_chapter": parasha.get("Start", {}).get("Chapter"),
+                "start_verse": parasha.get("Start", {}).get("Verse"),
+                "end_chapter": parasha.get("End", {}).get("Chapter"),
+                "end_verse": parasha.get("End", {}).get("Verse"),
+                "tanakh_section": parasha.get("Tanakh Section"),
+            }
+            parasha_details.append(details)
+
+        return parasha_details
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
+
+############################################################################# ENG
 
 # Utility Functions
 def load_data(json_filename, return_path_only=False):
