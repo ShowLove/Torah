@@ -282,7 +282,7 @@ def get_parasha_details(file_path):
         file_path (str): Path to the JSON file.
 
     Returns:
-        list: A list of dictionaries with Parasha details (Parasha, Book, Start, End).
+        list: A list of dictionaries with Parasha details (Parasha, Book, Start, End, Start Chapter).
     """
     try:
         with open(file_path, 'r') as file:
@@ -295,6 +295,7 @@ def get_parasha_details(file_path):
                 "Book": parasha.get("Book"),
                 "Start": parasha.get("Start"),
                 "End": parasha.get("End"),
+                "Start_Chapter": parasha.get("Start", {}).get("Chapter"),  # Extracts the Start Chapter (e.g., 13)
             }
             parasha_details.append(details)
 

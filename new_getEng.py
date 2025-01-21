@@ -240,28 +240,6 @@ def getChFromLink(parasha_link, book_name, chapter_choice):
     folder_path = folder_path + ".docx"
     reformat_eng_docx(folder_path)
 
-def get_parasha_details(parasha_name, file_path="data/torah_parashot_eng.json"):
-    # Load the JSON file
-    with open(file_path, 'r') as file:
-        parashot_data = json.load(file)
-    
-    # Search for the specific parasha
-    for parasha in parashot_data["Parashot"]:
-        if parasha["Name"] == parasha_name:
-            # Return the parasha details
-            return {
-                "Name": parasha["Name"],
-                "Book": parasha["Book"],
-                "Start_Chapter": parasha["Start"]["Chapter"],
-                "Start_Verse": parasha["Start"]["Verse"],
-                "End_Chapter": parasha["End"]["Chapter"],
-                "End_Verse": parasha["End"]["Verse"]
-            }
-    
-    # If parasha not found
-    print(f"Parasha '{parasha_name}' not found in the file.")
-    return None
-
 def main_open_website_with_chrome(website_url):
     try:
         # Path to the Google Chrome executable on macOS
@@ -284,6 +262,7 @@ def prompt_user_choice():
         Book = first_parasha["Book"]
         Start = first_parasha["Start"]
         End = first_parasha["End"]
+        start_chapter = first_parasha["Start_Chapter"]
     else:
         print("No parasha details found.")
         return None
@@ -307,7 +286,7 @@ def prompt_user_choice():
     elif choice == "3":
         # Will only name first chapter of now parasha, but the link can be anything
         link = "http://www.mnemotrix.com/texis/vtx/chumash/+9wwBme4J+he5VixwwxFqwqFqt0Ldm15mFqAgrwpBnGaWvnFqwtzmxwww/article.html"
-        getChFromLink(link, Book, Start)
+        getChFromLink(link, Book, start_chapter)
     if choice == "4":
         details = get_parasha_details("Vayechi")
         if details:
