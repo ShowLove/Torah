@@ -48,6 +48,9 @@ FONT_SIZE_HEB = 16  # Font size in points
 FONT_SIZE_ENG = 12  # Font size in points
 MARGIN_SIZE = Pt(12)  # Margin size in points
 
+# Heb Constants
+PARASHOT_NOW_HEB = "now_parasha_heb.json"
+
 
 
 def get_parasha_details_heb(file_path):
@@ -68,6 +71,39 @@ def get_parasha_details_heb(file_path):
         for parasha in data.get("Parashot", []):
             details = {
                 "parasha_name": parasha.get("Parasha"),
+                "book_name": parasha.get("Book"),
+                "start_chapter": parasha.get("Start", {}).get("Chapter"),
+                "start_verse": parasha.get("Start", {}).get("Verse"),
+                "end_chapter": parasha.get("End", {}).get("Chapter"),
+                "end_verse": parasha.get("End", {}).get("Verse"),
+                "tanakh_section": parasha.get("Tanakh Section"),
+            }
+            parasha_details.append(details)
+
+        return parasha_details
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
+
+def get_parasha_details_heb2(file_path):
+    """
+    Extracts Parasha details from a JSON file.
+
+    Args:
+        file_path (str): Path to the JSON file.
+
+    Returns:
+        list: A list of dictionaries with Parasha details.
+    """
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+
+        parasha_details = []
+        for parasha in data.get("Parashot", []):
+            details = {
+                "parasha_name": parasha.get("Name"),
                 "book_name": parasha.get("Book"),
                 "start_chapter": parasha.get("Start", {}).get("Chapter"),
                 "start_verse": parasha.get("Start", {}).get("Verse"),

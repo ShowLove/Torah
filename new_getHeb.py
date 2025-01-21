@@ -10,7 +10,9 @@ from docx.shared import RGBColor
 
 
 if __name__ == "__main__":
-    # Extract the parasha details
+    #################################
+    # Eng
+    #################################
     now_parasha_path = utils.load_data(utils.PARASHOT_NOW, return_path_only=True)
     parasha_details = utils.get_parasha_details_heb(now_parasha_path)
 
@@ -26,11 +28,11 @@ if __name__ == "__main__":
         tanakh_section = first_parasha["tanakh_section"]
 
         # Print the details
-        print(f"Parasha Name:\t\t {parasha_name}")
-        print(f"Book Name:\t\t {book_name}")
-        print(f"Start Chapter:\t\t {start_chapter}, Start Verse: {start_verse}")
-        print(f"End Chapter: {end_chapter}, End Verse: {end_verse}")
-        print(f"Tanakh Section:\t\t {tanakh_section}")
+        print(f"Parasha Name:\t\t\t {parasha_name}")
+        print(f"Book Name:\t\t\t {book_name}")
+        print(f"Start Chapter:\t\t\t {start_chapter}, Start Verse: {start_verse}")
+        print(f"End Chapter:\t\t\t {end_chapter}, End Verse: {end_verse}")
+        print(f"Tanakh Section:\t\t\t {tanakh_section}")
     else:
         print("No parasha details found.")
 
@@ -42,12 +44,46 @@ if __name__ == "__main__":
     english_file_path = "english_text.docx"
     output_file_path = "combined_output.docx"
 
+    #################################
+    # Heb
+    #################################
+    now_parasha_path_heb = utils.load_data(utils.PARASHOT_NOW_HEB, return_path_only=True)
+    parasha_details_heb = utils.get_parasha_details_heb2(now_parasha_path_heb)
+
+    if parasha_details_heb:
+        # Extract the first parasha's details into individual variables
+        first_parasha_heb = parasha_details_heb[0]
+        parasha_name_heb = first_parasha_heb["parasha_name"]
+        book_name_heb = first_parasha_heb["book_name"]
+        start_chapter_heb = first_parasha_heb["start_chapter"]
+        start_verse_heb = first_parasha_heb["start_verse"]
+        end_chapter_heb = first_parasha_heb["end_chapter"]
+        end_verse_heb = first_parasha_heb["end_verse"]
+        tanakh_section_heb = first_parasha_heb["tanakh_section"]
+
+        # Print the details
+        print(f"\nParasha Name Heb:\t\t\t {parasha_name_heb}")
+        print(f"Book Name Heb:\t\t\t\t {book_name_heb}")
+        print(f"Start Chapter Heb:\t\t\t {start_chapter_heb}, Start Verse: {start_verse_heb}")
+        print(f"End Chapter Heb:\t\t\t {end_chapter_heb}, End Verse: {end_verse_heb}")
+        print(f"Tanakh Section Heb:\t\t\t {tanakh_section_heb}")
+    else:
+        print("No parasha details found.")
+
+    # Step 2. Get folder paths
+    # Eng
     eng_filename = f"{book_name}_{start_chapter}.docx"
     eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
     eng_folder_path = os.path.join(eng_folder_path, parasha_name)
     print(f"English filename:\t {eng_filename}")
     print(f"English folder name:\t {eng_folder_path}")
+    # Heb
+    heb_filename = f"{book_name}_{start_chapter}.docx"
+    heb_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
+    heb_folder_path = os.path.join(eng_folder_path, parasha_name)
+    print(f"English filename:\t {eng_filename}")
+    print(f"English folder name:\t {eng_folder_path}")
 
-    # Step 4: Ask the user whether to add notes to verses
+    # Step 3: Ask the user whether to add notes to verses
     add_notes = input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
 
