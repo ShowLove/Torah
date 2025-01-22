@@ -80,12 +80,16 @@ if __name__ == "__main__":
     print(f"English filename:\t {eng_filename}")
     print(f"English folder name:\t {eng_folder_path}")
     # Heb
-    heb_filename = f"{book_name}_{start_chapter}.docx"
+    heb_filename = f"{book_name_heb}_CH_{start_chapter}_Verses_{start_verse_heb}_to_{end_verse_heb}.docx"
     heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
     heb_folder_path = os.path.join(eng_folder_path, parasha_name)
-    print(f"English filename:\t {eng_filename}")
-    print(f"English folder name:\t {eng_folder_path}")
+
+    print(f"Hebrew filename:\t {heb_filename}")
+    print(f"Hebrew folder name:\t {heb_folder_path}")
 
     # Step 3: Ask the user whether to add notes to verses
     add_notes = input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
+
+    # Step 5: weave heb_file and english_file
+    #weave_torah_files(parasha_name, heb_file, english_file, output_folder_path)
 
