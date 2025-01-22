@@ -82,8 +82,7 @@ if __name__ == "__main__":
     # Heb
     heb_filename = f"{book_name_heb}_CH_{start_chapter}_Verses_{start_verse_heb}_to_{end_verse_heb}.docx"
     heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
-    heb_folder_path = os.path.join(eng_folder_path, parasha_name)
-
+    heb_folder_path = os.path.join(heb_folder_path, parasha_name)
     print(f"Hebrew filename:\t {heb_filename}")
     print(f"Hebrew folder name:\t {heb_folder_path}")
 
