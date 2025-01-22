@@ -88,19 +88,26 @@ def get_parasha_details_heb(file_path):
 
 def get_parasha_details_heb2(file_path):
     """
-    Extracts Parasha details from a JSON file.
+    Extracts Parasha details and num_parasha from a JSON file.
 
     Args:
         file_path (str): Path to the JSON file.
 
     Returns:
-        list: A list of dictionaries with Parasha details.
+        list: A list of dictionaries with Parasha details and num_parasha.
     """
     try:
         with open(file_path, 'r') as file:
             data = json.load(file)
 
         parasha_details = []
+
+        # Safely extract num_parasha
+        num_parasha = None
+        if "Num_Parasha" in data and isinstance(data["Num_Parasha"], list):
+            num_parasha = data["Num_Parasha"][0].get("num_parasha")  # Use .get()
+
+        # Extract Parashot details
         for parasha in data.get("Parashot", []):
             details = {
                 "parasha_name": parasha.get("Name"),
@@ -110,6 +117,7 @@ def get_parasha_details_heb2(file_path):
                 "end_chapter": parasha.get("End", {}).get("Chapter"),
                 "end_verse": parasha.get("End", {}).get("Verse"),
                 "tanakh_section": parasha.get("Tanakh Section"),
+                "num_parasha": num_parasha,  # Add num_parasha to each parasha details
             }
             parasha_details.append(details)
 

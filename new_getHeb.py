@@ -51,24 +51,26 @@ if __name__ == "__main__":
     parasha_details_heb = utils.get_parasha_details_heb2(now_parasha_path_heb)
 
     if parasha_details_heb:
-        # Extract the first parasha's details into individual variables
-        first_parasha_heb = parasha_details_heb[0]
-        parasha_name_heb = first_parasha_heb["parasha_name"]
-        book_name_heb = first_parasha_heb["book_name"]
-        start_chapter_heb = first_parasha_heb["start_chapter"]
-        start_verse_heb = first_parasha_heb["start_verse"]
-        end_chapter_heb = first_parasha_heb["end_chapter"]
-        end_verse_heb = first_parasha_heb["end_verse"]
-        tanakh_section_heb = first_parasha_heb["tanakh_section"]
+	    # Extract the first parasha's details into individual variables
+	    first_parasha_heb = parasha_details_heb[0]
+	    parasha_name_heb = first_parasha_heb["parasha_name"]
+	    book_name_heb = first_parasha_heb["book_name"]
+	    start_chapter_heb = first_parasha_heb["start_chapter"]
+	    start_verse_heb = first_parasha_heb["start_verse"]
+	    end_chapter_heb = first_parasha_heb["end_chapter"]
+	    end_verse_heb = first_parasha_heb["end_verse"]
+	    tanakh_section_heb = first_parasha_heb["tanakh_section"]
+	    num_parasha = first_parasha_heb["num_parasha"]  # Fix: Use first_parasha_heb
 
-        # Print the details
-        print(f"\nParasha Name Heb:\t\t\t {parasha_name_heb}")
-        print(f"Book Name Heb:\t\t\t\t {book_name_heb}")
-        print(f"Start Chapter Heb:\t\t\t {start_chapter_heb}, Start Verse: {start_verse_heb}")
-        print(f"End Chapter Heb:\t\t\t {end_chapter_heb}, End Verse: {end_verse_heb}")
-        print(f"Tanakh Section Heb:\t\t\t {tanakh_section_heb}")
+	    # Print the details
+	    print(f"\nParasha Name Heb:\t\t\t {parasha_name_heb}")
+	    print(f"Book Name Heb:\t\t\t\t {book_name_heb}")
+	    print(f"Start Chapter Heb:\t\t\t {start_chapter_heb}, Start Verse: {start_verse_heb}")
+	    print(f"End Chapter Heb:\t\t\t {end_chapter_heb}, End Verse: {end_verse_heb}")
+	    print(f"Tanakh Section Heb:\t\t\t {tanakh_section_heb}")
+	    print(f"num_parasha:\t\t\t {num_parasha}")
     else:
-        print("No parasha details found.")
+	    print("No parasha details found.")
 
     # Step 2. Get folder paths
     # Eng
@@ -79,7 +81,7 @@ if __name__ == "__main__":
     print(f"English folder name:\t {eng_folder_path}")
     # Heb
     heb_filename = f"{book_name}_{start_chapter}.docx"
-    heb_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
+    heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
     heb_folder_path = os.path.join(eng_folder_path, parasha_name)
     print(f"English filename:\t {eng_filename}")
     print(f"English folder name:\t {eng_folder_path}")
