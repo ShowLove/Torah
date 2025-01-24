@@ -67,8 +67,8 @@ def weave_torah_files(parasha_name, hebrew_file_path, english_file_path, output_
             run_new.bold = run.bold
             run_new.italic = run.italic
             run_new.underline = run.underline
-            run_new.font.name = DOCX_HEBREW_FONT
-            run_new.font.size = Pt(FONT_SIZE_HEB)
+            run_new.font.name = utils.DOCX_HEBREW_FONT
+            run_new.font.size = Pt(utils.FONT_SIZE_HEB)
 
         # Align Hebrew text to the right (Right-to-left alignment)
         output_paragraph.alignment = 1  # Center-aligned (Note: 2 corresponds to right in python-docx)
@@ -88,8 +88,8 @@ def weave_torah_files(parasha_name, hebrew_file_path, english_file_path, output_
                 run_new.bold = run.bold
                 run_new.italic = run.italic
                 run_new.underline = run.underline
-                run_new.font.name = DOCX_ENGLISH_FONT
-                run_new.font.size = Pt(FONT_SIZE_ENG)
+                run_new.font.name = utils.DOCX_ENGLISH_FONT
+                run_new.font.size = Pt(utils.FONT_SIZE_ENG)
 
             # Align English text to the left (Left-to-right alignment)
             output_paragraph.alignment = 0  # Left-aligned (0 corresponds to left in python-docx)
