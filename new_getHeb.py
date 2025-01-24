@@ -124,6 +124,34 @@ def weave_torah_files(parasha_name, hebrew_file_path, english_file_path, output_
     output_doc.save(final_path_result)
     print(f"Combined document saved as: {final_path_result}")
 
+def clean_hebrew_filename(filename):
+    """
+    Clean a Hebrew filename string to a consistent format.
+    
+    Args:
+        filename (str): The original filename string.
+        
+    Returns:
+        str: The cleaned filename string.
+    """
+    # Replace spaces with underscores
+    cleaned_string = re.sub(r"\s+", "_", filename)
+    # Replace multiple underscores with a single underscore
+    cleaned_string = re.sub(r"_{2,}", "_", cleaned_string)
+    # Ensure proper format for "Chapter"
+    cleaned_string = re.sub(r"_Chapter_", " Chapter_", cleaned_string)
+    # Ensure proper format for "Verses"
+    cleaned_string = re.sub(r"_Verses_", " Verses_", cleaned_string)
+    # Remove extra underscores after "Chapter" and "Verses"
+    cleaned_string = re.sub(r"(?<=Chapter)_+", "_", cleaned_string)
+    cleaned_string = re.sub(r"(?<=Verses)_+", "_", cleaned_string)
+    # Remove trailing underscores
+    cleaned_string = re.sub(r"_+$", "", cleaned_string)
+    # Handle dangling underscores before ".docx"
+    cleaned_string = re.sub(r"_\.docx$", ".docx", cleaned_string)
+    
+    return cleaned_string
+
 if __name__ == "__main__":
     #################################
     # Eng
