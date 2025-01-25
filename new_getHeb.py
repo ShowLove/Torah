@@ -153,9 +153,18 @@ def clean_hebrew_filename(filename):
     return cleaned_string
 
 if __name__ == "__main__":
+    # Step 1: get the paths
+    eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
+    heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
+    output_folder_path = utils.load_tanakh_path(utils.OUTPUT_DOCX_FOLDER)
+    hebrew_file_path = "hebrew_text.docx"
+    english_file_path = "english_text.docx"
+    output_file_path = "combined_output.docx"
+    
     #################################
     # Eng
     #################################
+    # utils.PARASHOT_NOW is a string
     now_parasha_path = utils.load_data(utils.PARASHOT_NOW, return_path_only=True)
     parasha_details = utils.get_parasha_details_heb(now_parasha_path)
 
@@ -178,14 +187,6 @@ if __name__ == "__main__":
         print(f"Tanakh Section:\t\t\t {tanakh_section}")
     else:
         print("No parasha details found.")
-
-    # Step 1: get the paths
-    eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
-    heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
-    output_folder_path = utils.load_tanakh_path(utils.OUTPUT_DOCX_FOLDER)
-    hebrew_file_path = "hebrew_text.docx"
-    english_file_path = "english_text.docx"
-    output_file_path = "combined_output.docx"
 
     #################################
     # Heb
