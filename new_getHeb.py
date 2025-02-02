@@ -360,10 +360,11 @@ if __name__ == "__main__":
     if parasha_details and parasha_details_heb:
         # Extract necessary details
         parasha_name, book_name, start_chapter = parasha_details["parasha_name"], parasha_details["book_name"], parasha_details["start_chapter"]
-        parasha_name_heb, book_name_heb, start_chapter_heb, num_parasha = (
+        parasha_name_heb, book_name_heb, start_chapter_heb, end_chapter_heb, num_parasha = (
             parasha_details_heb["parasha_name"],
             parasha_details_heb["book_name"],
             parasha_details_heb["start_chapter"],
+            parasha_details_heb["end_chapter"],
             parasha_details_heb["num_parasha"],
         )
 
