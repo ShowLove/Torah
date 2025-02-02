@@ -291,7 +291,10 @@ def format_docx_file(file_path):
     print(f"Formatted document saved as: {file_path}")
 
 if __name__ == "__main__":
-    # Step 1: get the paths
+
+    # Ask the user whether to add notes to verses
+    add_notes = input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
+
     eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
     heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
     output_folder_path = utils.load_tanakh_path(utils.OUTPUT_DOCX_FOLDER)
@@ -300,7 +303,11 @@ if __name__ == "__main__":
     output_file_path = "combined_output.docx"
 
     #################################
-    # Eng
+    # Step 1 : Get the paths
+    #################################
+
+    #################################
+    # Eng paths
     #################################
     # utils.PARASHOT_NOW is a string
     now_parasha_path = utils.load_data(utils.PARASHOT_NOW, return_path_only=True)
@@ -325,8 +332,15 @@ if __name__ == "__main__":
     else:
         print("No parasha details found.")
 
+    # Get folder paths for Eng
+    eng_filename = f"{book_name}_{start_chapter}.docx"
+    eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
+    eng_folder_path = os.path.join(eng_folder_path, parasha_name)
+    print(f"\nEnglish filename:\t {eng_filename}")
+    print(f"English folder name:\t {eng_folder_path}")
+
     #################################
-    # Heb
+    # Heb paths
     #################################
     now_parasha_path_heb = utils.load_data(utils.PARASHOT_NOW_HEB, return_path_only=True)
     parasha_details_heb = utils.get_parasha_details_heb2(now_parasha_path_heb)
@@ -352,14 +366,8 @@ if __name__ == "__main__":
     else:
 	    print("No parasha details found.")
 
-    # Step 2. Get folder paths
-    # Eng
-    eng_filename = f"{book_name}_{start_chapter}.docx"
-    eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
-    eng_folder_path = os.path.join(eng_folder_path, parasha_name)
-    print(f"\nEnglish filename:\t {eng_filename}")
-    print(f"English folder name:\t {eng_folder_path}")
-    # Heb
+
+    # Get folder paths for Heb
     heb_filename = f"{book_name_heb}_CH_{start_chapter}"
     heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
     end_heb_path_name = str(num_parasha) + "_" + parasha_name
@@ -369,7 +377,11 @@ if __name__ == "__main__":
     print(f"Hebrew filename:\t {heb_filename}")
     print(f"Hebrew folder name:\t {heb_folder_path}")
 
-    # Step 4: weave heb_file and english_file
+    ###################################################
+    # Step 2: weave heb_file and english_file into one
+    ###################################################
+
+    # Weave files together then save the document
     bug_baindaid_eng_filename = eng_filename + ".docx"
     english_file = os.path.join(eng_folder_path, bug_baindaid_eng_filename)
     heb_file = os.path.join(heb_folder_path, heb_filename)
@@ -377,17 +389,22 @@ if __name__ == "__main__":
     print(f"final Eng folder name:\t {english_file}")
     final_output = weave_torah_files(parasha_name_heb, heb_file, english_file, output_folder_path)
 
-    # Step 5: Ask the user whether to add notes to verses
-    #final_output = parasha_name_heb + book_name_heb + "_" + str(start_chapter_heb)
-    #print(f"final_output:\t {final_output}")
-    #final_output = get_full_filename(final_output, output_folder_path)
-    #print(f"final_output2:\t {final_output}")
-    add_notes = input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
+    ###################################################
+    # Step 3: Add notes if needed
+    ###################################################
+
+    # Add notes if needed, then save the document
     if add_notes == 'yes':
         add_notes_to_verses(final_output)
         print("\nNotes have been added to the verses.")
+
+    # Get an instance of the document
     print(f"final_output3:\t {final_output}")
     doc = Document(final_output)
+
+    ###################################################
+    # Step 4: Processing - remove colon
+    ###################################################
 
     # Iterate over paragraphs and remove second Heb verse number colon
     for para in doc.paragraphs:
@@ -398,6 +415,10 @@ if __name__ == "__main__":
 
     # Save the modified document
     doc.save(final_output)
+
+    ###################################################
+    # Step 5: Processing - final output
+    ###################################################
 
     # Format the document (you can add your specific formatting logic here)
     format_docx_file(final_output)
