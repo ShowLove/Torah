@@ -359,7 +359,12 @@ if __name__ == "__main__":
 
     if parasha_details and parasha_details_heb:
         # Extract necessary details
-        parasha_name, book_name, start_chapter = parasha_details["parasha_name"], parasha_details["book_name"], parasha_details["start_chapter"]
+        parasha_name, book_name, start_chapter = (
+            parasha_details["parasha_name"], 
+            parasha_details["book_name"], 
+            parasha_details["start_chapter"]
+        )
+        
         parasha_name_heb, book_name_heb, start_chapter_heb, end_chapter_heb, num_parasha = (
             parasha_details_heb["parasha_name"],
             parasha_details_heb["book_name"],
@@ -368,12 +373,14 @@ if __name__ == "__main__":
             parasha_details_heb["num_parasha"],
         )
 
-        # Get file paths
-        english_file = get_file_paths(parasha_name, book_name, start_chapter, is_hebrew=False)
-        heb_file = get_file_paths(parasha_name_heb, book_name_heb, start_chapter_heb, num_parasha, is_hebrew=True)
+        # Iterate through the chapter range
+        for chapter in range(start_chapter_heb, end_chapter_heb + 1):
+            # Get file paths for each chapter
+            english_file = get_file_paths(parasha_name, book_name, chapter, is_hebrew=False)
+            heb_file = get_file_paths(parasha_name_heb, book_name_heb, chapter, num_parasha, is_hebrew=True)
 
-        # Weave and save document
-        final_output = weave_and_save_files(parasha_name_heb, heb_file, english_file, utils.load_tanakh_path(utils.OUTPUT_DOCX_FOLDER))
+            # Weave and save document
+            final_output = weave_and_save_files(parasha_name_heb, heb_file, english_file, utils.load_tanakh_path(utils.OUTPUT_DOCX_FOLDER))
 
-        # Process final document
-        process_document(final_output, add_notes)
+            # Process final document
+            process_document(final_output, add_notes)
