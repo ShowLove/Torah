@@ -290,136 +290,89 @@ def format_docx_file(file_path):
     new_doc.save(file_path)
     print(f"Formatted document saved as: {file_path}")
 
-if __name__ == "__main__":
+def get_user_input():
+    """Ask the user whether to add notes to verses."""
+    return input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
 
-    # Ask the user whether to add notes to verses
-    add_notes = input("\nWould you like to add notes to the verses? (yes/no): ").strip().lower()
 
-    eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
-    heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
-    output_folder_path = utils.load_tanakh_path(utils.OUTPUT_DOCX_FOLDER)
-    hebrew_file_path = "hebrew_text.docx"
-    english_file_path = "english_text.docx"
-    output_file_path = "combined_output.docx"
+def get_parasha_details(is_hebrew=True):
+    """Retrieve and print Parasha details for either Hebrew or English."""
+    parasha_path = utils.load_data(utils.PARASHOT_NOW_HEB if is_hebrew else utils.PARASHOT_NOW, return_path_only=True)
+    details = utils.get_parasha_details_heb2(parasha_path) if is_hebrew else utils.get_parasha_details_heb(parasha_path)
 
-    #################################
-    # Step 1 : Get the paths
-    #################################
-
-    #################################
-    # Eng paths
-    #################################
-    # utils.PARASHOT_NOW is a string
-    now_parasha_path = utils.load_data(utils.PARASHOT_NOW, return_path_only=True)
-    parasha_details = utils.get_parasha_details_heb(now_parasha_path)
-    if parasha_details:
-        # Extract the first parasha's details into individual variables
-        first_parasha = parasha_details[0]
-        parasha_name = first_parasha["parasha_name"]
-        book_name = first_parasha["book_name"]
-        start_chapter = first_parasha["start_chapter"]
-        start_verse = first_parasha["start_verse"]
-        end_chapter = first_parasha["end_chapter"]
-        end_verse = first_parasha["end_verse"]
-        tanakh_section = first_parasha["tanakh_section"]
-
-        # Print the details
-        print(f"Parasha Name:\t\t\t {parasha_name}")
-        print(f"Book Name:\t\t\t {book_name}")
-        print(f"Start Chapter:\t\t\t {start_chapter}, Start Verse: {start_verse}")
-        print(f"End Chapter:\t\t\t {end_chapter}, End Verse: {end_verse}")
-        print(f"Tanakh Section:\t\t\t {tanakh_section}")
+    if details:
+        first_parasha = details[0]
+        print("\nParasha Details (Hebrew)" if is_hebrew else "\nParasha Details (English)")
+        for key, value in first_parasha.items():
+            print(f"{key.replace('_', ' ').title()}:\t {value}")
+        return first_parasha
     else:
         print("No parasha details found.")
-
-    # Get folder paths for Eng
-    eng_filename = f"{book_name}_{start_chapter}.docx"
-    eng_folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
-    eng_folder_path = os.path.join(eng_folder_path, parasha_name)
-    print(f"\nEnglish filename:\t {eng_filename}")
-    print(f"English folder name:\t {eng_folder_path}")
-
-    #################################
-    # Heb paths
-    #################################
-    now_parasha_path_heb = utils.load_data(utils.PARASHOT_NOW_HEB, return_path_only=True)
-    parasha_details_heb = utils.get_parasha_details_heb2(now_parasha_path_heb)
-    if parasha_details_heb:
-	    # Extract the first parasha's details into individual variables
-	    first_parasha_heb = parasha_details_heb[0]
-	    parasha_name_heb = first_parasha_heb["parasha_name"]
-	    book_name_heb = first_parasha_heb["book_name"]
-	    start_chapter_heb = first_parasha_heb["start_chapter"]
-	    start_verse_heb = first_parasha_heb["start_verse"]
-	    end_chapter_heb = first_parasha_heb["end_chapter"]
-	    end_verse_heb = first_parasha_heb["end_verse"]
-	    tanakh_section_heb = first_parasha_heb["tanakh_section"]
-	    num_parasha = first_parasha_heb["num_parasha"]  # Fix: Use first_parasha_heb
-
-	    # Print the details
-	    print(f"\nParasha Name Heb:\t\t\t {parasha_name_heb}")
-	    print(f"Book Name Heb:\t\t\t\t {book_name_heb}")
-	    print(f"Start Chapter Heb:\t\t\t {start_chapter_heb}, Start Verse: {start_verse_heb}")
-	    print(f"End Chapter Heb:\t\t\t {end_chapter_heb}, End Verse: {end_verse_heb}")
-	    print(f"Tanakh Section Heb:\t\t\t {tanakh_section_heb}")
-	    print(f"num_parasha:\t\t\t {num_parasha}")
-    else:
-	    print("No parasha details found.")
+        return None
 
 
-    # Get folder paths for Heb
-    heb_filename = f"{book_name_heb}_CH_{start_chapter}"
-    heb_folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER)
-    end_heb_path_name = str(num_parasha) + "_" + parasha_name
-    heb_folder_path = os.path.join(heb_folder_path, end_heb_path_name)
-    # Get the full filename from the partial filename
-    heb_filename = get_full_filename(heb_filename, heb_folder_path)
-    print(f"Hebrew filename:\t {heb_filename}")
-    print(f"Hebrew folder name:\t {heb_folder_path}")
+def get_file_paths(parasha_name, book_name, start_chapter, num_parasha=None, is_hebrew=True):
+    """Construct and return file paths for Hebrew and English texts."""
+    folder_path = utils.load_tanakh_path(utils.HEB_DOCX_FOLDER if is_hebrew else utils.ENG_DOCX_FOLDER)
+    end_folder_name = f"{num_parasha}_{parasha_name}" if is_hebrew else parasha_name
+    folder_path = os.path.join(folder_path, end_folder_name)
 
-    ###################################################
-    # Step 2: weave heb_file and english_file into one
-    ###################################################
+    filename = f"{book_name}_CH_{start_chapter}" if is_hebrew else f"{book_name}_{start_chapter}.docx"
+    filename = get_full_filename(filename, folder_path) if is_hebrew else filename + ".docx"
 
-    # Weave files together then save the document
-    bug_baindaid_eng_filename = eng_filename + ".docx"
-    english_file = os.path.join(eng_folder_path, bug_baindaid_eng_filename)
-    heb_file = os.path.join(heb_folder_path, heb_filename)
-    print(f"\nfinal Hebrew filename:\t {heb_file}")
-    print(f"final Eng folder name:\t {english_file}")
+    print(f"\n{'Hebrew' if is_hebrew else 'English'} filename:\t {filename}")
+    print(f"{'Hebrew' if is_hebrew else 'English'} folder path:\t {folder_path}")
+
+    return os.path.join(folder_path, filename)
+
+def weave_and_save_files(parasha_name_heb, heb_file, english_file, output_folder_path):
+    """Weave Hebrew and English files together and return the output path."""
     final_output = weave_torah_files(parasha_name_heb, heb_file, english_file, output_folder_path)
+    print(f"\nFinal woven document:\t {final_output}")
+    return final_output
 
-    ###################################################
-    # Step 3: Add notes if needed
-    ###################################################
 
-    # Add notes if needed, then save the document
+def process_document(final_output, add_notes):
+    """Process the document by adding notes (if needed), removing colons, and formatting."""
     if add_notes == 'yes':
         add_notes_to_verses(final_output)
         print("\nNotes have been added to the verses.")
 
-    # Get an instance of the document
-    print(f"final_output3:\t {final_output}")
     doc = Document(final_output)
-
-    ###################################################
-    # Step 4: Processing - remove colon
-    ###################################################
-
-    # Iterate over paragraphs and remove second Heb verse number colon
+    
+    # Remove second Hebrew verse number colon
     for para in doc.paragraphs:
         para_text = para.text.strip()
-        new_paragraph = remove_second_colon(para_text, para)
+        remove_second_colon(para_text, para)
 
-    print(f"final_output:\t {final_output}")
-
-    # Save the modified document
     doc.save(final_output)
-
-    ###################################################
-    # Step 5: Processing - final output
-    ###################################################
-
-    # Format the document (you can add your specific formatting logic here)
     format_docx_file(final_output)
     print(f"\nDocument saved and formatted: {final_output}")
+
+
+if __name__ == "__main__":
+    add_notes = get_user_input()
+
+    # Retrieve Parasha details
+    parasha_details = get_parasha_details(is_hebrew=False)
+    parasha_details_heb = get_parasha_details(is_hebrew=True)
+
+    if parasha_details and parasha_details_heb:
+        # Extract necessary details
+        parasha_name, book_name, start_chapter = parasha_details["parasha_name"], parasha_details["book_name"], parasha_details["start_chapter"]
+        parasha_name_heb, book_name_heb, start_chapter_heb, num_parasha = (
+            parasha_details_heb["parasha_name"],
+            parasha_details_heb["book_name"],
+            parasha_details_heb["start_chapter"],
+            parasha_details_heb["num_parasha"],
+        )
+
+        # Get file paths
+        english_file = get_file_paths(parasha_name, book_name, start_chapter, is_hebrew=False)
+        heb_file = get_file_paths(parasha_name_heb, book_name_heb, start_chapter_heb, num_parasha, is_hebrew=True)
+
+        # Weave and save document
+        final_output = weave_and_save_files(parasha_name_heb, heb_file, english_file, utils.load_tanakh_path(utils.OUTPUT_DOCX_FOLDER))
+
+        # Process final document
+        process_document(final_output, add_notes)
