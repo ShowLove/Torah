@@ -446,7 +446,7 @@ def move_verse_number_to_start(text):
     Returns:
     - str: The modified text with the verse number moved to the beginning.
     """
-    print(f"Original text: {text}")  # Debug: Show the original text
+    #print(f"Original text: {text}")  # Debug: Show the original text
     
     # Regular expression to match verse numbers inside parentheses, including special characters like ‪
     match = re.search(r"‪\s?\(([^)]+)\)\s?‪", text)  # Match "(כח)", "(כט)", "(לא)", etc. allowing for spaces or special characters
@@ -454,7 +454,7 @@ def move_verse_number_to_start(text):
     if match:
         # Extract the verse number (e.g., "כח", "כט")
         verse_number = match.group(1)
-        print(f"Verse number found: {verse_number}")  # Debug: Show the found verse number
+        #print(f"Verse number found: {verse_number}")  # Debug: Show the found verse number
         
         # Remove the verse number from its original position
         modified_text = re.sub(r"‪\s?\(.*?\)\s?‪", "", text).strip()  # Strip any unwanted spaces
@@ -467,7 +467,7 @@ def move_verse_number_to_start(text):
         modified_text = modified_text + "\u200F"
         verse_number = f"\u200F{verse_number}  \u200F"
         new_text = verse_number + " \u200F" + modified_text + ":\u200F"
-        print(f"New text after modification: {new_text}")  # Debug: Show the modified text
+        #print(f"New text after modification: {new_text}")  # Debug: Show the modified text
         
         return new_text
     else:
