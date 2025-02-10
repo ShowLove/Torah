@@ -6,6 +6,9 @@ from docx.shared import Inches
 import re
 import os
 from docx.shared import RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml.ns import qn
+
 
 def get_full_filename(partial_filename, search_dir):
     """
@@ -349,6 +352,153 @@ def process_document(final_output, add_notes):
     format_docx_file(final_output)
     print(f"\nDocument saved and formatted: {final_output}")
 
+def contains_hebrew(text):
+    """
+    Check if the provided text contains Hebrew characters.
+
+    Parameters:
+    - text (str): The text to check.
+
+    Returns:
+    - bool: True if the text contains Hebrew characters, False otherwise.
+    """
+    # Hebrew characters range from Unicode 0x0590 to 0x05FF
+    return any("\u0590" <= char <= "\u05FF" for char in text)
+
+def apply_rtl_alignment(paragraph):
+    """
+    Apply right-to-left alignment to the paragraph and ensure it is set at the XML level.
+    
+    Parameters:
+    - paragraph (docx.text.Paragraph): The paragraph to format.
+    """
+    # Align paragraph text to the right
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    # Ensure the XML-level setting for RTL is applied
+    paragraph._p.set(qn('w:bidi'), '1')
+
+def format_hebrew_paragraph(document):
+    """
+    Format Hebrew text in a Word document:
+    - Align the text to the right (RTL).
+    - Move the verse number to the beginning of the paragraph.
+    - Apply specific fonts and font sizes.
+
+    Parameters:
+    - document (docx.Document): The document to be formatted.
+    """
+    
+    for paragraph in document.paragraphs:
+        # Step 1: Check if the paragraph contains any Hebrew characters
+        if contains_hebrew(paragraph.text):
+            # Step 2: Apply right-to-left (RTL) alignment
+            apply_rtl_alignment(paragraph)
+            
+            # Step 3: Move the verse number (if present) to the beginning of the paragraph
+            paragraph.text = move_verse_number_to_start(paragraph.text)
+            
+            # Step 4: Apply the Hebrew font and size to the paragraph
+            apply_hebrew_font(paragraph)
+
+def update_second_line(document, parasha_name):
+    """
+    Update the second line of the document by removing everything before 'Chapter' 
+    and appending the parasha_name.
+    Parameters:
+    - document (docx.Document): The document object to process.
+    - parasha_name (str): The name of the parasha to append to the second line.
+    """
+    # Ensure the document has at least two paragraphs
+    if len(document.paragraphs) >= 2:
+        second_paragraph = document.paragraphs[1]
+        if "Chapter" in second_paragraph.text:
+            # Find the position of the word "Chapter" and update the text
+            chapter_index = second_paragraph.text.find("Chapter")
+            updated_text = second_paragraph.text[chapter_index:] + f" - {parasha_name}"
+            second_paragraph.text = updated_text
+
+def format_eng_paragraph(paragraph):
+    """
+    Process the paragraph to replace "::" with ":" while preserving formatting.
+
+    Parameters:
+    - paragraph (docx.text.Paragraph): The paragraph object to process.
+    """
+    # Combine all runs' text into a single string
+    para_text = "".join(run.text for run in paragraph.runs)
+
+    # Replace "::" with ":" in the combined text
+    updated_text = remove_second_colon_eng(para_text)
+
+    # If changes are needed, clear existing runs and re-add the updated text
+    if para_text != updated_text:
+        for run in paragraph.runs:
+            run.text = ""  # Clear existing text
+        paragraph.add_run(updated_text)  # Add updated text back
+
+def move_verse_number_to_start(text):
+    """
+    Move the verse number (if present) to the start of the paragraph.
+    
+    Parameters:
+    - text (str): The paragraph text.
+    
+    Returns:
+    - str: The modified text with the verse number moved to the beginning.
+    """
+    print(f"Original text: {text}")  # Debug: Show the original text
+    
+    # Regular expression to match verse numbers inside parentheses, including special characters like ‪
+    match = re.search(r"‪\s?\(([^)]+)\)\s?‪", text)  # Match "(כח)", "(כט)", "(לא)", etc. allowing for spaces or special characters
+    
+    if match:
+        # Extract the verse number (e.g., "כח", "כט")
+        verse_number = match.group(1)
+        print(f"Verse number found: {verse_number}")  # Debug: Show the found verse number
+        
+        # Remove the verse number from its original position
+        modified_text = re.sub(r"‪\s?\(.*?\)\s?‪", "", text).strip()  # Strip any unwanted spaces
+        
+        # Remove any trailing colon (:) from the text
+        if modified_text.endswith(":"):
+            modified_text = modified_text[:-1]
+        
+        # Build the new text with the verse number at the start
+        modified_text = modified_text + "\u200F"
+        verse_number = f"\u200F{verse_number}  \u200F"
+        new_text = verse_number + " \u200F" + modified_text + ":\u200F"
+        print(f"New text after modification: {new_text}")  # Debug: Show the modified text
+        
+        return new_text
+    else:
+        print("No verse number found.")  # Debug: Inform when no verse number is found
+        # If no verse number is found, return the original text
+        return text
+
+def apply_hebrew_font(paragraph):
+    """
+    Apply the specific Hebrew font and size to the paragraph text.
+    
+    Parameters:
+    - paragraph (docx.text.Paragraph): The paragraph to format.
+    """
+    for run in paragraph.runs:
+        # Apply Hebrew font and size
+        run.font.name = utils.DOCX_HEBREW_FONT
+        run.font.size = Pt(utils.FONT_SIZE_HEB)
+
+def remove_second_colon_eng(para_text):
+    """
+    Replace all occurrences of "::" with ":" in the given text.
+
+    Parameters:
+    - para_text (str): The text of the paragraph.
+
+    Returns:
+    - str: The updated text with "::" replaced by ":".
+    """
+    # Replace all occurrences of "::" with ":"
+    return re.sub(r"::", r":", para_text)
 
 if __name__ == "__main__":
     add_notes = get_user_input()
@@ -384,3 +534,23 @@ if __name__ == "__main__":
 
             # Process final document
             process_document(final_output, add_notes)
+
+            doc = Document(final_output)
+
+            # Setp 2: Update the line after the header
+            update_second_line(doc,parasha_name_heb)
+
+            # Step 3: Format the Hebrew text in Word
+            #    - Align the Heb text to the right (RTL).
+            #    - Move the verse number to the beginning of the paragraph.
+            #    - Apply specific fonts and font sizes.
+            format_hebrew_paragraph(doc)
+
+            # Step 4: Format the Eng text in Word
+            #    - replace "::" with ":" in the Engs
+            for para in doc.paragraphs:
+                format_eng_paragraph(para)
+
+            # Step 5: Save the updated document
+            doc.save(final_output)
+            print("File has been updated and saved.")
