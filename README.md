@@ -85,3 +85,53 @@ deactivate
 
 Now, you can safely manage and install Python packages without encountering the "externally-managed-environment" error.
 
+### A. Getting Started
+```bash
+################
+# Get Eng
+################
+#1 Check for the name of your Parasha in the Eng Data base
+./data/torah_parashot_eng.json
+
+#2 Put that name & data into eng now file
+#  Copy from { to } and delete the ,
+#  Change       "Name": "Balak", --> "Parasha": "Balak",
+./data/now_parasha.json
+
+#3 Run the Eng script, run option 2
+python3 new_getEng.py 
+Choose an option:
+1. Open english Torah Site
+2. Get parasha: Balak
+3. Get the chapter from a link
+4. Get specific parasha details
+Please enter a number: 1 through 5.: 2
+
+# SUCCESS
+Formatted document saved as: tanakh_docs/eng_docs/Balak/Numbers_25.docx.docx
+Have a nice Day !
+
+#4
+python3 new_getEng.py
+
+################
+# Get Heb
+################
+#1 Check for the name of your Parasha in the Heb Data base
+./data/now_parasha_heb.json:4:      "Name": "Beshalach"
+
+#2 Put that name & data into heb now file
+#  Copy from { to } and delete the ,
+#  Don't forget to add the num of the Parasha, can be found in "data/ParashaOrder.txt"
+./data/now_parasha_heb.json
+
+#3 Run the Heb script, 
+python3 new_getHeb.py
+
+Would you like to add notes to the verses? (yes/no): yes
+...
+# SUCCESS
+Document saved and formatted: tanakh_docs/output_docs/Balak_Bamidbar_Numbers Chapter_25 Verses_1_9.docx
+File has been updated and saved.
+```
+

@@ -1,0 +1,54 @@
+1. Bereshit  
+2. Noach  
+3. Lech-Lecha  
+4. Vayera  
+5. Chayei Sarah  
+6. Toldot  
+7. Vayetze  
+8. Vayishlach  
+9. Vayeshev  
+10. Miketz  
+11. Vayigash  
+12. Vayechi  
+13. Shemot  
+14. Va’era  
+15. Bo  
+16. Beshalach  
+17. Yitro  
+18. Mishpatim  
+19. Terumah  
+20. Tetzaveh  
+21. Ki Tisa  
+22. Vayakhel  
+23. Pekudei  
+24. Vayikra  
+25. Tzav  
+26. Shemini  
+27. Tazria  
+28. Metzora  
+29. Acharei Mot  
+30. Kedoshim  
+31. Emor  
+32. Behar  
+33. Bechukotai  
+34. Bamidbar  
+35. Naso  
+36. Beha’alotcha  
+37. Shelach  
+38. Korach  
+39. Chukat  
+40. Balak  
+41. Pinchas  
+42. Matot  
+43. Masei  
+44. Devarim  
+45. Va’etchanan  
+46. Eikev  
+47. Re’eh  
+48. Shoftim  
+49. Ki Teitzei  
+50. Ki Tavo  
+51. Nitzavim  
+52. Vayelech  
+53. Ha’azinu  
+54. V’Zot HaBerachah  
