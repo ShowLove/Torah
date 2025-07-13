@@ -57,24 +57,29 @@ def create_gui():
     ttk.Label(root, text="TORAH BOOK:").pack(padx=5, pady=5)
 
     # Add an entry field (text box) where the user can type their search query
-    # It is linked to search_var and stretches horizontally with padding
-    ttk.Entry(root, textvariable=search_var).pack(fill='x', padx=5)
+    search_entry = ttk.Entry(root, textvariable=search_var) # So we can reference the book
+    search_entry.pack(fill='x', padx=5)
 
     # Create a Listbox widget to display search results
-    # Set its width and pack it with padding; it fills available space and expands
     result_box = tk.Listbox(root, width=80)
     result_box.pack(padx=5, pady=10, fill='both', expand=True)
 
     # Bind listbox click
     result_box.bind("<<ListboxSelect>>", on_result_selected)
 
+    # Create the search button
     ttk.Button(
         root,
         text="Search",
         command=lambda: perform_search(search_var, result_box)
     ).pack(pady=5)
 
+    # Bind the Enter key to trigger the search function to select the book
+    root.bind('<Return>', lambda event: perform_search(search_var, result_box))
+
+    # Start the GUI loop
     root.mainloop()
+
 
 if __name__ == "__main__":
     create_gui()
