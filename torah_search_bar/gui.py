@@ -2,14 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 from search_engine import load_json_files, search_data
 
-# Load JSON data at startup
+# Load data at startup
 data = load_json_files()
+result_metadata = {}  # Maps listbox indices to books
 
-# Global to map listbox index → source book
-result_metadata = {}
-
-# Global to hold selected book variation from result
-selected_book_variation = None
 
 def perform_search(search_var, result_box):
     """
@@ -28,58 +24,76 @@ def perform_search(search_var, result_box):
             result_metadata[index] = book  # Map index to book
             index += 1
 
-def on_result_selected(event):
-    """
-    Triggered when user selects a result in the Listbox.
-    Finds the corresponding book and saves its first variation.
-    """
-    global selected_book_variation
-    widget = event.widget
-    if widget.curselection():
-        index = widget.curselection()[0]
-        book_data = result_metadata.get(index)
-        if book_data:
-            selected_book_variation = book_data["variations"][0]
-            print(f"Selected Book Variation: {selected_book_variation}")
 
 def create_gui():
-    """
-    Creates the Tkinter GUI
-    """
-    # Create the main Tkinter window and set the window title
     root = tk.Tk()
     root.title("TORAH SEARCH")
 
-    # Create a StringVar to hold the user's search input (linked to the Entry widget)
+    # Variables for selections
     search_var = tk.StringVar()
+    selected_book_variation = tk.StringVar()
+    chapter_num = tk.StringVar()
+    verse_num = tk.StringVar()
 
-    # Add a label widget that says "Search:"
+    # Book Search
     ttk.Label(root, text="TORAH BOOK:").pack(padx=5, pady=5)
+    book_entry = ttk.Entry(root, textvariable=search_var)
+    book_entry.pack(fill='x', padx=5)
 
-    # Add an entry field (text box) where the user can type their search query
-    search_entry = ttk.Entry(root, textvariable=search_var) # So we can reference the book
-    search_entry.pack(fill='x', padx=5)
-
-    # Create a Listbox widget to display search results
+    # Search results list
     result_box = tk.Listbox(root, width=80)
     result_box.pack(padx=5, pady=10, fill='both', expand=True)
 
-    # Bind listbox click
-    result_box.bind("<<ListboxSelect>>", on_result_selected)
+    # CHAPTER and VERSE widgets (initially hidden)
+    chapter_label = ttk.Label(root, text="CHAPTER:")
+    chapter_entry = ttk.Entry(root, textvariable=chapter_num)
 
-    # Create the search button
+    verse_label = ttk.Label(root, text="VERSE:")
+    verse_entry = ttk.Entry(root, textvariable=verse_num)
+
+    def on_result_selected(event=None):
+        selected_index = result_box.curselection()
+        if selected_index:
+            index = selected_index[0]
+            book_key = result_metadata.get(index)
+            if book_key:
+                selected_book_variation.set(book_key)
+
+                # Show CHAPTER and VERSE input fields
+                chapter_label.pack(padx=5, pady=5)
+                chapter_entry.pack(fill='x', padx=5)
+                verse_label.pack(padx=5, pady=5)
+                verse_entry.pack(fill='x', padx=5)
+
+                chapter_entry.focus_set()
+
+    # Bind selection and Enter key
+    result_box.bind("<<ListboxSelect>>", on_result_selected)
+    result_box.bind("<Return>", on_result_selected)
+
+    # Search button
     ttk.Button(
         root,
-        text="Search",
+        text="Search Book",
         command=lambda: perform_search(search_var, result_box)
     ).pack(pady=5)
 
-    # Bind the Enter key to trigger the search function to select the book
-    root.bind('<Return>', lambda event: perform_search(search_var, result_box))
+    # Also trigger search on Enter key in entry box
+    book_entry.bind('<Return>', lambda event: perform_search(search_var, result_box))
 
-    # Start the GUI loop
+    def on_close():
+        root.destroy()
+
+    root.protocol("WM_DELETE_WINDOW", on_close)
     root.mainloop()
 
+    # Return values after GUI closes
+    return selected_book_variation.get(), chapter_num.get(), verse_num.get()
 
+
+# Run and print results
 if __name__ == "__main__":
-    create_gui()
+    book, chapter, verse = create_gui()
+    print(f"Selected Book: {book}")
+    print(f"Chapter: {chapter}")
+    print(f"Verse: {verse}")
