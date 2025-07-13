@@ -46,14 +46,22 @@ def create_gui():
     """
     Creates the Tkinter GUI
     """
+    # Create the main Tkinter window and set the window title
     root = tk.Tk()
-    root.title("JSON Search")
+    root.title("TORAH SEARCH")
 
+    # Create a StringVar to hold the user's search input (linked to the Entry widget)
     search_var = tk.StringVar()
 
-    ttk.Label(root, text="Search:").pack(padx=5, pady=5)
+    # Add a label widget that says "Search:"
+    ttk.Label(root, text="TORAH BOOK:").pack(padx=5, pady=5)
+
+    # Add an entry field (text box) where the user can type their search query
+    # It is linked to search_var and stretches horizontally with padding
     ttk.Entry(root, textvariable=search_var).pack(fill='x', padx=5)
 
+    # Create a Listbox widget to display search results
+    # Set its width and pack it with padding; it fills available space and expands
     result_box = tk.Listbox(root, width=80)
     result_box.pack(padx=5, pady=10, fill='both', expand=True)
 
