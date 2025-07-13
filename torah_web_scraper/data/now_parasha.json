@@ -1,11 +1,11 @@
 {
   "Parashot": [
     {
-      "Parasha": "Beshalach",
-      "Book": "Exodus",
+      "Parasha": "Pinchas",
+      "Book": "Numbers",
       "Tanakh Section": "Torah (Pentateuch)",
-      "Start": {"Chapter": 13, "Verse": 17},
-      "End": {"Chapter": 17, "Verse": 16}
+      "Start": {"Chapter": 25, "Verse": 10},
+      "End": {"Chapter": 30, "Verse": 1}
     }
   ]
 }

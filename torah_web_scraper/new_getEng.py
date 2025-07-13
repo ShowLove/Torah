@@ -249,6 +249,38 @@ def main_open_website_with_chrome(website_url):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def get_Tanakh_from_link(hardcoded_url, book_name, chapter_number, parasha_name):
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    
+    try:
+        # Go directly to the hardcoded Tanakh chapter page
+        driver.get(hardcoded_url)
+        time.sleep(2)
+
+        # Optional: grab the actual final redirected URL if needed
+        final_url = driver.current_url
+        driver.get(final_url)
+        time.sleep(2)
+
+        # Grab verses (assuming this function is defined elsewhere)
+        verses = grab_verses(driver)
+
+        # Save to Word
+        filename = f"{book_name}_{chapter_number}.docx"
+        folder_path = utils.load_tanakh_path(utils.ENG_DOCX_FOLDER)
+        folder_path = os.path.join(folder_path, parasha_name)
+        os.makedirs(folder_path, exist_ok=True)
+
+        save_to_word(verses, filename, book_name, chapter_number, file_path=folder_path)
+
+        # Reformat document
+        docx_path = os.path.join(folder_path, filename)
+        reformat_eng_docx(docx_path)
+
+    finally:
+        time.sleep(3)
+        driver.quit()
+
 ##################################################################################
 # Call prompt_user_choice in the main entry point
 ##################################################################################
@@ -272,7 +304,8 @@ def prompt_user_choice():
     print("1. Open english Torah Site")
     print("2. Get parasha: " + Parasha)
     print("3. Get the chapter from a link")
-    print("4. Get specific parasha details")
+    print("4. Get specific parasha file from link")
+    print("5. Get specific parasha ch from link")
 
     choice = input("Please enter a number: 1 through 5.: ").strip()
     file_path = utils.load_data(utils.PARASHOT_LIST_ENG_FILE, return_path_only=True)
@@ -287,10 +320,17 @@ def prompt_user_choice():
         # Will only name first chapter of now parasha, but the link can be anything
         link = "http://www.mnemotrix.com/texis/vtx/chumash/+9wwBme4J+he5VixwwxFqwqFqt0Ldm15mFqAgrwpBnGaWvnFqwtzmxwww/article.html"
         getChFromLink(link, Book, start_chapter)
-    if choice == "4":
+    elif choice == "4":
         details = get_parasha_details("Vayechi")
         if details:
             print(details)
+    if choice == "5":
+        get_Tanakh_from_link(
+            hardcoded_url="http://www.mnemotrix.com/texis/vtx/chumash/+YwwBmeIJ+he5lowwwxFqhFwcwAqFqwmFqwnFqwtzmxwww/article.html",
+            book_name="Numbers",
+            chapter_number=22,
+            parasha_name="Balak"
+        )
     else:
         print("Have a nice Day !")
 

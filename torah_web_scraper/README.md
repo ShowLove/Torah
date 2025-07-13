@@ -93,7 +93,7 @@ Now, you can safely manage and install Python packages without encountering the 
 #1 Check for the name of your Parasha in the Eng Data base
 ./data/torah_parashot_eng.json
 
-#2 Put that name & data into eng now file
+#2 Put that name & data into eng now_parasha.json file
 #  Copy from { to } and delete the ,
 #  Change       "Name": "Balak", --> "Parasha": "Balak",
 ./data/now_parasha.json
@@ -110,9 +110,6 @@ Please enter a number: 1 through 5.: 2
 # SUCCESS
 Formatted document saved as: tanakh_docs/eng_docs/Balak/Numbers_25.docx.docx
 Have a nice Day !
-
-#4
-python3 new_getEng.py
 
 ################
 # Get Heb
@@ -133,5 +130,24 @@ Would you like to add notes to the verses? (yes/no): yes
 # SUCCESS
 Document saved and formatted: tanakh_docs/output_docs/Balak_Bamidbar_Numbers Chapter_25 Verses_1_9.docx
 File has been updated and saved.
+
+#################
+# Bug workaround
+#################
+If there is any part missing you can manually add it. json
+
+#1 Add the specific missing peace to new_getEng.py
+
+    if choice == "5":
+        get_Tanakh_from_link(
+            hardcoded_url="http://www.mnemotrix.com/texis/vtx/chumash/+YwwBmeIJ+he5lowwwxFqhFwcwAqFqwmFqwnFqwtzmxwww/article.html",
+            book_name="Numbers",
+            chapter_number=22,
+            parasha_name="Balak"
+        )
+
+# 2 run it again.
+python3 new_getEng.py
+python3 new_getHeb.py
 ```
 
