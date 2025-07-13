@@ -39,7 +39,7 @@ def create_gui():
     # Label and entry field for the book search
     ttk.Label(root, text="TORAH BOOK:").pack(padx=5, pady=5)
     book_entry = ttk.Entry(root, textvariable=search_var)  # Entry widget for search input
-    book_entry.pack(fill='x', padx=5)  # Expand entry horizontally
+    book_entry.pack(fill='x', padx=5)                      # Expand entry horizontally
 
     # Create a Listbox to show matching book names after search
     result_box = tk.Listbox(root, width=80)
@@ -54,10 +54,10 @@ def create_gui():
 
     # Function triggered when a search result is selected (by click or Enter key)
     def on_result_selected(event=None):
-        selected_index = result_box.curselection()  # Get the currently selected index
+        selected_index = result_box.curselection()     # Get the currently selected index
         if selected_index:
             index = selected_index[0]
-            book_key = result_metadata.get(index)  # Get book name from metadata mapping
+            book_key = result_metadata.get(index)      # Get book name from metadata mapping
             if book_key:
                 selected_book_variation.set(book_key)  # Save selected book
 
