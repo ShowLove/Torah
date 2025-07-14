@@ -51,39 +51,18 @@ def on_result_selected(event, result_box, result_metadata, selected_book_variati
             if fields_to_show:
                 fields_to_show[0][1].focus_set()
 
-def create_gui():
-    root = tk.Tk()
-    root.title("TORAH SEARCH")
-
-    # Define StringVar variables
+def create_search_ui(root):
     search_var = tk.StringVar()
     selected_book_variation = tk.StringVar()
-    chapter_num = tk.StringVar()
-    verse_num = tk.StringVar()
 
-    # Search input field
+    # Book search label + entry
     ttk.Label(root, text="TORAH BOOK:").pack(padx=5, pady=5)
     book_entry = ttk.Entry(root, textvariable=search_var)
     book_entry.pack(fill='x', padx=5)
 
-    # Result listbox
+    # Result box
     result_box = tk.Listbox(root, width=80)
     result_box.pack(padx=5, pady=10, fill='both', expand=True)
-
-    # Chapter and Verse widgets (initially hidden)
-    chapter_label = ttk.Label(root, text="CHAPTER:")
-    chapter_entry = ttk.Entry(root, textvariable=chapter_num)
-    verse_label = ttk.Label(root, text="VERSE:")
-    verse_entry = ttk.Entry(root, textvariable=verse_num)
-
-    # Group label/entry pairs for reuse
-    fields_to_show = [(chapter_label, chapter_entry), (verse_label, verse_entry)]
-
-    # Bind result selection to generic handler
-    result_box.bind("<<ListboxSelect>>", lambda event: on_result_selected(
-        event, result_box, result_metadata, selected_book_variation, fields_to_show))
-    result_box.bind("<Return>", lambda event: on_result_selected(
-        event, result_box, result_metadata, selected_book_variation, fields_to_show))
 
     # Search button
     ttk.Button(
@@ -92,18 +71,39 @@ def create_gui():
         command=lambda: perform_search(search_var, result_box)
     ).pack(pady=5)
 
-    # Allow Enter key in entry to trigger search
+    # Trigger search on Enter
     book_entry.bind('<Return>', lambda event: perform_search(search_var, result_box))
 
-    # Handle window close
-    def on_close():
-        root.destroy()
-    root.protocol("WM_DELETE_WINDOW", on_close)
+    return search_var, selected_book_variation, result_box
 
-    # Launch GUI
+def create_gui():
+    root = tk.Tk()
+    root.title("TORAH SEARCH")
+
+    # Setup search section
+    search_var, selected_book_variation, result_box = create_search_ui(root)
+
+    # Chapter/Verse variables and widgets
+    chapter_num = tk.StringVar()
+    verse_num = tk.StringVar()
+    chapter_label = ttk.Label(root, text="CHAPTER:")
+    chapter_entry = ttk.Entry(root, textvariable=chapter_num)
+    verse_label = ttk.Label(root, text="VERSE:")
+    verse_entry = ttk.Entry(root, textvariable=verse_num)
+    fields_to_show = [(chapter_label, chapter_entry), (verse_label, verse_entry)]
+
+    # Bind result selection
+    result_box.bind("<<ListboxSelect>>", lambda event: on_result_selected(
+        event, result_box, result_metadata, selected_book_variation, fields_to_show))
+    result_box.bind("<Return>", lambda event: on_result_selected(
+        event, result_box, result_metadata, selected_book_variation, fields_to_show))
+
+    # Handle window close
+    root.protocol("WM_DELETE_WINDOW", root.destroy)
+
+    # Start event loop
     root.mainloop()
 
-    # Return values after GUI closes
     return selected_book_variation.get(), chapter_num.get(), verse_num.get()
 
 # Run and print results
