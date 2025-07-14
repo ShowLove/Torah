@@ -83,6 +83,19 @@ def create_labeled_entry(root, label_text, text_variable):
     entry = ttk.Entry(root, textvariable=text_variable)
     return label, entry
 
+def prompt_user_and_exit(root, condition_func, prompt_text):
+    """
+    Prompts the user with a Yes/No dialog and closes the GUI if they confirm.
+
+    Parameters:
+    - root: The Tk root window (used for closing)
+    - condition_func: A callable that returns True if the prompt should be shown
+    - prompt_text: The message to display in the dialog
+    """
+    if condition_func():
+        if messagebox.askyesno("Exit?", prompt_text):
+            root.destroy()
+
 def create_gui():
     root = tk.Tk()
     root.title("TORAH SEARCH")
@@ -90,7 +103,7 @@ def create_gui():
     # Setup search section
     search_var, selected_book_variation, result_box = create_search_ui(root)
 
-    # Create chapter and verse fields using reusable function
+    # Create chapter and verse fields
     chapter_num = tk.StringVar()
     verse_num = tk.StringVar()
 
@@ -99,22 +112,18 @@ def create_gui():
 
     fields_to_show = [(chapter_label, chapter_entry), (verse_label, verse_entry)]
 
-    # Bind result selection to show fields
+    # Bind result selection to show chapter/verse fields
     result_box.bind("<<ListboxSelect>>", lambda event: on_result_selected(
         event, result_box, result_metadata, selected_book_variation, fields_to_show))
     result_box.bind("<Return>", lambda event: on_result_selected(
         event, result_box, result_metadata, selected_book_variation, fields_to_show))
 
-    # New: Prompt to exit when verse entry loses focus or on Enter key press
-    def prompt_exit(event=None):
-        # Only prompt if verse is filled (optional)
-        if verse_num.get().strip():
-            if messagebox.askyesno("Exit?", "You've entered the verse. Exit now?"):
-                root.destroy()
+    # Bind exit prompt to verse entry field events
+    verse_entry.bind("<Return>", lambda event: prompt_user_and_exit(
+        root, lambda: verse_num.get().strip(), "You've entered the verse. Exit now?"))
 
-    # Bind Enter key and focus out on verse_entry
-    verse_entry.bind("<Return>", prompt_exit)
-    verse_entry.bind("<FocusOut>", prompt_exit)
+    verse_entry.bind("<FocusOut>", lambda event: prompt_user_and_exit(
+        root, lambda: verse_num.get().strip(), "You've entered the verse. Exit now?"))
 
     # Handle window close
     root.protocol("WM_DELETE_WINDOW", root.destroy)
