@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from search_engine import load_json_files, search_data
+import tkinter.messagebox as messagebox  
 
 # Load data at startup
 data = load_json_files()
@@ -104,13 +105,24 @@ def create_gui():
     result_box.bind("<Return>", lambda event: on_result_selected(
         event, result_box, result_metadata, selected_book_variation, fields_to_show))
 
+    # New: Prompt to exit when verse entry loses focus or on Enter key press
+    def prompt_exit(event=None):
+        # Only prompt if verse is filled (optional)
+        if verse_num.get().strip():
+            if messagebox.askyesno("Exit?", "You've entered the verse. Exit now?"):
+                root.destroy()
+
+    # Bind Enter key and focus out on verse_entry
+    verse_entry.bind("<Return>", prompt_exit)
+    verse_entry.bind("<FocusOut>", prompt_exit)
+
     # Handle window close
     root.protocol("WM_DELETE_WINDOW", root.destroy)
 
     # Start event loop
     root.mainloop()
 
-    # ✅ Return values after GUI closes
+    # Return values after GUI closes
     return selected_book_variation.get(), chapter_num.get(), verse_num.get()
 
 
