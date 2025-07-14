@@ -31,24 +31,23 @@ def create_gui():
     root.title("TORAH SEARCH")  # Set the window title
 
     # Define StringVar variables to hold user input
-    search_var = tk.StringVar()             # Holds the search term entered by the user
+    search_var = tk.StringVar()             # Will hold the search term entered by the user
     selected_book_variation = tk.StringVar()# Will hold the selected book from search results
     chapter_num = tk.StringVar()            # Will hold the user-inputted chapter number
     verse_num = tk.StringVar()              # Will hold the user-inputted verse number
 
-    # Label and entry field for the book search
+    # Book Label and entry
     ttk.Label(root, text="TORAH BOOK:").pack(padx=5, pady=5)
     book_entry = ttk.Entry(root, textvariable=search_var)  # Entry widget for search input
     book_entry.pack(fill='x', padx=5)                      # Expand entry horizontally
 
-    # Create a Listbox to show matching book names after search
+    # Search result Listbox with matching book names
     result_box = tk.Listbox(root, width=80)
     result_box.pack(padx=5, pady=10, fill='both', expand=True)
 
-    # Create labels and entry fields for CHAPTER and VERSE (initially hidden)
+    # CHAPTER and VERSE (initially hidden) label and entry
     chapter_label = ttk.Label(root, text="CHAPTER:")
     chapter_entry = ttk.Entry(root, textvariable=chapter_num)
-
     verse_label = ttk.Label(root, text="VERSE:")
     verse_entry = ttk.Entry(root, textvariable=verse_num)
 
