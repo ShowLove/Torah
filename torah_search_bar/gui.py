@@ -24,75 +24,86 @@ def perform_search(search_var, result_box):
             result_metadata[index] = book  # Map index to book
             index += 1
 
+def on_result_selected(event, result_box, result_metadata, selected_book_variation, fields_to_show):
+    """
+    Handles selection from the result box and reveals input fields (like chapter/verse).
+    
+    Parameters:
+    - event: The triggering event.
+    - result_box: The Listbox widget containing search results.
+    - result_metadata: A dict mapping result indices to book names.
+    - selected_book_variation: A StringVar to store the selected book key.
+    - fields_to_show: A list of (label_widget, entry_widget) tuples to pack and show.
+    """
+    selected_index = result_box.curselection()
+    if selected_index:
+        index = selected_index[0]
+        book_key = result_metadata.get(index)
+        if book_key:
+            selected_book_variation.set(book_key)
+
+            # Show all provided label/entry pairs
+            for label, entry in fields_to_show:
+                label.pack(padx=5, pady=5)
+                entry.pack(fill='x', padx=5)
+
+            # Focus the first entry field
+            if fields_to_show:
+                fields_to_show[0][1].focus_set()
 
 def create_gui():
-    # Create the main Tkinter window
     root = tk.Tk()
-    root.title("TORAH SEARCH")  # Set the window title
+    root.title("TORAH SEARCH")
 
-    # Define StringVar variables to hold user input
-    search_var = tk.StringVar()             # Will hold the search term entered by the user
-    selected_book_variation = tk.StringVar()# Will hold the selected book from search results
-    chapter_num = tk.StringVar()            # Will hold the user-inputted chapter number
-    verse_num = tk.StringVar()              # Will hold the user-inputted verse number
+    # Define StringVar variables
+    search_var = tk.StringVar()
+    selected_book_variation = tk.StringVar()
+    chapter_num = tk.StringVar()
+    verse_num = tk.StringVar()
 
-    # Book Label and entry
+    # Search input field
     ttk.Label(root, text="TORAH BOOK:").pack(padx=5, pady=5)
-    book_entry = ttk.Entry(root, textvariable=search_var)  # Entry widget for search input
-    book_entry.pack(fill='x', padx=5)                      # Expand entry horizontally
+    book_entry = ttk.Entry(root, textvariable=search_var)
+    book_entry.pack(fill='x', padx=5)
 
-    # Search result Listbox with matching book names
+    # Result listbox
     result_box = tk.Listbox(root, width=80)
     result_box.pack(padx=5, pady=10, fill='both', expand=True)
 
-    # CHAPTER and VERSE (initially hidden) label and entry
+    # Chapter and Verse widgets (initially hidden)
     chapter_label = ttk.Label(root, text="CHAPTER:")
     chapter_entry = ttk.Entry(root, textvariable=chapter_num)
     verse_label = ttk.Label(root, text="VERSE:")
     verse_entry = ttk.Entry(root, textvariable=verse_num)
 
-    # Function triggered when a search result is selected (by click or Enter key)
-    def on_result_selected(event=None):
-        selected_index = result_box.curselection()     # Get the currently selected index
-        if selected_index:
-            index = selected_index[0]
-            book_key = result_metadata.get(index)      # Get book name from metadata mapping
-            if book_key:
-                selected_book_variation.set(book_key)  # Save selected book
+    # Group label/entry pairs for reuse
+    fields_to_show = [(chapter_label, chapter_entry), (verse_label, verse_entry)]
 
-                # Show CHAPTER and VERSE fields when a book is selected
-                chapter_label.pack(padx=5, pady=5)
-                chapter_entry.pack(fill='x', padx=5)
-                verse_label.pack(padx=5, pady=5)
-                verse_entry.pack(fill='x', padx=5)
+    # Bind result selection to generic handler
+    result_box.bind("<<ListboxSelect>>", lambda event: on_result_selected(
+        event, result_box, result_metadata, selected_book_variation, fields_to_show))
+    result_box.bind("<Return>", lambda event: on_result_selected(
+        event, result_box, result_metadata, selected_book_variation, fields_to_show))
 
-                chapter_entry.focus_set()  # Move cursor to chapter input
-
-    # Bind mouse click selection and Enter key to trigger selection handler
-    result_box.bind("<<ListboxSelect>>", on_result_selected)
-    result_box.bind("<Return>", on_result_selected)
-
-    # Button that performs the book search
+    # Search button
     ttk.Button(
         root,
         text="Search Book",
-        command=lambda: perform_search(search_var, result_box)  # Run search on click
+        command=lambda: perform_search(search_var, result_box)
     ).pack(pady=5)
 
-    # Allow pressing Enter in the book search field to trigger the search
+    # Allow Enter key in entry to trigger search
     book_entry.bind('<Return>', lambda event: perform_search(search_var, result_box))
 
-    # Define a cleanup function to close the GUI window
+    # Handle window close
     def on_close():
         root.destroy()
-
-    # Bind the window close event to the cleanup function
     root.protocol("WM_DELETE_WINDOW", on_close)
 
-    # Start the Tkinter event loop (shows window and listens for user input)
+    # Launch GUI
     root.mainloop()
 
-    # Return the values selected/inputted by the user after the window closes
+    # Return values after GUI closes
     return selected_book_variation.get(), chapter_num.get(), verse_num.get()
 
 # Run and print results
