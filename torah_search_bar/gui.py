@@ -118,12 +118,12 @@ def create_gui():
     result_box.bind("<Return>", lambda event: on_result_selected(
         event, result_box, result_metadata, selected_book_variation, fields_to_show))
 
-    # Bind exit prompt to verse entry field events
+    # called twice because it’s being passed separately in each bind() call 
+    exit_prompt_text = "You've entered the verse. Exit now?"
     verse_entry.bind("<Return>", lambda event: prompt_user_and_exit(
-        root, lambda: verse_num.get().strip(), "You've entered the verse. Exit now?"))
-
+        root, lambda: verse_num.get().strip(), exit_prompt_text))
     verse_entry.bind("<FocusOut>", lambda event: prompt_user_and_exit(
-        root, lambda: verse_num.get().strip(), "You've entered the verse. Exit now?"))
+        root, lambda: verse_num.get().strip(), exit_prompt_text))
 
     # Handle window close
     root.protocol("WM_DELETE_WINDOW", root.destroy)
