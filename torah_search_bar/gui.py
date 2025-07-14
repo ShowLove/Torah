@@ -20,8 +20,9 @@ def perform_search(search_var, result_box):
     for book in data:
         results = search_data(query, [book])  # Search in each book
         for res in results:
-            result_box.insert(tk.END, str(res))
-            result_metadata[index] = book  # Map index to book
+            # Instead of printing the full result, just show the canonical book name
+            result_box.insert(tk.END, book["book"])
+            result_metadata[index] = book["book"]  # Map index to book name string
             index += 1
 
 def on_result_selected(event, result_box, result_metadata, selected_book_variation, fields_to_show):
