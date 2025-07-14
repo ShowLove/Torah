@@ -76,6 +76,11 @@ def create_search_ui(root):
 
     return search_var, selected_book_variation, result_box
 
+def create_labeled_entry(root, label_text, text_variable):
+    label = ttk.Label(root, text=label_text)
+    entry = ttk.Entry(root, textvariable=text_variable)
+    return label, entry
+
 def create_gui():
     root = tk.Tk()
     root.title("TORAH SEARCH")
@@ -83,16 +88,16 @@ def create_gui():
     # Setup search section
     search_var, selected_book_variation, result_box = create_search_ui(root)
 
-    # Chapter/Verse variables and widgets
+    # Create chapter and verse fields using reusable function
     chapter_num = tk.StringVar()
     verse_num = tk.StringVar()
-    chapter_label = ttk.Label(root, text="CHAPTER:")
-    chapter_entry = ttk.Entry(root, textvariable=chapter_num)
-    verse_label = ttk.Label(root, text="VERSE:")
-    verse_entry = ttk.Entry(root, textvariable=verse_num)
+
+    chapter_label, chapter_entry = create_labeled_entry(root, "CHAPTER:", chapter_num)
+    verse_label, verse_entry = create_labeled_entry(root, "VERSE:", verse_num)
+
     fields_to_show = [(chapter_label, chapter_entry), (verse_label, verse_entry)]
 
-    # Bind result selection
+    # Bind result selection to show fields
     result_box.bind("<<ListboxSelect>>", lambda event: on_result_selected(
         event, result_box, result_metadata, selected_book_variation, fields_to_show))
     result_box.bind("<Return>", lambda event: on_result_selected(
@@ -104,11 +109,16 @@ def create_gui():
     # Start event loop
     root.mainloop()
 
+    # ✅ Return values after GUI closes
     return selected_book_variation.get(), chapter_num.get(), verse_num.get()
+
 
 # Run and print results
 if __name__ == "__main__":
+    # Launch the GUI and capture results
     book, chapter, verse = create_gui()
+
+    # Print selected results
     print(f"Selected Book: {book}")
     print(f"Chapter: {chapter}")
     print(f"Verse: {verse}")
