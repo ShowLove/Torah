@@ -38,9 +38,11 @@ def inquireForParasha():
     # Get the Parasha from the verse
     parasha = findParashaFromVerse.get_parasha(book, chapter, verse)
     print(f"Parasha: {parasha}")
+    return parasha
 
 def main():
-    inquireForParasha()
+    parashaName = inquireForParasha()
+    print(f"Parasha Name: {parashaName}")
 
 if __name__ == "__main__":
     main()
