@@ -1,6 +1,7 @@
 {
-    "book": "Leviticus",
-    "chapter": "12",
-    "verse": "12",
-    "website": "web_site_c"
+    "book": "Genesis",
+    "chapter": "1",
+    "verse": "1",
+    "website_eng": "web_site_b",
+    "website_heb": "NA"
 }

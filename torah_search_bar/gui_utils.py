@@ -1,10 +1,10 @@
 import json
 import os
 
-def update_selection_json(book=None, chapter=None, verse=None, website=None, folder="data", filename="current_verse_target.json"):
+def update_selection_json(book=None, chapter=None, verse=None, website_eng=None, website_heb=None, folder="data", filename="current_verse_target.json"):
     """
     Conditionally updates the current_verse_target.json file with any combination of
-    book, chapter, verse, and website. Skips any value left as None.
+    book, chapter, verse, website_eng, and website_heb. Skips any value left as None.
     """
     os.makedirs(folder, exist_ok=True)
     file_path = os.path.join(folder, filename)
@@ -22,8 +22,10 @@ def update_selection_json(book=None, chapter=None, verse=None, website=None, fol
         data["chapter"] = chapter
     if verse is not None:
         data["verse"] = verse
-    if website is not None:
-        data["website"] = website
+    if website_eng is not None:
+        data["website_eng"] = website_eng
+    if website_heb is not None:
+        data["website_heb"] = website_heb
 
     with open(file_path, "w") as f:
         json.dump(data, f, indent=4)

@@ -47,7 +47,7 @@ def main():
     print(f"Selected Website: {website}")
 
     # Update JSON using the utility function
-    gui_utils.update_selection_json(website=website)
+    gui_utils.update_selection_json(website_eng=website)
     return website
 
 if __name__ == "__main__":
