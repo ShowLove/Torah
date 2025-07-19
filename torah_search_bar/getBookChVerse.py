@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from search_engine import load_json_files, search_data
-import tkinter.messagebox as messagebox  
+import tkinter.messagebox as messagebox
+import gui_utils
 
 # Load data at startup
 data = load_json_files()
@@ -144,3 +145,6 @@ if __name__ == "__main__":
     print(f"Selected Book: {book}")
     print(f"Chapter: {chapter}")
     print(f"Verse: {verse}")
+
+    # Update JSON using the utility function
+    gui_utils.update_selection_json(book=book, chapter=chapter, verse=verse)

@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import json
 import os
+import gui_utils
 
 def load_websites():
     """
@@ -44,3 +45,6 @@ def create_gui():
 if __name__ == "__main__":
     website = create_gui()
     print(f"Selected Website: {website}")
+
+    # Update JSON using the utility function
+    utils.update_selection_json(website=website)
