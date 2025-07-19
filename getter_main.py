@@ -16,12 +16,12 @@ sys.path.append(os.path.join(current_dir, "data"))
 # utils
 utils_path = os.path.join(current_dir, "utils")
 sys.path.append(utils_path)
-
 ######################################################################
+
 from torah_search_bar import getBookChVerse, getSite
 import findParashaFromVerse  # Make sure this file exists in utils
 
-def main():
+def inquireForParasha():
     book, chapter, verse = getBookChVerse.main()
     website = getSite.main()
 
@@ -38,6 +38,9 @@ def main():
     # Get the Parasha from the verse
     parasha = findParashaFromVerse.get_parasha(book, chapter, verse)
     print(f"Parasha: {parasha}")
+
+def main():
+    inquireForParasha()
 
 if __name__ == "__main__":
     main()
