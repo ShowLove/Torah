@@ -6,9 +6,15 @@ import gui_utils
 
 def load_websites():
     """
-    Loads website list from data/websites.json.
+    Loads website list from data/websites.json, using a path relative to the current script's location.
     """
-    file_path = os.path.join("data", "websites.json")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, "..", "data", "websites.json")
+    file_path = os.path.normpath(file_path)
+
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Could not find websites.json at {file_path}")
+
     with open(file_path, "r") as f:
         return json.load(f)
 
