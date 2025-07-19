@@ -1,7 +1,7 @@
 import json
 import os
 
-def load_json_files(data_folder="data"):
+def load_json_files(data_folder="book_data"):
     all_data = []
     for filename in os.listdir(data_folder):
         if filename.endswith(".json"):
