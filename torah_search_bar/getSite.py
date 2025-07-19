@@ -42,9 +42,13 @@ def create_gui():
     return selected_site["value"]
 
 # Example usage
-if __name__ == "__main__":
+def main():
     website = create_gui()
     print(f"Selected Website: {website}")
 
     # Update JSON using the utility function
-    utils.update_selection_json(website=website)
+    gui_utils.update_selection_json(website=website)
+    return website
+
+if __name__ == "__main__":
+    main()

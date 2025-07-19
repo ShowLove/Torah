@@ -137,7 +137,7 @@ def create_gui():
 
 
 # Run and print results
-if __name__ == "__main__":
+def main():
     # Launch the GUI and capture results
     book, chapter, verse = create_gui()
 
@@ -148,3 +148,7 @@ if __name__ == "__main__":
 
     # Update JSON using the utility function
     gui_utils.update_selection_json(book=book, chapter=chapter, verse=verse)
+    return book, chapter, verse
+
+if __name__ == "__main__":
+    main()
