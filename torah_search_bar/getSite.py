@@ -12,7 +12,7 @@ def load_websites():
     with open(file_path, "r") as f:
         return json.load(f)
 
-def create_gui():
+def create_eng_site_getter():
     """
     Creates the GUI, waits for selection, and exits with selected website.
     """
@@ -25,7 +25,7 @@ def create_gui():
         root.destroy()  # Close GUI
 
     root = tk.Tk()
-    root.title("WEBSITE SELECTOR")
+    root.title("ENG WEBSITE SELECTOR")
 
     selected_site_var = tk.StringVar()
 
@@ -43,7 +43,7 @@ def create_gui():
 
 # Example usage
 def main():
-    website = create_gui()
+    website = create_eng_site_getter()
     print(f"Selected Website: {website}")
 
     # Update JSON using the utility function
