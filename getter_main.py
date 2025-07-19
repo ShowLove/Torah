@@ -1,3 +1,4 @@
+# getter_main.py
 import sys
 import os
 
@@ -18,11 +19,15 @@ sys.path.append(utils_path)
 
 ######################################################################
 from torah_search_bar import getBookChVerse, getSite
-import findParashaFromVerse  # Corrected name
+import findParashaFromVerse  # Make sure this file exists in utils
 
 def main():
     book, chapter, verse = getBookChVerse.main()
     website = getSite.main()
+
+    # Ensure chapter and verse are integers
+    chapter = int(chapter)
+    verse = int(verse)
 
     print("\n--- Final Selection ---")
     print(f"Book: {book}")
