@@ -1,0 +1,436 @@
+{
+  "ParashaNames": [
+    {
+      "number": 1,
+      "standard": "Bereshit",
+      "Book": "Genesis",
+      "variations": ["Breishit", "Bereishit", "B'reishit", "בראשית"],
+      "Start": {"Chapter": 1, "Verse": 1},
+      "End": {"Chapter": 6, "Verse": 8}
+    },
+    {
+      "number": 2,
+      "standard": "Noach",
+      "Book": "Genesis",
+      "variations": ["Noah", "נח"],
+      "Start": {"Chapter": 6, "Verse": 9},
+      "End": {"Chapter": 11, "Verse": 32}
+    },
+    {
+      "number": 3,
+      "standard": "Lech Lecha",
+      "Book": "Genesis",
+      "variations": ["Lech-L'cha", "לך לך"],
+      "Start": {"Chapter": 12, "Verse": 1},
+      "End": {"Chapter": 17, "Verse": 27}
+    },
+    {
+      "number": 4,
+      "standard": "Vayera",
+      "Book": "Genesis",
+      "variations": ["VaYera", "וירא"],
+      "Start": {"Chapter": 18, "Verse": 1},
+      "End": {"Chapter": 22, "Verse": 24}
+    },
+    {
+      "number": 5,
+      "standard": "Chayei Sarah",
+      "Book": "Genesis",
+      "variations": ["Chaye Sarah", "חיי שרה"],
+      "Start": {"Chapter": 23, "Verse": 1},
+      "End": {"Chapter": 25, "Verse": 18}
+    },
+    {
+      "number": 6,
+      "standard": "Toldot",
+      "Book": "Genesis",
+      "variations": ["Toldos", "תולדות"],
+      "Start": {"Chapter": 25, "Verse": 19},
+      "End": {"Chapter": 28, "Verse": 9}
+    },
+    {
+      "number": 7,
+      "standard": "Vayetze",
+      "Book": "Genesis",
+      "variations": ["VaYetzei", "ויצא"],
+      "Start": {"Chapter": 28, "Verse": 10},
+      "End": {"Chapter": 32, "Verse": 3}
+    },
+    {
+      "number": 8,
+      "standard": "Vayishlach",
+      "Book": "Genesis",
+      "variations": ["VaYishlach", "וישלח"],
+      "Start": {"Chapter": 32, "Verse": 4},
+      "End": {"Chapter": 36, "Verse": 43}
+    },
+    {
+      "number": 9,
+      "standard": "Vayeshev",
+      "Book": "Genesis",
+      "variations": ["VaYeshev", "וישב"],
+      "Start": {"Chapter": 37, "Verse": 1},
+      "End": {"Chapter": 40, "Verse": 23}
+    },
+    {
+      "number": 10,
+      "standard": "Miketz",
+      "Book": "Genesis",
+      "variations": ["Mikets", "מקץ"],
+      "Start": {"Chapter": 41, "Verse": 1},
+      "End": {"Chapter": 44, "Verse": 17}
+    },
+    {
+      "number": 11,
+      "standard": "Vayigash",
+      "Book": "Genesis",
+      "variations": ["VaYigash", "ויגש"],
+      "Start": {"Chapter": 44, "Verse": 18},
+      "End": {"Chapter": 47, "Verse": 27}
+    },
+    {
+      "number": 12,
+      "standard": "Vayechi",
+      "Book": "Genesis",
+      "variations": ["VaYechi", "ויחי"],
+      "Start": {"Chapter": 47, "Verse": 28},
+      "End": {"Chapter": 50, "Verse": 26}
+    },
+    {
+      "number": 13,
+      "standard": "Shemot",
+      "Book": "Exodus",
+      "variations": ["Shmot", "שמות"],
+      "Start": {"Chapter": 1, "Verse": 1},
+      "End": {"Chapter": 6, "Verse": 1}
+    },
+    {
+      "number": 14,
+      "standard": "Vaera",
+      "Book": "Exodus",
+      "variations": ["VaEra", "וארא"],
+      "Start": {"Chapter": 6, "Verse": 2},
+      "End": {"Chapter": 9, "Verse": 35}
+    },
+    {
+      "number": 15,
+      "standard": "Bo",
+      "Book": "Exodus",
+      "variations": ["בא"],
+      "Start": {"Chapter": 10, "Verse": 1},
+      "End": {"Chapter": 13, "Verse": 16}
+    },
+    {
+      "number": 16,
+      "standard": "Beshalach",
+      "Book": "Exodus",
+      "variations": ["B'shalach", "בשלח"],
+      "Start": {"Chapter": 13, "Verse": 17},
+      "End": {"Chapter": 17, "Verse": 16}
+    },
+    {
+      "number": 17,
+      "standard": "Yitro",
+      "Book": "Exodus",
+      "variations": ["Yisro", "יתרו"],
+      "Start": {"Chapter": 18, "Verse": 1},
+      "End": {"Chapter": 20, "Verse": 23}
+    },
+    {
+      "number": 18,
+      "standard": "Mishpatim",
+      "Book": "Exodus",
+      "variations": ["משפטים"],
+      "Start": {"Chapter": 21, "Verse": 1},
+      "End": {"Chapter": 24, "Verse": 18}
+    },
+    {
+      "number": 19,
+      "standard": "Terumah",
+      "Book": "Exodus",
+      "variations": ["תרומה"],
+      "Start": {"Chapter": 25, "Verse": 1},
+      "End": {"Chapter": 27, "Verse": 19}
+    },
+    {
+      "number": 20,
+      "standard": "Tetzaveh",
+      "Book": "Exodus",
+      "variations": ["Tetzave", "תצוה"],
+      "Start": {"Chapter": 27, "Verse": 20},
+      "End": {"Chapter": 30, "Verse": 10}
+    },
+    {
+      "number": 21,
+      "standard": "Ki Tisa",
+      "Book": "Exodus",
+      "variations": ["כי תשא"],
+      "Start": {"Chapter": 30, "Verse": 11},
+      "End": {"Chapter": 34, "Verse": 35}
+    },
+    {
+      "number": 22,
+      "standard": "Vayakhel",
+      "Book": "Exodus",
+      "variations": ["VaYakhel", "ויקהל"],
+      "Start": {"Chapter": 35, "Verse": 1},
+      "End": {"Chapter": 38, "Verse": 20}
+    },
+    {
+      "number": 23,
+      "standard": "Pekudei",
+      "Book": "Exodus",
+      "variations": ["Pikkudei", "פקודי"],
+      "Start": {"Chapter": 38, "Verse": 21},
+      "End": {"Chapter": 40, "Verse": 38}
+    },
+    {
+      "number": 24,
+      "standard": "Vayikra",
+      "Book": "Leviticus",
+      "variations": ["VaYikra", "ויקרא"],
+      "Start": {"Chapter": 1, "Verse": 1},
+      "End": {"Chapter": 5, "Verse": 26}
+    },
+    {
+      "number": 25,
+      "standard": "Tzav",
+      "Book": "Leviticus",
+      "variations": ["צו"],
+      "Start": {"Chapter": 6, "Verse": 1},
+      "End": {"Chapter": 8, "Verse": 36}
+    },
+    {
+      "number": 26,
+      "standard": "Shemini",
+      "Book": "Leviticus",
+      "variations": ["שмини"],
+      "Start": {"Chapter": 9, "Verse": 1},
+      "End": {"Chapter": 11, "Verse": 47}
+    },
+    {
+      "number": 27,
+      "standard": "Tazria",
+      "Book": "Leviticus",
+      "variations": ["תזריע"],
+      "Start": {"Chapter": 12, "Verse": 1},
+      "End": {"Chapter": 13, "Verse": 59}
+    },
+    {
+      "number": 28,
+      "standard": "Metzora",
+      "Book": "Leviticus",
+      "variations": ["מצורע"],
+      "Start": {"Chapter": 14, "Verse": 1},
+      "End": {"Chapter": 15, "Verse": 33}
+    },
+    {
+      "number": 29,
+      "standard": "Acharei Mot",
+      "Book": "Leviticus",
+      "variations": ["Aharei Mot", "אחרי מות"],
+      "Start": {"Chapter": 16, "Verse": 1},
+      "End": {"Chapter": 18, "Verse": 30}
+    },
+    {
+      "number": 30,
+      "standard": "Kedoshim",
+      "Book": "Leviticus",
+      "variations": ["קדושים"],
+      "Start": {"Chapter": 19, "Verse": 1},
+      "End": {"Chapter": 20, "Verse": 27}
+    },
+    {
+      "number": 31,
+      "standard": "Emor",
+      "Book": "Leviticus",
+      "variations": ["אמר"],
+      "Start": {"Chapter": 21, "Verse": 1},
+      "End": {"Chapter": 24, "Verse": 23}
+    },
+    {
+      "number": 32,
+      "standard": "Behar",
+      "Book": "Leviticus",
+      "variations": ["בהר"],
+      "Start": {"Chapter": 25, "Verse": 1},
+      "End": {"Chapter": 25, "Verse": 38}
+    },
+    {
+      "number": 33,
+      "standard": "Bechukotai",
+      "Book": "Leviticus",
+      "variations": ["Behukotai", "בחוקותי"],
+      "Start": {"Chapter": 26, "Verse": 3},
+      "End": {"Chapter": 27, "Verse": 34}
+    },
+    {
+      "number": 34,
+      "standard": "Bamidbar",
+      "Book": "Numbers",
+      "variations": ["BaMidbar", "במדבר"],
+      "Start": {"Chapter": 1, "Verse": 1},
+      "End": {"Chapter": 4, "Verse": 20}
+    },
+    {
+      "number": 35,
+      "standard": "Nasso",
+      "Book": "Numbers",
+      "variations": ["Naso", "נשא"],
+      "Start": {"Chapter": 4, "Verse": 21},
+      "End": {"Chapter": 7, "Verse": 89}
+    },
+    {
+      "number": 36,
+      "standard": "Behaalotecha",
+      "Book": "Numbers",
+      "variations": ["BeHalotecha", "בהעלותך"],
+      "Start": {"Chapter": 8, "Verse": 1},
+      "End": {"Chapter": 12, "Verse": 16}
+    },
+    {
+      "number": 37,
+      "standard": "Shelach",
+      "Book": "Numbers",
+      "variations": ["Sh'lach", "שלח"],
+      "Start": {"Chapter": 13, "Verse": 1},
+      "End": {"Chapter": 15, "Verse": 41}
+    },
+    {
+      "number": 38,
+      "standard": "Korach",
+      "Book": "Numbers",
+      "variations": ["קרח"],
+      "Start": {"Chapter": 16, "Verse": 1},
+      "End": {"Chapter": 18, "Verse": 32}
+    },
+    {
+      "number": 39,
+      "standard": "Chukat",
+      "Book": "Numbers",
+      "variations": ["חוקת"],
+      "Start": {"Chapter": 19, "Verse": 1},
+      "End": {"Chapter": 22, "Verse": 1}
+    },
+    {
+      "number": 40,
+      "standard": "Balak",
+      "Book": "Numbers",
+      "variations": ["בלק"],
+      "Start": {"Chapter": 22, "Verse": 2},
+      "End": {"Chapter": 25, "Verse": 9}
+    },
+    {
+      "number": 41,
+      "standard": "Pinchas",
+      "Book": "Numbers",
+      "variations": ["פנחס"],
+      "Start": {"Chapter": 25, "Verse": 10},
+      "End": {"Chapter": 30, "Verse": 1}
+    },
+    {
+      "number": 42,
+      "standard": "Matot",
+      "Book": "Numbers",
+      "variations": ["Matos", "מטות"],
+      "Start": {"Chapter": 30, "Verse": 2},
+      "End": {"Chapter": 32, "Verse": 42}
+    },
+    {
+      "number": 43,
+      "standard": "Masei",
+      "Book": "Numbers",
+      "variations": ["Masai", "מסעי"],
+      "Start": {"Chapter": 33, "Verse": 1},
+      "End": {"Chapter": 36, "Verse": 13}
+    },
+    {
+      "number": 44,
+      "standard": "Devarim",
+      "Book": "Deuteronomy",
+      "variations": ["דברים"],
+      "Start": {"Chapter": 1, "Verse": 1},
+      "End": {"Chapter": 3, "Verse": 22}
+    },
+    {
+      "number": 45,
+      "standard": "Vaetchanan",
+      "Book": "Deuteronomy",
+      "variations": ["ואתחנן"],
+      "Start": {"Chapter": 3, "Verse": 23},
+      "End": {"Chapter": 7, "Verse": 11}
+    },
+    {
+      "number": 46,
+      "standard": "Ekev",
+      "Book": "Deuteronomy",
+      "variations": ["עקב"],
+      "Start": {"Chapter": 7, "Verse": 12},
+      "End": {"Chapter": 11, "Verse": 25}
+    },
+    {
+      "number": 47,
+      "standard": "Reeh",
+      "Book": "Deuteronomy",
+      "variations": ["Re'eh", "ראה"],
+      "Start": {"Chapter": 11, "Verse": 26},
+      "End": {"Chapter": 16, "Verse": 17}
+    },
+    {
+      "number": 48,
+      "standard": "Shoftim",
+      "Book": "Deuteronomy",
+      "variations": ["שופטים"],
+      "Start": {"Chapter": 16, "Verse": 18},
+      "End": {"Chapter": 21, "Verse": 9}
+    },
+    {
+      "number": 49,
+      "standard": "Ki Teitzei",
+      "Book": "Deuteronomy",
+      "variations": ["Ki Tetzei", "כי תצא"],
+      "Start": {"Chapter": 21, "Verse": 10},
+      "End": {"Chapter": 25, "Verse": 19}
+    },
+    {
+      "number": 50,
+      "standard": "Ki Tavo",
+      "Book": "Deuteronomy",
+      "variations": ["כי תבוא"],
+      "Start": {"Chapter": 26, "Verse": 1},
+      "End": {"Chapter": 29, "Verse": 8}
+    },
+    {
+      "number": 51,
+      "standard": "Nitzavim",
+      "Book": "Deuteronomy",
+      "variations": ["נצבים"],
+      "Start": {"Chapter": 29, "Verse": 9},
+      "End": {"Chapter": 30, "Verse": 20}
+    },
+    {
+      "number": 52,
+      "standard": "Vayelech",
+      "Book": "Deuteronomy",
+      "variations": ["VaYelech", "וילך"],
+      "Start": {"Chapter": 31, "Verse": 1},
+      "End": {"Chapter": 31, "Verse": 30}
+    },
+    {
+      "number": 53,
+      "standard": "Haazinu",
+      "Book": "Deuteronomy",
+      "variations": ["Ha'azinu", "האזינו"],
+      "Start": {"Chapter": 32, "Verse": 1},
+      "End": {"Chapter": 32, "Verse": 52}
+    },
+    {
+      "number": 54,
+      "standard": "Vezot Haberakhah",
+      "Book": "Deuteronomy",
+      "variations": ["Vezot HaBerachah", "וזאת הברכה"],
+      "Start": {"Chapter": 33, "Verse": 1},
+      "End": {"Chapter": 34, "Verse": 12}
+    }
+  ]
+}
