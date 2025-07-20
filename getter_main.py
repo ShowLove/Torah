@@ -1,6 +1,8 @@
 # getter_main.py
 import sys
 import os
+import time
+
 
 ######################################################################
 # Dependency Folders: torah_search_bar, data, utils ##################
@@ -59,8 +61,14 @@ def main():
             # For example, get the page title:
             print("Page Title:", driver.title)
 
-            # You could also extract verses, search for elements, etc.
-            # e.g., driver.find_element(By.ID, 'some-id')
+            # Example hardcoded values — these would come from your JSON or logic
+            book = "Exodus"
+            chapter = 2
+            verse = 2
+
+            # Interact with the page to select options
+            web_navigator_funcs.select_chumash_options(driver, book, chapter, verse)
+            time.sleep(3)  # Pause for 3 seconds
 
         finally:
             driver.quit()
