@@ -44,7 +44,9 @@ def inquireForParasha():
     return parasha, book, chapter, verse, website
 
 def main():
-	# Get Torah Data to navigate ther web and do the backend 
+    ################################################################################
+	# 1. Get Torah Data from GUI
+    ################################################################################
     parasha, book, chapter, verse, website = inquireForParasha()
     print(f"{parasha} {book}, ch:{chapter} v:{verse} \nFrom WebSite: {website}")
     if not website or parasha is None:
@@ -56,11 +58,13 @@ def main():
         print(f"[ERROR] No valid {' and '.join(missing)} provided. Exiting.")
         return
 
-    # Get a specific verse from Torah Data in json file.
+    ################################################################################
+    # 2. Get a specific verse from Torah on the metsudah site.
+    ################################################################################
     driver, verse_str, text_str = metsudah_chumash_web_nav.get_metsudah_verse(book, chapter, verse)
     if not driver:
         return
-        
+
     # Display results
     if verse_str and text_str:
         print("Verse Label:", verse_str)
