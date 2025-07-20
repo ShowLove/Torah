@@ -25,7 +25,7 @@ sys.path.append(web_navigator_path)
 ######################################################################
 
 from torah_search_bar import getBookChVerse, getSite
-import parasha_funcs              # Make sure this file exists in utils
+import json_funcs              # Make sure this file exists in utils
 import metsudah_chumash_web_nav   # Make sure this file exists in web_navigator
 
 def inquireForParasha():
@@ -37,8 +37,8 @@ def inquireForParasha():
     verse = int(verse)
 
     # Get the Parasha from the verse
-    parasha = parasha_funcs.get_parasha(book, chapter, verse)
-    parasha_funcs.set_parasha_json(parasha)
+    parasha = json_funcs.get_parasha(book, chapter, verse)
+    json_funcs.set_parasha_json(parasha)
     print(f"Parasha: {parasha}")
 
     return parasha, book, chapter, verse, website
