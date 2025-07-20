@@ -36,14 +36,9 @@ def inquireForParasha():
     chapter = int(chapter)
     verse = int(verse)
 
-    print("\n--- Final Selection ---")
-    print(f"Book: {book}")
-    print(f"Chapter: {chapter}")
-    print(f"Verse: {verse}")
-    print(f"Eng Website: {website}")
-
     # Get the Parasha from the verse
     parasha = findParashaFromVerse.get_parasha(book, chapter, verse)
+    findParashaFromVerse.set_parasha_json(parasha)
     print(f"Parasha: {parasha}")
 
     return parasha, book, chapter, verse, website
@@ -56,7 +51,7 @@ def main():
     if not website:
         print("[ERROR] No website provided. Exiting.")
         return
-    
+
     print(f"{parasha} {book}, ch:{chapter} v:{verse}")
     print(f"From WebSite: {website}")
 
