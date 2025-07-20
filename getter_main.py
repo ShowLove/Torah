@@ -56,35 +56,19 @@ def main():
         print(f"[ERROR] No valid {' and '.join(missing)} provided. Exiting.")
         return
 
-    #Open the Eng website
-    driver = metsudah_chumash_web_nav.open_website_from_json("current_verse_target.json")
+    # Get a specific verse from Torah Data in json file.
+    driver, verse_str, text_str = metsudah_chumash_web_nav.get_metsudah_verse(book, chapter, verse)
+    if not driver:
+        return
+        
+    # Display results
+    if verse_str and text_str:
+        print("Verse Label:", verse_str)
+        print("Verse Text:", text_str)
+    else:
+        print("Verse not found.")
 
-    if driver:
-        try:
-            # --- Add your page interaction logic here ---
-            # For example, get the page title:
-            print("Page Title:", driver.title)
-
-            # Select book, chapter, verse on metsudah site
-            driver = metsudah_chumash_web_nav.select_chumash_options(driver, book, chapter, verse)
-            time.sleep(3)  # Pause for 3 seconds
-
-            # Click the GO button
-            driver = metsudah_chumash_web_nav.click_go_button(driver)
-            print("Page Title:", driver.title)
-            time.sleep(3)  # Pause for 3 seconds
-
-            verse_str, text_str, driver = metsudah_chumash_web_nav.extract_verse_data(driver, verse)
-
-            # Display results
-            if verse_str and text_str:
-                print("Verse Label:", verse_str)
-                print("Verse Text:", text_str)
-            else:
-                print("Verse not found.")
-
-        finally:
-            driver.quit()
+    driver.quit()
 
 if __name__ == "__main__":
     main()

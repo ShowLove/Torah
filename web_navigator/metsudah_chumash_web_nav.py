@@ -174,6 +174,34 @@ def extract_verse_data(driver: WebDriver, verse_number: int) -> Tuple[str, str, 
 
     return "", "", driver  # fallback if verse not found
 
+def get_metsudah_verse(book, chapter, verse):
+    # Open the English website
+    driver = open_website_from_json("current_verse_target.json")
+
+    if not driver:
+        return None, None, None
+
+    try:
+        print("Initial Page Title:", driver.title)
+
+        # Select book, chapter, and verse
+        driver = select_chumash_options(driver, book, chapter, verse)
+        time.sleep(3)  # Allow the page to update
+
+        # Click the GO button
+        driver = click_go_button(driver)
+        print("After GO Click Page Title:", driver.title)
+        time.sleep(3)  # Wait for content to load
+
+        # Extract the verse and text
+        verse_str, text_str, driver = extract_verse_data(driver, verse)
+
+        return driver, verse_str, text_str
+
+    except Exception as e:
+        print("An error occurred:", e)
+        return driver, None, None
+
 # Example usage
 if __name__ == "__main__":
     open_website_with_driver("current_verse_target.json")
