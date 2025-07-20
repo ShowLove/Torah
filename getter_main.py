@@ -46,17 +46,15 @@ def inquireForParasha():
 def main():
 	# Get Torah Data to navigate ther web and do the backend 
     parasha, book, chapter, verse, website = inquireForParasha()
-
-    if not website:
-        print("[ERROR] No website provided. Exiting.")
+    print(f"{parasha} {book}, ch:{chapter} v:{verse} \nFrom WebSite: {website}")
+    if not website or parasha is None:
+        missing = []
+        if not website:
+            missing.append("website")
+        if parasha is None:
+            missing.append("Parasha")
+        print(f"[ERROR] No valid {' and '.join(missing)} provided. Exiting.")
         return
-
-    if parasha is None:
-        print("[ERROR] No valid Parasha provided. Exiting.")
-        return
-
-    print(f"{parasha} {book}, ch:{chapter} v:{verse}")
-    print(f"From WebSite: {website}")
 
     #Open the Eng website
     driver = metsudah_chumash_web_nav.open_website_from_json("current_verse_target.json")
