@@ -43,12 +43,13 @@ def inquireForParasha():
 
     return parasha, book, chapter, verse, website
 
-def main():
-    ################################################################################
-	# 1. Get Torah Data from GUI
-    ################################################################################
+def metsudah_verse_getter_from_gui():
+
+    ######## 1. Get Torah Data from our GUI ##############################################
     parasha, book, chapter, verse, website = inquireForParasha()
     print(f"{parasha} {book}, ch:{chapter} v:{verse} \nFrom WebSite: {website}")
+
+    # Check for missing inputs
     if not website or parasha is None:
         missing = []
         if not website:
@@ -56,14 +57,19 @@ def main():
         if parasha is None:
             missing.append("Parasha")
         print(f"[ERROR] No valid {' and '.join(missing)} provided. Exiting.")
-        return
+        return None, None, None
 
-    ################################################################################
-    # 2. Get a specific verse from Torah on the metsudah site.
-    ################################################################################
+    ######## 2. Get a specific verse from the Torah on the metsudah site. ##################
     driver, verse_str, text_str = metsudah_chumash_web_nav.get_metsudah_verse(book, chapter, verse)
     if not driver:
-        return
+        print("[ERROR] Could not initialize web driver or page load failed.")
+        return None, None, None
+
+    return driver, verse_str, text_str
+
+def main():
+
+    driver, verse_str, text_str = metsudah_verse_getter_from_gui()
 
     # Display results
     if verse_str and text_str:
