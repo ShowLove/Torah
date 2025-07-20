@@ -2,6 +2,7 @@ import json
 import os
 import time
 from selenium import webdriver
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
@@ -9,6 +10,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
+from bs4 import BeautifulSoup
+from typing import Tuple
 import time
 
 def load_eng_website_link(json_filename):
@@ -132,6 +135,44 @@ def click_go_button(driver, timeout=10):
         print(f"[ERROR] Could not click GO button: {e}")
 
     return driver
+
+def extract_verse_data(driver: WebDriver, verse_number: int) -> Tuple[str, str, WebDriver]:
+    """
+    Extracts verse and text from a Metsudah Chumash HTML page using the given Selenium driver.
+
+    Parameters:
+        driver (WebDriver): An active Selenium WebDriver instance.
+        verse_number (int): The verse number to extract.
+
+    Returns:
+        Tuple[str, str, WebDriver]: A tuple containing:
+            - The verse label (e.g., 'Verse 17:')
+            - The verse text (everything after </b> and before the next <p>)
+            - The WebDriver instance
+    """
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    target_label = f"Verse {verse_number}:"
+
+    # Find all <b> tags
+    for bold in soup.find_all("b"):
+        if bold.text.strip() == target_label:
+            verse_tag = bold
+            verse_string = bold.text.strip()
+
+            # Extract all the text after the </b> until the next <p>
+            text_parts = []
+            for sibling in bold.next_siblings:
+                if sibling.name == 'p':
+                    break
+                if isinstance(sibling, str):
+                    text_parts.append(sibling.strip())
+                elif sibling.name is None:
+                    text_parts.append(str(sibling).strip())
+
+            verse_text = ' '.join(filter(None, text_parts)).replace('\n', ' ').strip()
+            return verse_string, verse_text, driver
+
+    return "", "", driver  # fallback if verse not found
 
 # Example usage
 if __name__ == "__main__":

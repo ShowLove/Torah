@@ -69,9 +69,19 @@ def main():
             driver = metsudah_chumash_web_nav.select_chumash_options(driver, book, chapter, verse)
             time.sleep(3)  # Pause for 3 seconds
 
+            # Click the GO button
             driver = metsudah_chumash_web_nav.click_go_button(driver)
             print("Page Title:", driver.title)
             time.sleep(3)  # Pause for 3 seconds
+
+            verse_str, text_str, driver = metsudah_chumash_web_nav.extract_verse_data(driver, verse)
+
+            # Display results
+            if verse_str and text_str:
+                print("Verse Label:", verse_str)
+                print("Verse Text:", text_str)
+            else:
+                print("Verse not found.")
 
         finally:
             driver.quit()
