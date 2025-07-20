@@ -110,6 +110,8 @@ def select_chumash_options(driver, book="Genesis", chapter="1", verse="1", debug
         print(f"Verse option not found: {verse}. Error: {e}")
     time.sleep(0.5)
 
+    return driver
+
 # Example usage
 if __name__ == "__main__":
     open_website_with_driver("current_verse_target.json")

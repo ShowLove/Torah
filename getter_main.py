@@ -67,7 +67,7 @@ def main():
             verse = 2
 
             # Interact with the page to select options
-            metsudah_chumash_web_nav.select_chumash_options(driver, book, chapter, verse)
+            driver = metsudah_chumash_web_nav.select_chumash_options(driver, book, chapter, verse)
             time.sleep(3)  # Pause for 3 seconds
 
         finally:
