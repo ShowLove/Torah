@@ -25,8 +25,8 @@ sys.path.append(web_navigator_path)
 ######################################################################
 
 from torah_search_bar import getBookChVerse, getSite
-import findParashaFromVerse  # Make sure this file exists in utils
-import web_navigator_funcs   # Make sure this file exists in web_navigator
+import findParashaFromVerse       # Make sure this file exists in utils
+import metsudah_chumash_web_nav   # Make sure this file exists in web_navigator
 
 def inquireForParasha():
     book, chapter, verse = getBookChVerse.main()
@@ -53,7 +53,7 @@ def main():
     print(f"Parasha Name: {parashaName}")
 
     #Open the Eng website
-    driver = web_navigator_funcs.open_website_from_json("current_verse_target.json")
+    driver = metsudah_chumash_web_nav.open_website_from_json("current_verse_target.json")
 
     if driver:
         try:
@@ -67,7 +67,7 @@ def main():
             verse = 2
 
             # Interact with the page to select options
-            web_navigator_funcs.select_chumash_options(driver, book, chapter, verse)
+            metsudah_chumash_web_nav.select_chumash_options(driver, book, chapter, verse)
             time.sleep(3)  # Pause for 3 seconds
 
         finally:
