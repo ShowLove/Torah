@@ -43,7 +43,7 @@ def inquireForParasha():
 
     return parasha, book, chapter, verse, website
 
-def metsudah_verse_getter_from_gui():
+def metsudah_eng_verse_getter_from_gui():
 
     ######## 1. Get Torah Data from our GUI ##############################################
     parasha, book, chapter, verse, website = inquireForParasha()
@@ -69,7 +69,7 @@ def metsudah_verse_getter_from_gui():
 
 def main():
 
-    driver, verse_str, text_str = metsudah_verse_getter_from_gui()
+    driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
 
     # Display results
     if verse_str and text_str:
