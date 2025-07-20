@@ -63,12 +63,7 @@ def main():
             # For example, get the page title:
             print("Page Title:", driver.title)
 
-            # Example hardcoded values — these would come from your JSON or logic
-            #book = "Exodus"
-            #chapter = 2
-            #verse = 2
-
-            # Interact with the page to select options
+            # Select book, chapter, verse on metsudah site
             driver = metsudah_chumash_web_nav.select_chumash_options(driver, book, chapter, verse)
             time.sleep(3)  # Pause for 3 seconds
 
