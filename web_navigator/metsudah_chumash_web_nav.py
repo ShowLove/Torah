@@ -30,6 +30,59 @@ def load_eng_website_link(json_filename):
 
     return data.get("website_eng"), data.get("book"), data.get("chapter"), data.get("parasha", "Unknown")
 
+def load_json(json_filename):
+    """
+    Safely load JSON data from a file in the data directory with error checking.
+
+    :param json_filename: str - Filename of the JSON file to load.
+    :return: dict - Parsed JSON data.
+    :raises FileNotFoundError: If the file does not exist.
+    :raises ValueError: If the file is not valid JSON.
+    """
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, "..", "data", json_filename)
+    file_path = os.path.normpath(file_path)
+
+    if not os.path.exists(file_path):
+        logging.error(f"[ERROR] File not found: {file_path}")
+        raise FileNotFoundError(f"Could not find {json_filename} at {file_path}")
+
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except json.JSONDecodeError as e:
+        logging.error(f"[ERROR] Failed to parse JSON in {file_path}: {e}")
+        raise ValueError(f"Invalid JSON in {json_filename}: {e}")
+
+    if not isinstance(data, dict):
+        logging.error(f"[ERROR] Expected JSON object in {json_filename}, got {type(data)}")
+        raise ValueError(f"Expected JSON object in {json_filename}, got {type(data)}")
+
+    return data
+
+def load_json_fields(json_filename, *fields, default=None, folder="data"):
+    """
+    Load specific fields from a JSON file located in the given folder.
+
+    :param json_filename: Name of the JSON file
+    :param fields: Fields to retrieve from the JSON
+    :param default: Default value if a field is missing
+    :param folder: Folder where the JSON file is stored
+    :return: Tuple of values corresponding to the requested fields
+    """
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, "..", folder, json_filename)
+    file_path = os.path.normpath(file_path)
+
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Could not find {json_filename} at {file_path}")
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    return tuple(data.get(field, default) for field in fields)
+
+
 def open_website_from_json(json_filename):
     """
     Load URL from given JSON file and open it using a Selenium WebDriver. Returns the driver.
@@ -201,6 +254,39 @@ def get_metsudah_verse(book, chapter, verse):
     except Exception as e:
         print("An error occurred:", e)
         return driver, None, None
+
+def get_metsudah_chapter(book_name, chapter_number, json_filename="TorahChapterLengths.json"):
+    """
+    Given a book name and chapter number, prints the verse numbers for that chapter.
+
+    :param book_name: str - The name of the book (e.g., "Bereshit (Genesis)")
+    :param chapter_number: int - The chapter number (e.g., 1)
+    :param json_path: str - Path to the JSON file
+    """
+    # Load the JSON data
+    data = load_json(json_filename)
+
+    print("JSON loaded successfully:")
+    print(json_filename)
+
+    # Validate book
+    books = data.get("books", {})
+    if book_name not in books:
+        print(f"[ERROR] Book '{book_name}' not found in data.")
+        return
+
+    chapters = books[book_name].get("chapters", {})
+
+    chapter_str = str(chapter_number)
+    if chapter_str not in chapters:
+        print(f"[ERROR] Chapter '{chapter_number}' not found in book '{book_name}'.")
+        return
+
+    total_verses = chapters[chapter_str]
+    print(f"Chapter {chapter_number} of {book_name} has {total_verses} verses:")
+    for verse in range(1, total_verses + 1):
+        print(f"Verse {verse}")
+
 
 # Example usage
 if __name__ == "__main__":

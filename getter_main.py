@@ -28,6 +28,19 @@ from torah_search_bar import getBookChVerse, getSite
 import json_funcs              # Make sure this file exists in utils
 import metsudah_chumash_web_nav   # Make sure this file exists in web_navigator
 
+def display_verse(verse_str, text_str):
+    """
+    Displays the verse label and text if both are provided.
+    Parameters:
+        verse_str (str): The label or reference of the verse (e.g., "Genesis 1:1").
+        text_str (str): The text/content of the verse.
+    """
+    if verse_str and text_str:
+        print("Verse Label:", verse_str)
+        print("Verse Text:", text_str)
+    else:
+        print("Verse not found.")
+
 def inquireForParasha():
     book, chapter, verse = getBookChVerse.main()
     website = getSite.main()
@@ -69,16 +82,11 @@ def metsudah_eng_verse_getter_from_gui():
 
 def main():
 
-    driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
+    metsudah_chumash_web_nav.get_metsudah_chapter("Genesis", 1)
 
-    # Display results
-    if verse_str and text_str:
-        print("Verse Label:", verse_str)
-        print("Verse Text:", text_str)
-    else:
-        print("Verse not found.")
-
-    driver.quit()
+    #driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
+    #display_verse(verse_str, text_str)
+    #driver.quit()
 
 if __name__ == "__main__":
     main()
