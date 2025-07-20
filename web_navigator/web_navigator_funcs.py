@@ -23,18 +23,18 @@ def load_eng_website_link(json_filename):
 
 def open_website_from_json(json_filename):
     """
-    Load URL from given JSON file and open it using a Selenium WebDriver.
+    Load URL from given JSON file and open it using a Selenium WebDriver. Returns the driver.
     """
     url, book, chapter, parasha = load_eng_website_link(json_filename)
 
     if not url:
         print("No valid URL found in JSON.")
-        return
+        return None
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
     try:
-        print(f"Opening {url} for {book} {chapter} ({parasha})")
+        print(f"Opening {url} for {book} ch:{chapter} parasha:({parasha})")
         driver.get(url)
         time.sleep(2)
 
@@ -42,12 +42,12 @@ def open_website_from_json(json_filename):
         driver.get(final_url)
         time.sleep(2)
 
-        # Example of what to do next:
-        # verses = grab_verses(driver)
-        # print(verses)
+        return driver
 
-    finally:
+    except Exception as e:
+        print(f"Error loading URL: {e}")
         driver.quit()
+        return None
 
 # Example usage
 if __name__ == "__main__":

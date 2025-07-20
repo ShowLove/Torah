@@ -46,10 +46,24 @@ def inquireForParasha():
     return parasha
 
 def main():
+	# Get Torah Data to navigate ther web and do the backend with
     parashaName = inquireForParasha()
     print(f"Parasha Name: {parashaName}")
 
-    web_navigator_funcs.open_website_from_json("current_verse_target.json")
+    #Open the Eng website
+    driver = web_navigator_funcs.open_website_from_json("current_verse_target.json")
+
+    if driver:
+        try:
+            # --- Add your page interaction logic here ---
+            # For example, get the page title:
+            print("Page Title:", driver.title)
+
+            # You could also extract verses, search for elements, etc.
+            # e.g., driver.find_element(By.ID, 'some-id')
+
+        finally:
+            driver.quit()
 
 if __name__ == "__main__":
     main()
