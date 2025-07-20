@@ -49,8 +49,14 @@ def inquireForParasha():
     return parasha, book, chapter, verse, website
 
 def main():
-	# Get Torah Data to navigate ther web and do the backend with
+	# Get Torah Data to navigate ther web and do the backend 
     parasha, book, chapter, verse, website = inquireForParasha()
+
+    # Check if website is None
+    if not website:
+        print("[ERROR] No website provided. Exiting.")
+        return
+    
     print(f"{parasha} {book}, ch:{chapter} v:{verse}")
     print(f"From WebSite: {website}")
 

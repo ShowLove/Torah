@@ -142,9 +142,9 @@ def main():
     book, chapter, verse = create_gui()
 
     # Print selected results
-    print(f"Selected Book: {book}")
-    print(f"Chapter: {chapter}")
-    print(f"Verse: {verse}")
+    #print(f"Selected Book: {book}")
+    #print(f"Chapter: {chapter}")
+    #print(f"Verse: {verse}")
 
     # Update JSON using the utility function
     gui_utils.update_selection_json(book=book, chapter=chapter, verse=verse)
