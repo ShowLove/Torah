@@ -5,6 +5,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
@@ -109,6 +112,24 @@ def select_chumash_options(driver, book="Genesis", chapter="1", verse="1", debug
     except Exception as e:
         print(f"Verse option not found: {verse}. Error: {e}")
     time.sleep(0.5)
+
+    return driver
+
+def click_go_button(driver, timeout=10):
+    """
+    Clicks the "GO" button on the Chumash search page and returns the driver.
+
+    :param driver: Selenium WebDriver object
+    :param timeout: Maximum wait time in seconds for the button to become clickable
+    :return: Selenium WebDriver object
+    """
+    try:
+        go_button = WebDriverWait(driver, timeout).until(
+            EC.element_to_be_clickable((By.XPATH, "//input[@type='submit' and @value='GO']"))
+        )
+        go_button.click()
+    except Exception as e:
+        print(f"[ERROR] Could not click GO button: {e}")
 
     return driver
 

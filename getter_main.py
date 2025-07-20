@@ -69,6 +69,10 @@ def main():
             driver = metsudah_chumash_web_nav.select_chumash_options(driver, book, chapter, verse)
             time.sleep(3)  # Pause for 3 seconds
 
+            driver = metsudah_chumash_web_nav.click_go_button(driver)
+            print("Page Title:", driver.title)
+            time.sleep(3)  # Pause for 3 seconds
+
         finally:
             driver.quit()
 
