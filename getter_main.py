@@ -47,7 +47,6 @@ def main():
 	# Get Torah Data to navigate ther web and do the backend 
     parasha, book, chapter, verse, website = inquireForParasha()
 
-    # Check if website is None
     if not website:
         print("[ERROR] No website provided. Exiting.")
         return
