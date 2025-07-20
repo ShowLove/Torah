@@ -45,12 +45,14 @@ def inquireForParasha():
     # Get the Parasha from the verse
     parasha = findParashaFromVerse.get_parasha(book, chapter, verse)
     print(f"Parasha: {parasha}")
-    return parasha
+
+    return parasha, book, chapter, verse, website
 
 def main():
 	# Get Torah Data to navigate ther web and do the backend with
-    parashaName = inquireForParasha()
-    print(f"Parasha Name: {parashaName}")
+    parasha, book, chapter, verse, website = inquireForParasha()
+    print(f"{parasha} {book}, ch:{chapter} v:{verse}")
+    print(f"From WebSite: {website}")
 
     #Open the Eng website
     driver = metsudah_chumash_web_nav.open_website_from_json("current_verse_target.json")
@@ -62,9 +64,9 @@ def main():
             print("Page Title:", driver.title)
 
             # Example hardcoded values — these would come from your JSON or logic
-            book = "Exodus"
-            chapter = 2
-            verse = 2
+            #book = "Exodus"
+            #chapter = 2
+            #verse = 2
 
             # Interact with the page to select options
             driver = metsudah_chumash_web_nav.select_chumash_options(driver, book, chapter, verse)
