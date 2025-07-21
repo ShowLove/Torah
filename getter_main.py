@@ -25,8 +25,9 @@ sys.path.append(web_navigator_path)
 ######################################################################
 
 from torah_search_bar import getBookChVerse, getSite
-import json_funcs              # Make sure this file exists in utils
-import metsudah_chumash_web_nav   # Make sure this file exists in web_navigator
+import json_funcs                 # utils
+import generic_funcs              # utils
+import metsudah_chumash_web_nav   # web_navigator
 
 def display_verse(verse_str, text_str):
     """
@@ -82,11 +83,11 @@ def metsudah_eng_verse_getter_from_gui():
 
 def main():
 
-    metsudah_chumash_web_nav.get_torah_chapter("Genesis", 1)
-
     #driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
     #display_verse(verse_str, text_str)
     #driver.quit()
+
+    generic_funcs.get_torah_chapter("Genesis", 1)
 
 if __name__ == "__main__":
     main()

@@ -255,38 +255,6 @@ def get_metsudah_verse(book, chapter, verse):
         print("An error occurred:", e)
         return driver, None, None
 
-def get_torah_chapter(book_name, chapter_number, json_filename="TorahChapterLengths.json"):
-    """
-    Given a book name and chapter number, prints the verse numbers for that chapter.
-
-    :param book_name: str - The name of the book (e.g., "Bereshit (Genesis)")
-    :param chapter_number: int - The chapter number (e.g., 1)
-    :param json_path: str - Path to the JSON file
-    """
-    # Load the JSON data
-    data = load_json(json_filename)
-
-    print("JSON loaded successfully:")
-    print(json_filename)
-
-    # Validate book
-    books = data.get("books", {})
-    if book_name not in books:
-        print(f"[ERROR] Book '{book_name}' not found in data.")
-        return
-
-    chapters = books[book_name].get("chapters", {})
-
-    chapter_str = str(chapter_number)
-    if chapter_str not in chapters:
-        print(f"[ERROR] Chapter '{chapter_number}' not found in book '{book_name}'.")
-        return
-
-    total_verses = chapters[chapter_str]
-    print(f"Chapter {chapter_number} of {book_name} has {total_verses} verses:")
-    for verse in range(1, total_verses + 1):
-        print(f"Verse {verse}")
-
 
 # Example usage
 if __name__ == "__main__":
