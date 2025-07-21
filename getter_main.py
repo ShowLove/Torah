@@ -82,7 +82,7 @@ def metsudah_eng_verse_getter_from_gui():
 
 def main():
 
-    metsudah_chumash_web_nav.get_metsudah_chapter("Genesis", 1)
+    metsudah_chumash_web_nav.get_torah_chapter("Genesis", 1)
 
     #driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
     #display_verse(verse_str, text_str)

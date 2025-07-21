@@ -255,7 +255,7 @@ def get_metsudah_verse(book, chapter, verse):
         print("An error occurred:", e)
         return driver, None, None
 
-def get_metsudah_chapter(book_name, chapter_number, json_filename="TorahChapterLengths.json"):
+def get_torah_chapter(book_name, chapter_number, json_filename="TorahChapterLengths.json"):
     """
     Given a book name and chapter number, prints the verse numbers for that chapter.
 
