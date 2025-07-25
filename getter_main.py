@@ -1,46 +1,31 @@
 # getter_main.py
 import sys
 import os
-import time
+from pathlib import Path
 
 
-######################################################################
-# Dependency Folders: torah_search_bar, data, utils ##################
-######################################################################
-current_dir = os.path.dirname(os.path.abspath(__file__))
+# -------------------------
+# Bootstrapping Dependencies
+# -------------------------
+BASE_DIR = Path(__file__).resolve().parent
+PARENT_DIRS = [
+    BASE_DIR / "torah_search_bar",
+    BASE_DIR / "utils",
+    BASE_DIR / "data",
+    BASE_DIR / "web_navigator"
+]
 
-# torah_search_bar
-sys.path.append(os.path.join(current_dir, "torah_search_bar"))
+for path in PARENT_DIRS:
+    sys.path.append(str(path))
 
-# data
-sys.path.append(os.path.join(current_dir, "data"))
-
-# utils
-utils_path = os.path.join(current_dir, "utils")
-sys.path.append(utils_path)
-
-# web_navigator
-web_navigator_path = os.path.join(current_dir, "web_navigator")
-sys.path.append(web_navigator_path)
-######################################################################
-
+# -------------------------
+# Import Dependencies
+# -------------------------
 from torah_search_bar import getBookChVerse, getSite
 import json_funcs                 # utils
 import generic_funcs              # utils
 import metsudah_chumash_web_nav   # web_navigator
 
-def display_verse(verse_str, text_str):
-    """
-    Displays the verse label and text if both are provided.
-    Parameters:
-        verse_str (str): The label or reference of the verse (e.g., "Genesis 1:1").
-        text_str (str): The text/content of the verse.
-    """
-    if verse_str and text_str:
-        print("Verse Label:", verse_str)
-        print("Verse Text:", text_str)
-    else:
-        print("Verse not found.")
 
 def inquireForParasha():
     book, chapter, verse = getBookChVerse.main()
@@ -83,11 +68,11 @@ def metsudah_eng_verse_getter_from_gui():
 
 def main():
 
-    #driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
-    #display_verse(verse_str, text_str)
-    #driver.quit()
+    driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
+    generic_funcs.display_verse(verse_str, text_str)
+    driver.quit()
 
-    generic_funcs.get_torah_chapter("Genesis", 1)
+    #generic_funcs.get_torah_chapter("Genesis", 1)
 
 if __name__ == "__main__":
     main()

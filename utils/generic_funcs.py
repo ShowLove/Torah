@@ -14,6 +14,19 @@ from bs4 import BeautifulSoup
 from typing import Tuple
 import time
 
+def display_verse(verse_str, text_str):
+    """
+    Displays the verse label and text if both are provided.
+    Parameters:
+        verse_str (str): The label or reference of the verse (e.g., "Genesis 1:1").
+        text_str (str): The text/content of the verse.
+    """
+    if verse_str and text_str:
+        print("Verse Label:", verse_str)
+        print("Verse Text:", text_str)
+    else:
+        print("Verse not found.")
+
 def load_json(json_filename):
     """
     Safely load JSON data from a file in the data directory with error checking.
@@ -54,6 +67,7 @@ def get_torah_chapter(book_name, chapter_number, json_filename="TorahChapterLeng
     """
     # Load the JSON data
     data = load_json(json_filename)
+    torah_data = load_json("current_verse_target.json")
 
     print("JSON loaded successfully:")
     print(json_filename)
