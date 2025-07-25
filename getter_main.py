@@ -12,7 +12,8 @@ PARENT_DIRS = [
     BASE_DIR / "torah_search_bar",
     BASE_DIR / "utils",
     BASE_DIR / "data",
-    BASE_DIR / "web_navigator"
+    BASE_DIR / "web_navigator",
+    BASE_DIR / "excel_engine"
 ]
 
 for path in PARENT_DIRS:
@@ -25,6 +26,7 @@ from torah_search_bar import getBookChVerse, getSite
 import json_funcs                 # utils directory
 import generic_funcs              # utils directory
 import metsudah_chumash_web_nav   # web_navigator directory
+import excel_engine               # excel_engine directory
 
 
 def inquireForParasha():
@@ -72,7 +74,8 @@ def main():
     #generic_funcs.display_verse(verse_str, text_str)
     #driver.quit()
 
-    generic_funcs.get_torah_chapter("Genesis", 1)
+    #generic_funcs.get_torah_chapter("Genesis", 1)
+    excel_engine.test()
 
 if __name__ == "__main__":
     main()
