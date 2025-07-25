@@ -22,9 +22,9 @@ for path in PARENT_DIRS:
 # Import Dependencies
 # -------------------------
 from torah_search_bar import getBookChVerse, getSite
-import json_funcs                 # utils
-import generic_funcs              # utils
-import metsudah_chumash_web_nav   # web_navigator
+import json_funcs                 # utils directory
+import generic_funcs              # utils directory
+import metsudah_chumash_web_nav   # web_navigator directory
 
 
 def inquireForParasha():
@@ -68,11 +68,11 @@ def metsudah_eng_verse_getter_from_gui():
 
 def main():
 
-    driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
-    generic_funcs.display_verse(verse_str, text_str)
-    driver.quit()
+    #driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
+    #generic_funcs.display_verse(verse_str, text_str)
+    #driver.quit()
 
-    #generic_funcs.get_torah_chapter("Genesis", 1)
+    generic_funcs.get_torah_chapter("Genesis", 1)
 
 if __name__ == "__main__":
     main()

@@ -13,6 +13,32 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from typing import Tuple
 import time
+import sys
+from pathlib import Path
+
+# -------------------------
+# Bootstrapping Dependencies
+# -------------------------
+# Get the absolute path to the *parent* of the current file's directory
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
+
+# Folders in the root directory that contain modules
+DEPENDENCY_DIRS = [
+    PROJECT_ROOT / "torah_search_bar",
+    PROJECT_ROOT / "utils",
+    PROJECT_ROOT / "data",
+    PROJECT_ROOT / "web_navigator",
+    PROJECT_ROOT / "excel_engine"
+]
+
+# Add each dependency directory to sys.path if not already added
+for path in DEPENDENCY_DIRS:
+    path_str = str(path)
+    if path_str not in sys.path:
+        sys.path.append(path_str)
+
+import excel_engine 
 
 def display_verse(verse_str, text_str):
     """
@@ -89,3 +115,4 @@ def get_torah_chapter(book_name, chapter_number, json_filename="TorahChapterLeng
     print(f"Chapter {chapter_number} of {book_name} has {total_verses} verses:")
     for verse in range(1, total_verses + 1):
         print(f"Verse {verse}")
+        excel_engine.test()
