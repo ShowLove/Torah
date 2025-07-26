@@ -68,7 +68,7 @@ def metsudah_eng_verse_getter_from_gui():
 
     return driver, verse_str, text_str
 
-def get_and_display_metsudah_verse():
+def get_and_display_metsudah_verse_m():
     driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
     if not driver:
         return
@@ -82,7 +82,7 @@ def main():
     if choice == "1":
         # Longest verse: Esther 8:9, Shortest verse: 1 Chronicles 1:1
         # Longest has 77 words in eng, So I take that x3 for any translation.
-        get_and_display_metsudah_verse()
+        get_and_display_metsudah_verse_m()
     elif choice == "2":
         #utils.get_torah_chapter("Genesis", 1)
 
