@@ -41,6 +41,8 @@ def main():
 
         total_verses_in_ch = utils.get_torah_ch_verse_num("Genesis", 1)
         print(f"Total Verses = {total_verses_in_ch}")
+        for verse in range(1, total_verses_in_ch + 1):
+            print(f"Verse {verse}")
 
         filen_name = "fooo_test_2"
         HEADERS = ["verse", "verse string", "verse", "vw1", "vw2","..."]
