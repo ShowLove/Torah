@@ -2,6 +2,7 @@ import os
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.styles import Font, Alignment, PatternFill
+from pathlib import Path
 
 def create_excel_file(filename, directory):
     """
@@ -71,3 +72,73 @@ def style_excel_header(file_path, header_names):
     except Exception as e:
         print(f"[ERROR] Failed to apply header: {e}")
         return False
+
+def freeze_excel_header_row(file_path, sheet_name=None):
+    """
+    Freezes the first row of an existing Excel sheet so the header stays visible when scrolling.
+
+    Args:
+        file_path (str): Path to the existing Excel file.
+        sheet_name (str, optional): Name of the sheet to freeze the header in. 
+                                    If None, the active sheet is used.
+
+    Returns:
+        bool: True if successful, False if file/sheet not found.
+    """
+    try:
+        wb = load_workbook(file_path)
+        ws = wb[sheet_name] if sheet_name else wb.active
+
+        # Freeze the first row
+        ws.freeze_panes = ws['A2']
+
+        # Save changes
+        wb.save(file_path)
+        #print(f"[INFO] First row frozen in: {file_path}")
+        return True
+
+    except FileNotFoundError:
+        print(f"[ERROR] File not found: {file_path}")
+        return False
+    except KeyError:
+        print(f"[ERROR] Sheet '{sheet_name}' not found in file: {file_path}")
+        return False
+    except Exception as e:
+        print(f"[ERROR] {str(e)}")
+        return False
+
+
+def create_excel_m(filename: str, directory: Path, headers: list[str]):
+    """
+    Creates an Excel file with a styled header and frozen header row.
+
+    Args:
+        filename (str): Desired Excel filename, with or without '.xlsx' extension.
+        directory (Path): Target directory to save the Excel file.
+        headers (list[str]): List of column headers.
+
+    Returns:
+        Path: Full path to the created Excel file, or None if there was an error.
+    """
+    # Ensure filename has the .xlsx extension
+    if not filename.endswith(".xlsx"):
+        filename += ".xlsx"
+
+    # Ensure directory exists
+    if not directory.exists():
+        print(f"[ERROR] Directory does not exist: {directory}")
+        return None
+
+    xlsx_path = directory / filename
+
+    # Create the file
+    create_excel_file(filename, directory)
+
+    # Apply headers
+    style_excel_header(xlsx_path, headers)
+
+    # Freeze header row
+    freeze_excel_header_row(xlsx_path)
+
+    print(f"[INFO] Excel file created and styled: {xlsx_path}")
+    return xlsx_path
