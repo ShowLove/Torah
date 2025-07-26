@@ -102,22 +102,7 @@ def load_json(json_filename):
 
     return data
 
-def inquireForParasha():
-    book, chapter, verse = getBookChVerse.main()
-    website = getSite.main()
-
-    # Ensure chapter and verse are integers
-    chapter = int(chapter)
-    verse = int(verse)
-
-    # Get the Parasha from the verse
-    parasha = json_funcs.get_parasha(book, chapter, verse)
-    json_funcs.set_parasha_json(parasha)
-    print(f"Parasha: {parasha}")
-
-    return parasha, book, chapter, verse, website
-
-def get_torah_chapter(book_name, chapter_number, json_filename="TorahChapterLengths.json"):
+def get_torah_ch_verse_num(book_name, chapter_number, json_filename="TorahChapterLengths.json"):
     """
     Given a book name and chapter number, prints the verse numbers for that chapter.
 
@@ -147,6 +132,4 @@ def get_torah_chapter(book_name, chapter_number, json_filename="TorahChapterLeng
 
     total_verses = chapters[chapter_str]
     print(f"Chapter {chapter_number} of {book_name} has {total_verses} verses:")
-    for verse in range(1, total_verses + 1):
-        print(f"Verse {verse}")
-        excel_engine.test()
+    return total_verses

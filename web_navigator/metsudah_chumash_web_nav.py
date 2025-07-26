@@ -294,11 +294,10 @@ def get_metsudah_verse(book, chapter, verse):
 def metsudah_eng_verse_getter_from_gui():
 
     ######## 1. use GUI to prompt ##############################################
+    ######## Get Torah Data from our GUI ##############################################
 
     book, chapter, verse = getBookChVerse.main()
     website = getSite.main()
-
-    ######## 2. Get Torah Data from our GUI ##############################################
     parasha = inquireForParasha(book, chapter, verse)
     print(f"{parasha} {book}, ch:{chapter} v:{verse} \nFrom WebSite: {website}")
 
@@ -327,6 +326,33 @@ def get_and_display_metsudah_verse_m():
     utils.display_verse(verse_str, text_str)
     driver.quit()
 
+def get_metsudah_ch(book, chapter):
+    # Open the English website
+    driver = open_website_from_json("current_verse_target.json")
+
+    if not driver:
+        return None, None, None
+
+    try:
+        print("Initial Page Title:", driver.title)
+
+        # Select book, chapter, and verse
+        driver = select_chumash_options(driver, book, chapter, verse)
+        time.sleep(3)  # Allow the page to update
+
+        # Click the GO button
+        driver = click_go_button(driver)
+        print("After GO Click Page Title:", driver.title)
+        time.sleep(3)  # Wait for content to load
+
+        # Extract the verse and text
+        verse_str, text_str, driver = extract_verse_data(driver, verse)
+
+        return driver, verse_str, text_str
+
+    except Exception as e:
+        print("An error occurred:", e)
+        return driver, None, None
 
 # Example usage
 if __name__ == "__main__":

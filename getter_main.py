@@ -28,22 +28,6 @@ import utils                      # utils directory
 import metsudah_chumash_web_nav   # web_navigator directory
 import excel_engine               # excel_engine directory
 
-
-def inquireForParasha():
-    book, chapter, verse = getBookChVerse.main()
-    website = getSite.main()
-
-    # Ensure chapter and verse are integers
-    chapter = int(chapter)
-    verse = int(verse)
-
-    # Get the Parasha from the verse
-    parasha = json_funcs.get_parasha(book, chapter, verse)
-    json_funcs.set_parasha_json(parasha)
-    print(f"Parasha: {parasha}")
-
-    return parasha, book, chapter, verse, website
-
 def main():
 
     # Ask the user to choose between the options
@@ -51,12 +35,15 @@ def main():
     if choice == "1":
         # Longest verse: Esther 8:9, Shortest verse: 1 Chronicles 1:1
         # Longest has 77 words in eng, So I take that x3 for any translation.
+        # Gets a verse from teh metsudah site based on gui input
         metsudah_chumash_web_nav.get_and_display_metsudah_verse_m()
     elif choice == "2":
-        #utils.get_torah_chapter("Genesis", 1)
+
+        total_verses_in_ch = utils.get_torah_ch_verse_num("Genesis", 1)
+        print(f"Total Verses = {total_verses_in_ch}")
 
         filen_name = "fooo_test_2"
-        HEADERS = ["verse", "verse string", "verse", "vw1"]
+        HEADERS = ["verse", "verse string", "verse", "vw1", "vw2","..."]
         excel_engine.create_excel_m(filen_name, utils.OUT_ENG_TORAH_XLSX, HEADERS)
     else:
         print("Have a nice Day !")
