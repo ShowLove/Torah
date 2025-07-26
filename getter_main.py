@@ -75,7 +75,13 @@ def main():
     #driver.quit()
 
     #utils.get_torah_chapter("Genesis", 1)
-    excel_engine.create_excel_file("fooo_test", utils.OUT_ENG_TORAH_XLSX)
+    XLSX_NAME = "fooo_test.xlsx"
+    XLSX_PATH = utils.OUT_ENG_TORAH_XLSX / XLSX_NAME
+    excel_engine.create_excel_file(XLSX_NAME, utils.OUT_ENG_TORAH_XLSX)
+ 
+    headers = ["Name", "Age", "Email", "Country", "blah", "blah", "blah"]   
+    excel_engine.style_excel_header(XLSX_PATH, headers)
+
 
 if __name__ == "__main__":
     main()
