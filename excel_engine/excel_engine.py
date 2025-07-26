@@ -16,6 +16,10 @@ def create_excel_file(filename, directory):
         print(f"[ERROR] Directory does not exist: {directory}")
         return None
 
+    # Ensure filename has .xlsx extension
+    if not filename.lower().endswith(".xlsx"):
+        filename += ".xlsx"
+
     file_path = os.path.join(directory, filename)
 
     # Create a new Excel workbook
@@ -32,7 +36,3 @@ def create_excel_file(filename, directory):
     print(f"Excel file created: {file_path}")
 
     return file_path
-
-def test():
-    print("Test !!!!!!!!")
-    return
