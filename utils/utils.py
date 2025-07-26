@@ -38,6 +38,17 @@ for path in DEPENDENCY_DIRS:
     if path_str not in sys.path:
         sys.path.append(path_str)
 
+# absolute paths to subdirectories
+TORAH_SEARCH_BAR_DIR = PROJECT_ROOT / "torah_search_bar"
+UTILS_DIR = PROJECT_ROOT / "utils"
+DATA_DIR = PROJECT_ROOT / "data"
+WEB_NAVIGATOR_DIR = PROJECT_ROOT / "web_navigator"
+EXCEL_ENGINE_DIR = PROJECT_ROOT / "excel_engine"
+
+# sub-paths
+OUTPUT_DATA_DIR = DATA_DIR / "output_data"
+OUT_ENG_TORAH_XLSX = OUTPUT_DATA_DIR / "eng_torah_xlsx"
+
 import excel_engine 
 
 def display_verse(verse_str, text_str):
