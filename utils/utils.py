@@ -49,7 +49,15 @@ EXCEL_ENGINE_DIR = PROJECT_ROOT / "excel_engine"
 OUTPUT_DATA_DIR = DATA_DIR / "output_data"
 OUT_ENG_TORAH_XLSX = OUTPUT_DATA_DIR / "eng_torah_xlsx"
 
-import excel_engine 
+import excel_engine
+
+def terminal_prompt():
+    # Ask the user to choose between the options
+    print("Choose an option:")
+    print("1. Get a single verse from GUI input retrieved from the metsudah site")
+    print("2. Get a chapter of the Torah: ")
+    choice = input("Please enter a number: 1 through 2.: ").strip()
+    return choice
 
 def display_verse(verse_str, text_str):
     """
