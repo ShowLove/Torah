@@ -337,6 +337,7 @@ def get_metsudah_ch(book, chapter):
         print("Initial Page Title:", driver.title)
 
         # Select book, chapter, and verse
+        verse = "1"
         driver = select_chumash_options(driver, book, chapter, verse)
         time.sleep(3)  # Allow the page to update
 
@@ -345,6 +346,7 @@ def get_metsudah_ch(book, chapter):
         print("After GO Click Page Title:", driver.title)
         time.sleep(3)  # Wait for content to load
 
+        total_verses_in_ch = utils.get_torah_ch_verse_num("Genesis", 1)
         # Extract the verse and text
         verse_str, text_str, driver = extract_verse_data(driver, verse)
 

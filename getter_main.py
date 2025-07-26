@@ -49,6 +49,7 @@ def main():
         excel_engine.create_excel_m(filen_name, utils.OUT_ENG_TORAH_XLSX, HEADERS)
     else:
         print("Have a nice Day !")
+        metsudah_chumash_web_nav.get_metsudah_ch("Genesis", 1)
 
 
 if __name__ == "__main__":
