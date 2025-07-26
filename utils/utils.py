@@ -102,6 +102,21 @@ def load_json(json_filename):
 
     return data
 
+def inquireForParasha():
+    book, chapter, verse = getBookChVerse.main()
+    website = getSite.main()
+
+    # Ensure chapter and verse are integers
+    chapter = int(chapter)
+    verse = int(verse)
+
+    # Get the Parasha from the verse
+    parasha = json_funcs.get_parasha(book, chapter, verse)
+    json_funcs.set_parasha_json(parasha)
+    print(f"Parasha: {parasha}")
+
+    return parasha, book, chapter, verse, website
+
 def get_torah_chapter(book_name, chapter_number, json_filename="TorahChapterLengths.json"):
     """
     Given a book name and chapter number, prints the verse numbers for that chapter.

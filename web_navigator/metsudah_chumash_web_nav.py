@@ -13,6 +13,42 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from typing import Tuple
 import time
+from pathlib import Path
+
+
+
+# -------------------------
+# Bootstrapping Dependencies
+# -------------------------
+# Get the absolute path to the *parent* of the current file's directory
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
+
+# Folders in the root directory that contain modules
+DEPENDENCY_DIRS = [
+    BASE_DIR / "web_navigator",
+    PROJECT_ROOT / "utils"
+]
+
+# -------------------------
+# Import Dependencies
+# -------------------------
+from torah_search_bar import getBookChVerse, getSite
+import utils                      # utils directory
+import json_funcs                 # utils directory
+
+def inquireForParasha(book, chapter, verse):
+
+    # Ensure chapter and verse are integers
+    chapter = int(chapter)
+    verse = int(verse)
+
+    # Get the Parasha from the verse
+    parasha = json_funcs.get_parasha(book, chapter, verse)
+    json_funcs.set_parasha_json(parasha)
+    print(f"Parasha: {parasha}")
+
+    return parasha, book, chapter, verse
 
 def load_eng_website_link(json_filename):
     """
@@ -254,6 +290,42 @@ def get_metsudah_verse(book, chapter, verse):
     except Exception as e:
         print("An error occurred:", e)
         return driver, None, None
+
+def metsudah_eng_verse_getter_from_gui():
+
+    ######## 1. use GUI to prompt ##############################################
+
+    book, chapter, verse = getBookChVerse.main()
+    website = getSite.main()
+
+    ######## 2. Get Torah Data from our GUI ##############################################
+    parasha = inquireForParasha(book, chapter, verse)
+    print(f"{parasha} {book}, ch:{chapter} v:{verse} \nFrom WebSite: {website}")
+
+    # Check for missing inputs
+    if not website or parasha is None:
+        missing = []
+        if not website:
+            missing.append("website")
+        if parasha is None:
+            missing.append("Parasha")
+        print(f"[ERROR] No valid {' and '.join(missing)} provided. Exiting.")
+        return None, None, None
+
+    ######## 3. Get a specific verse from the Torah on the metsudah site. ##################
+    driver, verse_str, text_str = get_metsudah_verse(book, chapter, verse)
+    if not driver:
+        print("[ERROR] Could not initialize web driver or page load failed.")
+        return None, None, None
+
+    return driver, verse_str, text_str
+
+def get_and_display_metsudah_verse_m():
+    driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
+    if not driver:
+        return
+    utils.display_verse(verse_str, text_str)
+    driver.quit()
 
 
 # Example usage
