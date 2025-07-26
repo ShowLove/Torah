@@ -347,8 +347,11 @@ def get_metsudah_ch(book, chapter):
         time.sleep(3)  # Wait for content to load
 
         total_verses_in_ch = utils.get_torah_ch_verse_num("Genesis", 1)
-        # Extract the verse and text
-        verse_str, text_str, driver = extract_verse_data(driver, verse)
+        for verse in range(1, total_verses_in_ch + 1):
+            # Extract the verse and text
+            verse_str, text_str, driver = extract_verse_data(driver, verse)
+            print(f"{verse_str} {text_str}")
+
 
         return driver, verse_str, text_str
 
