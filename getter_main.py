@@ -39,17 +39,10 @@ def main():
         metsudah_chumash_web_nav.get_and_display_metsudah_verse_m()
     elif choice == "2":
 
-        total_verses_in_ch = utils.get_torah_ch_verse_num("Genesis", 1)
-        print(f"Total Verses = {total_verses_in_ch}")
-        for verse in range(1, total_verses_in_ch + 1):
-            print(f"Verse {verse}")
-
-        filen_name = "fooo_test_2"
-        HEADERS = ["verse", "verse string", "verse", "vw1", "vw2","..."]
-        excel_engine.create_excel_m(filen_name, utils.OUT_ENG_TORAH_XLSX, HEADERS)
+        metsudah_chumash_web_nav.get_metsudah_ch("Genesis", 1)
     else:
         print("Have a nice Day !")
-        metsudah_chumash_web_nav.get_metsudah_ch("Genesis", 1)
+
 
 
 if __name__ == "__main__":
