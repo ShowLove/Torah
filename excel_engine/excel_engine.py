@@ -66,7 +66,7 @@ def style_excel_header(file_path, header_names):
             cell.alignment = header_align
 
         wb.save(file_path)
-        print(f"Header styled and saved to: {file_path}")
+        #print(f"Header styled and saved to: {file_path}")
         return True
 
     except Exception as e:
@@ -140,5 +140,5 @@ def create_excel_m(filename: str, directory: Path, headers: list[str]):
     # Freeze header row
     freeze_excel_header_row(xlsx_path)
 
-    print(f"[INFO] Excel file created and styled: {xlsx_path}")
+    #print(f"[INFO] Excel file created and styled: {xlsx_path}")
     return xlsx_path

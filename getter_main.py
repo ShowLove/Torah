@@ -76,15 +76,9 @@ def main():
 
     #utils.get_torah_chapter("Genesis", 1)
 
-
-    #excel_engine.create_excel_m(headers, xlsx_name, directory)
-
     filen_name = "fooo_test_2"
     HEADERS = ["Name", "Age", "Email", "Country", "blah", "blah", "blah"]
     excel_engine.create_excel_m(filen_name, utils.OUT_ENG_TORAH_XLSX, HEADERS)
-
-
-
 
 if __name__ == "__main__":
     main()
