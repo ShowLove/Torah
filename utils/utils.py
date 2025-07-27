@@ -56,6 +56,7 @@ def terminal_prompt():
     print("Choose an option:")
     print("     1. Get a single verse from GUI input retrieved from the metsudah site.")
     print("     2. Get a chapter of the Torah based on a hard coded value. ")
+    print("     3. Open the metsudah site in chrome. ")
     choice = input("Please enter a number: 1 through 2:      (input) -->").strip()
     return choice
 
