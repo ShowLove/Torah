@@ -33,17 +33,16 @@ def main():
     # Ask the user to choose between the options
     choice = utils.terminal_prompt()
     if choice == "1":
-        # Longest verse: Esther 8:9, Shortest verse: 1 Chronicles 1:1
-        # Longest has 77 words in eng, So I take that x3 for any translation.
         # Gets a verse from teh metsudah site based on gui input
         metsudah_chumash_web_nav.get_and_display_metsudah_verse_m()
     elif choice == "2":
 
         book = "Genesis"
         chapter = 2
-
         # Get a chapter from the chumash site and save it in excel.
         metsudah_chumash_web_nav.save_torah_chapter_to_excel(book, chapter)
+    else:
+        print("Have a nice day !")
 
 if __name__ == "__main__":
     main()
