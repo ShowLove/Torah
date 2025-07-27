@@ -400,7 +400,7 @@ def save_torah_chapter_to_excel_m(torah_book: str, chapter: int):
             excel_engine.write_string_to_excel(xlsx_path, sheet_name=sheet_name, cell=verse_cell, text=verse_ref)
             excel_engine.write_string_to_excel(xlsx_path, sheet_name=sheet_name, cell=text_cell, text=verse_text)
 
-        print(f"Data written to {xlsx_path}")
+        #print(f"Data written to {xlsx_path}")
     else:
         print("Failed to create Excel file.")
 
@@ -409,6 +409,22 @@ def save_torah_chapter_to_excel_m(torah_book: str, chapter: int):
     # Step 5: Auto-adjust column widths
     final_xlsx_file = directory / f"{filename}.xlsx"
     excel_engine.autofit_excel_columns(final_xlsx_file, sheet_name)
+
+def save_entire_torah_book_to_excel_m(book_name):
+    """
+    Given a Torah book name, retrieves each chapter from the Metsudah English
+    translation site and saves each chapter to a separate sheet in a single Excel file.
+    One sheet per chapter of book and one excel per book will be saved one book at a time.
+
+    Args:
+        book_name (str): Name of the Torah book (e.g., 'Genesis')
+    """
+
+    chapter_count = utils.get_torah_book_num_chapters(book_name)
+
+    for num_chapter in range(1, chapter_count + 1):
+        print(f"Processing {book_name} Chapter {num_chapter}...")
+        save_torah_chapter_to_excel_m(book_name, num_chapter)
 
 # Example usage
 if __name__ == "__main__":
