@@ -62,17 +62,17 @@ def main():
         #         - using excel.
 
         # Define target directory and filename
+        sheet_name = f"{book} CH{chapter}"
         directory = utils.OUT_ENG_TORAH_XLSX
         filename = book
         headers = ["Verse", "Verse_String", "Num_Words", "Num_Chars","W1","W2","..."]
 
         # Step 3.A: Create the Excel file with headers and frozen top row
-        xlsx_path = excel_engine.create_excel_m(filename, directory, headers)
+        xlsx_path = excel_engine.create_excel_m(filename, directory, headers, sheet_name)
 
         # Step 3.B: Write each verse_ref and verse_text to separate columns in Excel
         if xlsx_path:
-            sheet_name = f"{book} CH{chapter}"
-            start_row = 1  # Starting row after headers
+            start_row = 2  # Starting row after headers
 
             for idx, (verse_ref, verse_text) in enumerate(verse_data.items(), start=start_row):
                 verse_cell = f"A{idx}"  # Column A for verse_ref

@@ -37,13 +37,14 @@ def create_excel_file(filename, directory):
 
     return file_path
 
-def style_excel_header(file_path, header_names):
+def style_excel_header(file_path, header_names, sheet_name=None):
     """
-    Applies a styled header row to the first row of an existing Excel file.
+    Applies a styled header row to the first row of a specific worksheet in an existing Excel file.
 
     Args:
         file_path (str): Path to the existing Excel (.xlsx) file.
         header_names (list): List of strings representing column headers.
+        sheet_name (str, optional): Name of the worksheet to apply the header to. Defaults to active sheet.
 
     Returns:
         bool: True if successful, False otherwise.
@@ -54,7 +55,7 @@ def style_excel_header(file_path, header_names):
 
     try:
         wb = load_workbook(file_path)
-        ws = wb.active
+        ws = wb[sheet_name] if sheet_name and sheet_name in wb.sheetnames else wb.active
 
         header_font = Font(bold=True, color="FFFFFF")
         header_fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
@@ -67,7 +68,6 @@ def style_excel_header(file_path, header_names):
             cell.alignment = header_align
 
         wb.save(file_path)
-        #print(f"Header styled and saved to: {file_path}")
         return True
 
     except Exception as e:
@@ -95,7 +95,6 @@ def freeze_excel_header_row(file_path, sheet_name=None):
 
         # Save changes
         wb.save(file_path)
-        #print(f"[INFO] First row frozen in: {file_path}")
         return True
 
     except FileNotFoundError:
@@ -109,14 +108,15 @@ def freeze_excel_header_row(file_path, sheet_name=None):
         return False
 
 
-def create_excel_m(filename: str, directory: Path, headers: list[str]):
+def create_excel_m(filename: str, directory: Path, headers: list[str], sheet_name: str = "Sheet1"):
     """
-    Creates an Excel file with a styled header and frozen header row.
+    Creates an Excel file with a styled header and frozen header row in a specified sheet.
 
     Args:
         filename (str): Desired Excel filename, with or without '.xlsx' extension.
         directory (Path): Target directory to save the Excel file.
         headers (list[str]): List of column headers.
+        sheet_name (str): Name of the worksheet to add headers to.
 
     Returns:
         Path: Full path to the created Excel file, or None if there was an error.
@@ -135,14 +135,14 @@ def create_excel_m(filename: str, directory: Path, headers: list[str]):
     # Create the file
     create_excel_file(filename, directory)
 
-    # Apply headers
-    style_excel_header(xlsx_path, headers)
+    # Apply headers to the specified sheet
+    style_excel_header(xlsx_path, headers, sheet_name)
 
-    # Freeze header row
-    freeze_excel_header_row(xlsx_path)
+    # Freeze header row in the specified sheet
+    freeze_excel_header_row(xlsx_path, sheet_name)
 
-    #print(f"[INFO] Excel file created and styled: {xlsx_path}")
     return xlsx_path
+
 
 def write_string_to_excel(file_path, sheet_name, cell, text):
     """
