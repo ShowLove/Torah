@@ -52,6 +52,15 @@ def main():
         # From - Hard Coded Values
         # Get a book from the Metsudah Eng translation site and save it in excel.
         metsudah_chumash_web_nav.save_entire_torah_book_to_excel_m(hc_book)
+    elif choice == "5":
+        # Masoretic Text -  https://tanach.us/Tanach.xml
+        # The Unicode/XML Leningrad Codex (UXLC) is a transcription of the Leningrad Codex (LC) 
+        # into a modern computer format (Unicode, XML). The UXLC text is a fork of the Groves Centers
+        # Westminster Leningrad Codex [ WLC 4.20, Revision 1950 of 2016-01-25 ]. The text is updated 
+        # semi-annually to better match the LC from reader suggestions through a formal and automated 
+        # process; more than a thousand changes have been made to date. The Hebrew text is version 
+        # controlled to provide a fixed reference for derived work. 
+        # The current release is UXLC 2.3 (27.4) of 31 March 2025 06:24. See the Technical page for further details.
     else:
         print("Have a nice day !")
 
