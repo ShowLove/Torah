@@ -65,7 +65,8 @@ def main():
         sheet_name = f"{book} CH{chapter}"
         directory = utils.OUT_ENG_TORAH_XLSX
         filename = book
-        headers = ["Verse", "Verse_String", "Num_Words", "Num_Chars","W1","W2","..."]
+        #headers = ["Verse", "Verse_String", "Num_Words", "Num_Chars","W1","W2","..."]
+        headers = ["Verse", "Verse_String"]
 
         # Step 3.A: Create the Excel file with headers and frozen top row
         xlsx_path = excel_engine.create_excel_m(filename, directory, headers, sheet_name)
