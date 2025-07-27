@@ -5,13 +5,14 @@ from openpyxl.styles import Font, Alignment, PatternFill
 from openpyxl.utils import get_column_letter
 from pathlib import Path
 
-def create_excel_file(filename, directory):
+def create_excel_file(filename, directory, sheet_name="Sheet1"):
     """
-    Creates an Excel file with the given filename in the specified directory.
+    Creates an Excel file with the given filename and specified sheet name in the given directory.
 
     Args:
         filename (str): Name of the Excel file to create (e.g., 'report.xlsx').
         directory (str): Directory path where the Excel file should be created.
+        sheet_name (str): Name of the initial worksheet. Defaults to 'Sheet1'.
 
     Returns:
         str: Full path to the created Excel file, or None if directory doesn't exist.
@@ -29,7 +30,7 @@ def create_excel_file(filename, directory):
     # Create a new Excel workbook
     wb = Workbook()
     ws = wb.active
-    ws.title = "Sheet1"
+    ws.title = sheet_name
 
     # Save the workbook
     wb.save(file_path)
@@ -133,7 +134,7 @@ def create_excel_m(filename: str, directory: Path, headers: list[str], sheet_nam
     xlsx_path = directory / filename
 
     # Create the file
-    create_excel_file(filename, directory)
+    create_excel_file(filename, directory, sheet_name)
 
     # Apply headers to the specified sheet
     style_excel_header(xlsx_path, headers, sheet_name)
