@@ -172,3 +172,36 @@ def write_string_to_excel(file_path, sheet_name, cell, text):
 
     # Save the workbook
     wb.save(file_path)
+
+def autofit_excel_columns(file_path, sheet_name):
+    """
+    Adjust the width of each column in the specified sheet to fit its longest cell content,
+    emulating Excel's auto-fit behavior.
+
+    Args:
+        file_path (str or Path): Path to the Excel file.
+        sheet_name (str): The name of the worksheet to adjust.
+    """
+    wb = load_workbook(file_path)
+
+    if sheet_name not in wb.sheetnames:
+        print(f"[ERROR] Sheet '{sheet_name}' not found in workbook.")
+        return
+
+    ws = wb[sheet_name]
+
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column  # Get the column number (1-based)
+        column_letter = get_column_letter(column)
+        for cell in col:
+            try:
+                if cell.value:
+                    max_length = max(max_length, len(str(cell.value)))
+            except:
+                pass
+
+        adjusted_width = max_length + 2  # Padding for readability
+        ws.column_dimensions[column_letter].width = adjusted_width
+
+    wb.save(file_path)

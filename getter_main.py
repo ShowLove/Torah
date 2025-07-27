@@ -88,5 +88,12 @@ def main():
 
         driver.quit()
 
+        ###########################################################################
+        # Step #4 - Format the excel sheet
+        #         - Make sure column widths are the size of largest string.
+        filename = filename + ".xlsx"
+        xlsx_file_path = directory / filename
+        excel_engine.autofit_excel_columns(xlsx_file_path, sheet_name)
+
 if __name__ == "__main__":
     main()
