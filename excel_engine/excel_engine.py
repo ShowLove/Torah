@@ -2,6 +2,7 @@ import os
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.styles import Font, Alignment, PatternFill
+from openpyxl.utils import get_column_letter
 from pathlib import Path
 
 def create_excel_file(filename, directory):
@@ -142,3 +143,31 @@ def create_excel_m(filename: str, directory: Path, headers: list[str]):
 
     #print(f"[INFO] Excel file created and styled: {xlsx_path}")
     return xlsx_path
+
+def write_string_to_excel(file_path, sheet_name, cell, text):
+    """
+    Writes a string to a specific cell in a specified worksheet of an existing xlsx file.
+    Creates the worksheet if it doesn't exist. Only modifies the specified worksheet.
+
+    :param file_path: Path to the Excel file
+    :param sheet_name: Name of the sheet to write to (creates if missing)
+    :param cell: Cell reference as a string (e.g., 'B4')
+    :param text: The string to write
+    """
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File '{file_path}' does not exist.")
+
+    # Load the workbook
+    wb = load_workbook(file_path)
+
+    # Get or create the specified sheet
+    if sheet_name in wb.sheetnames:
+        ws = wb[sheet_name]
+    else:
+        ws = wb.create_sheet(title=sheet_name)
+
+    # Write the text to the specified cell
+    ws[cell] = text
+
+    # Save the workbook
+    wb.save(file_path)
