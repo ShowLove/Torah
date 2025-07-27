@@ -3,7 +3,7 @@ import getSite
 
 def main(debug=False):
     # Step 1: Launch Book/Chapter/Verse Selector
-    book, chapter, verse = getBookChVerse.main()
+    book, chapter, verse = gui_getter.main()
 
     # Step 2: Launch Website Selector
     website = getSite.main()

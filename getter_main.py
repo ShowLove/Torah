@@ -22,7 +22,7 @@ for path in PARENT_DIRS:
 # -------------------------
 # Import Dependencies
 # -------------------------
-from torah_search_bar import getBookChVerse, getSite
+from torah_search_bar import gui_getter, getSite
 import json_funcs                 # utils directory
 import utils                      # utils directory
 import metsudah_chumash_web_nav   # web_navigator directory

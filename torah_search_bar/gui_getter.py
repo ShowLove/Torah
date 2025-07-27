@@ -137,7 +137,7 @@ def create_gui():
 
 
 # Run and print results
-def main():
+def get_book_ch_verse_from_gui():
     # Launch the GUI and capture results
     book, chapter, verse = create_gui()
 
@@ -151,4 +151,4 @@ def main():
     return book, chapter, verse
 
 if __name__ == "__main__":
-    main()
+    get_book_ch_verse_from_gui()

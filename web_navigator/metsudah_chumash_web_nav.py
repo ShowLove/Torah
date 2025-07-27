@@ -33,7 +33,7 @@ DEPENDENCY_DIRS = [
 # -------------------------
 # Import Dependencies
 # -------------------------
-from torah_search_bar import getBookChVerse, getSite
+from torah_search_bar import gui_getter, getSite
 import utils                      # utils directory
 import json_funcs                 # utils directory
 
@@ -293,7 +293,7 @@ def get_metsudah_verse(book, chapter, verse):
 
 def get_torah_data_from_gui_prompt():
 
-    book, chapter, verse = getBookChVerse.main()
+    book, chapter, verse = gui_getter.get_book_ch_verse_from_gui()
     website = getSite.main()
     parasha = inquireForParasha(book, chapter, verse)
     print(f"{parasha} {book}, ch:{chapter} v:{verse} \nFrom WebSite: {website}")
@@ -354,11 +354,11 @@ def get_metsudah_ch(book, chapter):
         return driver, None, None
 
 def get_and_display_metsudah_verse_m():
-
     book, chapter, verse, website, parasha = get_torah_data_from_gui_prompt();
     driver, verse_str, text_str = metsudah_eng_verse_getter(book, chapter, verse, website, parasha)
     if not driver:
         return
+
     utils.display_verse(verse_str, text_str)
     driver.quit()
 
