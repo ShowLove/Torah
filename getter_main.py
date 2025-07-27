@@ -39,7 +39,22 @@ def main():
         metsudah_chumash_web_nav.get_and_display_metsudah_verse_m()
     elif choice == "2":
 
-        metsudah_chumash_web_nav.get_metsudah_ch("Genesis", 1)
+        book = "Genesis"
+        chapter = 1
+
+        # Call function to get driver and verse data
+        verse_data, driver = metsudah_chumash_web_nav.get_metsudah_ch(book, chapter)
+
+        if not isinstance(verse_data, dict):
+            print("[ERROR] verse_data is not a dictionary. Exiting.")
+            return
+
+        for verse_ref, verse_text in verse_data.items():
+            print(f"{verse_ref}: {verse_text}")
+
+        driver.quit()
+
+
     else:
         print("Have a nice Day !")
 

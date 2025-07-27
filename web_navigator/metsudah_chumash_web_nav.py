@@ -325,14 +325,14 @@ def get_metsudah_ch(book, chapter):
     driver = open_website_from_json("current_verse_target.json")
 
     if not driver:
-        return None, None, None
+        return None, None
 
     try:
         print("Initial Page Title:", driver.title)
 
         # Select book, chapter, and verse
-        verse = "1"
-        driver = select_chumash_options(driver, book, chapter, verse)
+        starting_verse = "1"
+        driver = select_chumash_options(driver, book, chapter, starting_verse)
         time.sleep(3)  # Allow the page to update
 
         # Click the GO button
@@ -340,18 +340,19 @@ def get_metsudah_ch(book, chapter):
         print("After GO Click Page Title:", driver.title)
         time.sleep(3)  # Wait for content to load
 
-        total_verses_in_ch = utils.get_torah_ch_verse_num("Genesis", 1)
+        total_verses_in_ch = utils.get_torah_ch_verse_num(book, chapter)
+        verse_data = {}  # Dictionary to hold verse:text mapping
+
         for verse in range(1, total_verses_in_ch + 1):
-            # Extract the verse and text
             verse_str, text_str, driver = extract_verse_data(driver, verse)
-            print(f"{verse_str} {text_str}")
+            verse_data[verse_str] = text_str
+            #print(f"{verse_str} {text_str}")
 
-
-        return driver, verse_str, text_str
+        return verse_data, driver
 
     except Exception as e:
-        print("An error occurred:", e)
-        return driver, None, None
+        print(f"[ERROR] Exception occurred: {e}")
+        return None, driver
 
 def get_and_display_metsudah_verse_m():
     book, chapter, verse, website, parasha = get_torah_data_from_gui_prompt();
