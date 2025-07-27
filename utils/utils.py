@@ -49,6 +49,9 @@ EXCEL_ENGINE_DIR = PROJECT_ROOT / "excel_engine"
 OUTPUT_DATA_DIR = DATA_DIR / "output_data"
 OUT_ENG_TORAH_XLSX = OUTPUT_DATA_DIR / "eng_torah_xlsx"
 
+# Sites metsudah
+METSUDAH_ENG_SITE = "http://www.mnemotrix.com/texis/vtx/chumash"
+
 import excel_engine
 
 def terminal_prompt():

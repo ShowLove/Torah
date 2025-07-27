@@ -31,19 +31,20 @@ import excel_engine               # excel_engine directory
 
 def main():
 
+    # Hard Coded Values
+    book = "Genesis"
+    chapter = 5
+
     # Ask the user to choose between the options
     choice = utils.terminal_prompt()
     if choice == "1":
         # Gets a verse from teh metsudah site based on gui input
         metsudah_chumash_web_nav.get_and_display_metsudah_verse_m()
     elif choice == "2":
-        book = "Genesis"
-        chapter = 5
         # Get a chapter from the chumash site and save it in excel.
         metsudah_chumash_web_nav.save_torah_chapter_to_excel_m(book, chapter)
     elif choice == "3":
-        eng_website_url = "http://www.mnemotrix.com/texis/vtx/chumash"
-        web_utils.main_open_website_with_chrome(eng_website_url)
+        web_utils.main_open_website_with_chrome(utils.METSUDAH_ENG_SITE)
     else:
         print("Have a nice day !")
 
