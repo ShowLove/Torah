@@ -41,9 +41,10 @@ def main():
         # Gets a verse from teh metsudah site based on gui input
         metsudah_chumash_web_nav.get_and_display_metsudah_verse_m()
     elif choice == "2":
-        # Get a chapter from the chumash site and save it in excel.
+        # Get a chapter from the Metsudah Eng translation site and save it in excel.
         metsudah_chumash_web_nav.save_torah_chapter_to_excel_m(book, chapter)
     elif choice == "3":
+        # Open the Eng Metsudah translation site
         web_utils.main_open_website_with_chrome(utils.METSUDAH_ENG_SITE)
     else:
         print("Have a nice day !")
