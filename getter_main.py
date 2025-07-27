@@ -42,6 +42,7 @@ def main():
         book = "Genesis"
         chapter = 2
 
+        # Get a chapter from the chumash site and save it in excel.
         metsudah_chumash_web_nav.save_torah_chapter_to_excel(book, chapter)
 
 if __name__ == "__main__":
