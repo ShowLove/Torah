@@ -27,7 +27,8 @@ PROJECT_ROOT = BASE_DIR.parent
 # Folders in the root directory that contain modules
 DEPENDENCY_DIRS = [
     BASE_DIR / "web_navigator",
-    PROJECT_ROOT / "utils"
+    PROJECT_ROOT / "utils",
+    PROJECT_ROOT / "excel_engine"
 ]
 
 # -------------------------
@@ -36,6 +37,7 @@ DEPENDENCY_DIRS = [
 from torah_search_bar import gui_getter, getSite
 import utils                      # utils directory
 import json_funcs                 # utils directory
+import excel_engine               # excel_engine directory
 
 def inquireForParasha(book, chapter, verse):
 
@@ -362,6 +364,51 @@ def get_and_display_metsudah_verse_m():
 
     utils.display_verse(verse_str, text_str)
     driver.quit()
+
+def save_torah_chapter_to_excel(torah_book: str, chapter: int):
+    """
+    Fetches English Metsudah Torah text for a given book and chapter,
+    and writes the verse references and texts to an Excel file.
+
+    Args:
+        torah_book (str): Name of the Torah book (e.g., "Genesis").
+        chapter (int): Chapter number to retrieve.
+    """
+
+    # Step 1: Fetch the verse data from Metsudah
+    verse_data, driver = get_metsudah_ch(torah_book, chapter)
+
+    if not isinstance(verse_data, dict):
+        print("[ERROR] verse_data is not a dictionary. Exiting.")
+        return
+
+    # Step 2: Prepare Excel writing
+    sheet_name = f"{torah_book} CH{chapter}"
+    directory = utils.OUT_ENG_TORAH_XLSX
+    filename = torah_book
+    headers = ["Verse", "Verse_String"]
+
+    # Step 3: Create Excel file with headers
+    xlsx_path = excel_engine.create_excel_m(filename, directory, headers, sheet_name)
+
+    # Step 4: Write verse data
+    if xlsx_path:
+        start_row = 2
+        for idx, (verse_ref, verse_text) in enumerate(verse_data.items(), start=start_row):
+            verse_cell = f"A{idx}"
+            text_cell = f"B{idx}"
+            excel_engine.write_string_to_excel(xlsx_path, sheet_name=sheet_name, cell=verse_cell, text=verse_ref)
+            excel_engine.write_string_to_excel(xlsx_path, sheet_name=sheet_name, cell=text_cell, text=verse_text)
+
+        print(f"Data written to {xlsx_path}")
+    else:
+        print("Failed to create Excel file.")
+
+    driver.quit()
+
+    # Step 5: Auto-adjust column widths
+    final_xlsx_file = directory / f"{filename}.xlsx"
+    excel_engine.autofit_excel_columns(final_xlsx_file, sheet_name)
 
 # Example usage
 if __name__ == "__main__":
