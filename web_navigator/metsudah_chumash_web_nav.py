@@ -291,15 +291,16 @@ def get_metsudah_verse(book, chapter, verse):
         print("An error occurred:", e)
         return driver, None, None
 
-def metsudah_eng_verse_getter_from_gui():
-
-    ######## 1. use GUI to prompt ##############################################
-    ######## Get Torah Data from our GUI ##############################################
+def get_torah_data_from_gui_prompt():
 
     book, chapter, verse = getBookChVerse.main()
     website = getSite.main()
     parasha = inquireForParasha(book, chapter, verse)
     print(f"{parasha} {book}, ch:{chapter} v:{verse} \nFrom WebSite: {website}")
+
+    return book, chapter, verse, website, parasha
+
+def metsudah_eng_verse_getter_from_gui(book, chapter, verse, website, parasha):
 
     # Check for missing inputs
     if not website or parasha is None:
@@ -318,13 +319,6 @@ def metsudah_eng_verse_getter_from_gui():
         return None, None, None
 
     return driver, verse_str, text_str
-
-def get_and_display_metsudah_verse_m():
-    driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui()
-    if not driver:
-        return
-    utils.display_verse(verse_str, text_str)
-    driver.quit()
 
 def get_metsudah_ch(book, chapter):
     # Open the English website
@@ -358,6 +352,15 @@ def get_metsudah_ch(book, chapter):
     except Exception as e:
         print("An error occurred:", e)
         return driver, None, None
+
+def get_and_display_metsudah_verse_m():
+
+    book, chapter, verse, website, parasha = get_torah_data_from_gui_prompt();
+    driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui(book, chapter, verse, website, parasha)
+    if not driver:
+        return
+    utils.display_verse(verse_str, text_str)
+    driver.quit()
 
 # Example usage
 if __name__ == "__main__":
