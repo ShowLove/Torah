@@ -7,15 +7,18 @@ from pathlib import Path
 
 def create_excel_file(filename, directory, sheet_name="Sheet1"):
     """
-    Creates an Excel file with the given filename and specified sheet name in the given directory.
+    Creates or updates an Excel file with the given filename and specified sheet name in the given directory.
+
+    If the file already exists, a new sheet is added unless a sheet with the same name exists,
+    in which case that sheet is overwritten.
 
     Args:
         filename (str): Name of the Excel file to create (e.g., 'report.xlsx').
         directory (str): Directory path where the Excel file should be created.
-        sheet_name (str): Name of the initial worksheet. Defaults to 'Sheet1'.
+        sheet_name (str): Name of the worksheet. Defaults to 'Sheet1'.
 
     Returns:
-        str: Full path to the created Excel file, or None if directory doesn't exist.
+        str: Full path to the created or updated Excel file, or None if directory doesn't exist.
     """
     if not os.path.isdir(directory):
         print(f"[ERROR] Directory does not exist: {directory}")
@@ -27,15 +30,19 @@ def create_excel_file(filename, directory, sheet_name="Sheet1"):
 
     file_path = os.path.join(directory, filename)
 
-    # Create a new Excel workbook
-    wb = Workbook()
-    ws = wb.active
-    ws.title = sheet_name
+    if os.path.exists(file_path):
+        wb = load_workbook(file_path)
+        if sheet_name in wb.sheetnames:
+            # Remove existing sheet to overwrite it
+            std = wb[sheet_name]
+            wb.remove(std)
+        wb.create_sheet(title=sheet_name)
+    else:
+        wb = Workbook()
+        ws = wb.active
+        ws.title = sheet_name
 
-    # Save the workbook
     wb.save(file_path)
-    #print(f"Excel file created: {file_path}")
-
     return file_path
 
 def style_excel_header(file_path, header_names, sheet_name=None):

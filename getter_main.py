@@ -38,7 +38,7 @@ def main():
     elif choice == "2":
 
         book = "Genesis"
-        chapter = 3
+        chapter = 5
         # Get a chapter from the chumash site and save it in excel.
         metsudah_chumash_web_nav.save_torah_chapter_to_excel_m(book, chapter)
     else:
