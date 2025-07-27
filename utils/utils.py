@@ -58,8 +58,9 @@ def terminal_prompt():
     # Ask the user to choose between the options
     print("Choose an option:")
     print("     1. Get a single verse from GUI input retrieved from the metsudah site.")
-    print("     2. Get a chapter of the Torah based on a hard coded value. ")
+    print("     2. Get a chapter of the Torah from the Metsudah Eng translation site based on a hard coded value. ")
     print("     3. Open the metsudah site in chrome. ")
+    print("     4. Get a book from the Metsudah Eng translation site and save it in excel based on a hard coded value.. ")
     choice = input("Please enter a number: 1 through 2:      (input) -->").strip()
     return choice
 
@@ -105,6 +106,23 @@ def load_json(json_filename):
         raise ValueError(f"Expected JSON object in {json_filename}, got {type(data)}")
 
     return data
+
+def get_torah_book_num_chapters(book_name, json_filename="TorahChapterLengths.json"):
+    """
+    Returns the number of chapters in a given Torah book.
+
+    Args:
+        book_name (str): Name of the Torah book (e.g., 'Genesis').
+        json_filename (str): Path to JSON file containing chapter counts.
+
+    Returns:
+        int: Number of chapters in the book.
+    """
+    data = load_json(json_filename)
+    try:
+        return len(data["books"][book_name]["chapters"])
+    except KeyError:
+        raise ValueError(f"Book '{book_name}' not found in JSON data.")
 
 def get_torah_ch_verse_num(book_name, chapter_number, json_filename="TorahChapterLengths.json"):
     """

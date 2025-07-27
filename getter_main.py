@@ -32,8 +32,8 @@ import excel_engine               # excel_engine directory
 def main():
 
     # Hard Coded Values
-    book = "Genesis"
-    chapter = 5
+    hc_book = "Genesis"
+    hc_chapter = 5
 
     # Ask the user to choose between the options
     choice = utils.terminal_prompt()
@@ -41,11 +41,22 @@ def main():
         # Gets a verse from teh metsudah site based on gui input
         metsudah_chumash_web_nav.get_and_display_metsudah_verse_m()
     elif choice == "2":
+        # From - Hard Coded Values
         # Get a chapter from the Metsudah Eng translation site and save it in excel.
-        metsudah_chumash_web_nav.save_torah_chapter_to_excel_m(book, chapter)
+        metsudah_chumash_web_nav.save_torah_chapter_to_excel_m(hc_book, hc_chapter)
     elif choice == "3":
         # Open the Eng Metsudah translation site
         web_utils.main_open_website_with_chrome(utils.METSUDAH_ENG_SITE)
+    elif choice == "4":
+        # From - Hard Coded Values
+        # Get a book from the Metsudah Eng translation site and save it in excel.
+        # One sheet per chapter of book and one excel per book will be saved one book at a time.
+        chapter_count = utils.get_torah_book_num_chapters(hc_book)
+        # Iterate through each chapter number
+        for num_chapter in range(1, chapter_count + 1):
+            print(f"Processing {hc_book} Chapter {num_chapter}...")
+            # Get a chapter from the Metsudah Eng translation site and save it in excel.
+            metsudah_chumash_web_nav.save_torah_chapter_to_excel_m(hc_book, num_chapter)
     else:
         print("Have a nice day !")
 
