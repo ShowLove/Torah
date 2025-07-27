@@ -365,7 +365,7 @@ def get_and_display_metsudah_verse_m():
     utils.display_verse(verse_str, text_str)
     driver.quit()
 
-def save_torah_chapter_to_excel(torah_book: str, chapter: int):
+def save_torah_chapter_to_excel_m(torah_book: str, chapter: int):
     """
     Fetches English Metsudah Torah text for a given book and chapter,
     and writes the verse references and texts to an Excel file.
