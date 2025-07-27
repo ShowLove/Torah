@@ -300,7 +300,7 @@ def get_torah_data_from_gui_prompt():
 
     return book, chapter, verse, website, parasha
 
-def metsudah_eng_verse_getter_from_gui(book, chapter, verse, website, parasha):
+def metsudah_eng_verse_getter(book, chapter, verse, website, parasha):
 
     # Check for missing inputs
     if not website or parasha is None:
@@ -356,7 +356,7 @@ def get_metsudah_ch(book, chapter):
 def get_and_display_metsudah_verse_m():
 
     book, chapter, verse, website, parasha = get_torah_data_from_gui_prompt();
-    driver, verse_str, text_str = metsudah_eng_verse_getter_from_gui(book, chapter, verse, website, parasha)
+    driver, verse_str, text_str = metsudah_eng_verse_getter(book, chapter, verse, website, parasha)
     if not driver:
         return
     utils.display_verse(verse_str, text_str)
