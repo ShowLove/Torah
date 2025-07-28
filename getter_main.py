@@ -14,7 +14,8 @@ PARENT_DIRS = [
     BASE_DIR / "data",
     BASE_DIR / "web_navigator",
     BASE_DIR / "excel_engine",
-    BASE_DIR / "xml_engine"
+    BASE_DIR / "xml_engine",
+    BASE_DIR / "docx_engine"
 ]
 
 for path in PARENT_DIRS:
@@ -30,12 +31,16 @@ import metsudah_chumash_web_nav   # web_navigator directory
 import web_utils                  # web_navigator directory
 import excel_engine               # excel_engine directory
 import TanachXML_engine           # xml_engine directory
+import docx_engine                # docx_engine directory
 
 def main():
 
     # Hard Coded Values
     # Books - Genesis, Exodus, Leviticus, Numbers, Deuteronomy
+    #          בראשית  שמות    ויקרא      במדבר    דברים
+    # Books Heb - 
     hc_book = "Genesis"
+    hc_book_heb = "בראשית"
     hc_book_xml = "Genesis.xml"
     hc_chapter = 1
     hc_verse = 1
@@ -60,6 +65,12 @@ def main():
     elif choice == "5":
         # Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex.
         TanachXML_engine.example_usage(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse, hc_word_index)
+    elif choice == "6":
+
+        header = hc_book + " Chapter " + str(hc_chapter)
+        heb_text = "תּוֹרָה - סֵפֶר " + hc_book_heb
+        file_name = hc_book + "_Ch_" + str(hc_chapter) + ".docx"
+        docx_engine.create_docx_with_header(header, heb_text, utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
     else:
         print("Have a nice day !")
 

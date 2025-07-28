@@ -53,6 +53,9 @@ OUT_ENG_TORAH_XLSX = OUTPUT_DATA_DIR / "eng_torah_xlsx"
 # The Unicode/XML Leningrad Codex (UXLC) is a transcription of the Leningrad Codex (LC) 
 HEB_TORAH_BOOK_DATA_XML = DATA_DIR / "Tanach.xml" / "Books"
 
+METSUDAH_DOCX_ENG_OUTPUT = DATA_DIR / "docx_output_data" / "metsudah_docx_eng_output"
+
+
 # Sites metsudah
 METSUDAH_ENG_SITE = "http://www.mnemotrix.com/texis/vtx/chumash"
 
@@ -66,7 +69,8 @@ def terminal_prompt():
     print("     3. Open the metsudah site in chrome. ")
     print("     4. Get a book from the Metsudah Eng translation site and save it in excel based on a hard coded value. ")
     print("     5. Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex from hard coded values. ")
-    choice = input("Please enter a number: 1 through 2:      (input) -->").strip()
+    print("     6. Create a word document of a book chapter of mixed Heb and Metsudah Eng based on hard coded values.")
+    choice = input("Please enter a number: 1 through 2:      (input) -->  ").strip()
     return choice
 
 def display_verse(verse_str, text_str):
