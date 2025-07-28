@@ -13,7 +13,8 @@ PARENT_DIRS = [
     BASE_DIR / "utils",
     BASE_DIR / "data",
     BASE_DIR / "web_navigator",
-    BASE_DIR / "excel_engine"
+    BASE_DIR / "excel_engine",
+    BASE_DIR / "xml_engine"
 ]
 
 for path in PARENT_DIRS:
@@ -28,13 +29,17 @@ import utils                      # utils directory
 import metsudah_chumash_web_nav   # web_navigator directory
 import web_utils                  # web_navigator directory
 import excel_engine               # excel_engine directory
+import TanachXML_engine           # xml_engine directory
 
 def main():
 
     # Hard Coded Values
     # Books - Genesis, Exodus, Leviticus, Numbers, Deuteronomy
-    hc_book = "Deuteronomy"
-    hc_chapter = 5
+    hc_book = "Genesis"
+    hc_book_xml = "Genesis.xml"
+    hc_chapter = 1
+    hc_verse = 1
+    hc_word_index = 3
 
     # Ask the user to choose between the options
     choice = utils.terminal_prompt()
@@ -53,14 +58,8 @@ def main():
         # Get a book from the Metsudah Eng translation site and save it in excel.
         metsudah_chumash_web_nav.save_entire_torah_book_to_excel_m(hc_book)
     elif choice == "5":
-        # Masoretic Text -  https://tanach.us/Tanach.xml
-        # The Unicode/XML Leningrad Codex (UXLC) is a transcription of the Leningrad Codex (LC) 
-        # into a modern computer format (Unicode, XML). The UXLC text is a fork of the Groves Centers
-        # Westminster Leningrad Codex [ WLC 4.20, Revision 1950 of 2016-01-25 ]. The text is updated 
-        # semi-annually to better match the LC from reader suggestions through a formal and automated 
-        # process; more than a thousand changes have been made to date. The Hebrew text is version 
-        # controlled to provide a fixed reference for derived work. 
-        # The current release is UXLC 2.3 (27.4) of 31 March 2025 06:24. See the Technical page for further details.
+        # Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex.
+        TanachXML_engine.example_usage(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse, hc_word_index)
     else:
         print("Have a nice day !")
 

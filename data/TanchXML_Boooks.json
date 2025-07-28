@@ -1,0 +1,56 @@
+{
+  "Torah": [
+    "Genesis.xml",
+    "Exodus.xml",
+    "Leviticus.xml",
+    "Numbers.xml",
+    "Deuteronomy.xml"
+  ],
+  "Neviim": [
+    "Joshua.xml",
+    "Judges.xml",
+    "Samuel_1.xml",
+    "Samuel_2.xml",
+    "Kings_1.xml",
+    "Kings_2.xml",
+    "Isaiah.xml",
+    "Jeremiah.xml",
+    "Ezekiel.xml",
+    "Hosea.xml",
+    "Joel.xml",
+    "Amos.xml",
+    "Obadiah.xml",
+    "Jonah.xml",
+    "Micah.xml",
+    "Nahum.xml",
+    "Habakkuk.xml",
+    "Zephaniah.xml",
+    "Haggai.xml",
+    "Zechariah.xml",
+    "Malachi.xml"
+  ],
+  "Ketuvim": [
+    "Psalms.xml",
+    "Proverbs.xml",
+    "Job.xml",
+    "Song_of_Songs.xml",
+    "Ruth.xml",
+    "Lamentations.xml",
+    "Ecclesiastes.xml",
+    "Esther.xml",
+    "Daniel.xml",
+    "Ezra.xml",
+    "Nehemiah.xml",
+    "Chronicles_1.xml",
+    "Chronicles_2.xml"
+  ],
+  "Other": [
+    "Genesis.DH.xml",
+    "Exodus.DH.xml",
+    "Leviticus.DH.xml",
+    "Numbers.DH.xml",
+    "Deuteronomy.DH.xml",
+    "TanachHeader.xml",
+    "TanachIndex.xml"
+  ]
+}

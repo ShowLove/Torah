@@ -49,6 +49,10 @@ EXCEL_ENGINE_DIR = PROJECT_ROOT / "excel_engine"
 OUTPUT_DATA_DIR = DATA_DIR / "output_data"
 OUT_ENG_TORAH_XLSX = OUTPUT_DATA_DIR / "eng_torah_xlsx"
 
+# Masoretic Text -  https://tanach.us/Tanach.xml
+# The Unicode/XML Leningrad Codex (UXLC) is a transcription of the Leningrad Codex (LC) 
+HEB_TORAH_BOOK_DATA_XML = DATA_DIR / "Tanach.xml" / "Books"
+
 # Sites metsudah
 METSUDAH_ENG_SITE = "http://www.mnemotrix.com/texis/vtx/chumash"
 
@@ -61,6 +65,7 @@ def terminal_prompt():
     print("     2. Get a chapter of the Torah from the Metsudah Eng translation site based on a hard coded value. ")
     print("     3. Open the metsudah site in chrome. ")
     print("     4. Get a book from the Metsudah Eng translation site and save it in excel based on a hard coded value.. ")
+    print("     5. Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex. ")
     choice = input("Please enter a number: 1 through 2:      (input) -->").strip()
     return choice
 
