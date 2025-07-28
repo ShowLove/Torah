@@ -64,8 +64,8 @@ def terminal_prompt():
     print("     1. Get a single verse from GUI input retrieved from the metsudah site.")
     print("     2. Get a chapter of the Torah from the Metsudah Eng translation site based on a hard coded value. ")
     print("     3. Open the metsudah site in chrome. ")
-    print("     4. Get a book from the Metsudah Eng translation site and save it in excel based on a hard coded value.. ")
-    print("     5. Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex. ")
+    print("     4. Get a book from the Metsudah Eng translation site and save it in excel based on a hard coded value. ")
+    print("     5. Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex from hard coded values. ")
     choice = input("Please enter a number: 1 through 2:      (input) -->").strip()
     return choice
 
