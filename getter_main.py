@@ -69,7 +69,9 @@ def main():
 
         heb_verse_num = utils.get_hebrew_verse_num(hc_verse, utils.H_VERSE_NUM_JSON)
         heb_verse = TanachXML_engine.get_verse(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse)
+        heb_verse = " ".join(heb_verse)
         heb_string = str(heb_verse_num) + "   " + str(heb_verse)
+
         print(f"Hebrew Verse Number is --> {heb_verse_num}")
         print(f"Hebrew Verse is --> {heb_verse}")
         print(heb_string)
