@@ -43,7 +43,7 @@ def main():
     hc_book_heb = "בראשית"
     hc_book_xml = "Genesis.xml"
     hc_chapter = 1
-    hc_verse = 1
+    hc_verse = 70
     hc_word_index = 3
 
     # Ask the user to choose between the options
@@ -66,6 +66,10 @@ def main():
         # Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex.
         TanachXML_engine.example_usage(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse, hc_word_index)
     elif choice == "6":
+
+
+        heb_verse_num = utils.get_hebrew_verse_num(hc_verse, utils.H_VERSE_NUM_JSON);
+        print(f"Hebrew Verse Number is --> {heb_verse_num}")
 
         header = hc_book + " Chapter " + str(hc_chapter)
         heb_text = "תּוֹרָה - סֵפֶר " + hc_book_heb

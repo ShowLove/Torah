@@ -53,8 +53,11 @@ OUT_ENG_TORAH_XLSX = OUTPUT_DATA_DIR / "eng_torah_xlsx"
 # The Unicode/XML Leningrad Codex (UXLC) is a transcription of the Leningrad Codex (LC) 
 HEB_TORAH_BOOK_DATA_XML = DATA_DIR / "Tanach.xml" / "Books"
 
+# DOCX METSUDAH OUTPUT PATH
 METSUDAH_DOCX_ENG_OUTPUT = DATA_DIR / "docx_output_data" / "metsudah_docx_eng_output"
 
+# Specific json files.
+H_VERSE_NUM_JSON = DATA_DIR / "heb_verse_nums.json"
 
 # Sites metsudah
 METSUDAH_ENG_SITE = "http://www.mnemotrix.com/texis/vtx/chumash"
@@ -115,6 +118,21 @@ def load_json(json_filename):
         raise ValueError(f"Expected JSON object in {json_filename}, got {type(data)}")
 
     return data
+
+def get_hebrew_verse_num(verse_number, json_filename):
+    """
+    Returns the Hebrew label for a given verse number using a JSON file.
+
+    :param verse_number: int - The verse number to look up (1–176).
+    :param json_filename: str - Name of the JSON file (inside /data) to load.
+    :return: str - The corresponding Hebrew label, or an error message.
+    """
+    try:
+        verse_map = load_json(json_filename)
+        number_to_hebrew = {v: k for k, v in verse_map.items()}
+        return number_to_hebrew.get(verse_number, "Invalid verse number")
+    except Exception as e:
+        return f"Error: {e}"
 
 def get_torah_book_num_chapters(book_name, json_filename="TorahChapterLengths.json"):
     """
