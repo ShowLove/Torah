@@ -67,15 +67,24 @@ def main():
         TanachXML_engine.example_usage(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse, hc_word_index)
     elif choice == "6":
 
+        # Get a HEB verse string with verse number
         heb_verse_num = utils.get_hebrew_verse_num(hc_verse, utils.H_VERSE_NUM_JSON)
         heb_verse = TanachXML_engine.get_verse(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse)
         heb_verse = " ".join(heb_verse)
         heb_string = str(heb_verse_num) + "   " + str(heb_verse)
-
-        print(f"Hebrew Verse Number is --> {heb_verse_num}")
-        print(f"Hebrew Verse is --> {heb_verse}")
         print(heb_string)
 
+        # Get a ENG verse string with verse number 
+        row = hc_verse + 1 # Because the first row is the header we do: + 1.
+        sheet = str(hc_book) + " CH" + str(hc_chapter) 
+        xlsx_metsudah_eng = hc_book + ".xlsx"
+        eng_metsudah_xlsx_path = utils.METSUDAH_XLSX_ENG_FILES / xlsx_metsudah_eng
+        a, b = excel_engine.get_excel_row_ab(eng_metsudah_xlsx_path, sheet, row)
+        print("Column A:", a)
+        print("Column B:", b)
+
+
+        # Create a docx file with a header
         header = hc_book + " Chapter " + str(hc_chapter)
         heb_text = "תּוֹרָה - סֵפֶר " + hc_book_heb
         file_name = hc_book + "_Ch_" + str(hc_chapter) + ".docx"

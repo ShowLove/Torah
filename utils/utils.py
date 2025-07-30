@@ -47,6 +47,7 @@ EXCEL_ENGINE_DIR = PROJECT_ROOT / "excel_engine"
 
 # sub-paths
 OUTPUT_DATA_DIR = DATA_DIR / "output_data"
+METSUDAH_XLSX_ENG_FILES = DATA_DIR / "xlsx_data" / "metsudah_torah_eng"
 OUT_ENG_TORAH_XLSX = OUTPUT_DATA_DIR / "eng_torah_xlsx"
 
 # Masoretic Text -  https://tanach.us/Tanach.xml

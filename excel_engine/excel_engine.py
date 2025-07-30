@@ -212,3 +212,32 @@ def autofit_excel_columns(file_path, sheet_name):
         ws.column_dimensions[column_letter].width = adjusted_width
 
     wb.save(file_path)
+
+def get_excel_row_ab(file_path, sheet_name, row_number):
+    """
+    Returns the values from column A and B of a specific row in an Excel sheet.
+
+    :param file_path: str - Path to the Excel (.xlsx) file.
+    :param sheet_name: str - Sheet name to read from.
+    :param row_number: int - 1-based row number to retrieve.
+    :return: (str, str) - Tuple of (A cell value, B cell value)
+    :raises FileNotFoundError: If the file is not found.
+    :raises ValueError: If the sheet or row is invalid.
+    """
+    try:
+        wb = load_workbook(filename=file_path, read_only=True)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Excel file not found: {file_path}")
+
+    if sheet_name not in wb.sheetnames:
+        raise ValueError(f"Sheet '{sheet_name}' does not exist in the file.")
+
+    ws = wb[sheet_name]
+
+    cell_a = ws[f"A{row_number}"].value
+    cell_b = ws[f"B{row_number}"].value
+
+    if cell_a is None and cell_b is None:
+        raise ValueError(f"Row {row_number} is empty or out of bounds.")
+
+    return str(cell_a) if cell_a is not None else "", str(cell_b) if cell_b is not None else ""
