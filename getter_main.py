@@ -80,8 +80,8 @@ def main():
         xlsx_metsudah_eng = hc_book + ".xlsx"
         eng_metsudah_xlsx_path = utils.METSUDAH_XLSX_ENG_FILES / xlsx_metsudah_eng
         a, b = excel_engine.get_excel_row_ab(eng_metsudah_xlsx_path, sheet, row)
-        print("Column A:", a)
-        print("Column B:", b)
+        eng_string = str(a) + " " + str(b)
+        print(eng_string)
 
 
         # Create a docx file with a header
