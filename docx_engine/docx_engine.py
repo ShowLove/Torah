@@ -102,50 +102,39 @@ def append_paragraph_to_docx(doc: Document, text: str, is_hebrew: bool = False):
         run.font.size = Pt(FONT_SIZE_ENG)
         para.alignment = WD_ALIGN_PARAGRAPH.LEFT
 
+def get_heb_string(book_xml, chapter, verse):
+    verse_num = utils.get_hebrew_verse_num(verse, utils.H_VERSE_NUM_JSON)
+    verse_text = " ".join(TanachXML_engine.get_verse(utils.HEB_TORAH_BOOK_DATA_XML, book_xml, chapter, verse))
+    return f"{verse_num}   {verse_text}"
+
+def get_eng_string(book, chapter, verse):
+    row = verse + 1  # Excel row offset
+    sheet = f"{book} CH{chapter}"
+    path = utils.METSUDAH_XLSX_ENG_FILES / f"{book}.xlsx"
+    a, b = excel_engine.get_excel_row_ab(path, sheet, row)
+    return f"{a} {b}"
+
 def get_metsudah_ch_docx(hc_book: str, hc_book_heb: str, hc_chapter: int):
     """
     Export a full chapter of Torah to a DOCX file with Hebrew and English verses.
-
-    Args:
-        hc_book (str): Book name in English (e.g., "Genesis")
-        hc_chapter (int): Chapter number (1-based)
     """
 
-    # XML Book Name
-    hc_book_xml = str(hc_book) + ".xml"
-
-    # Get number of verses in the chapter
+    book_xml = f"{hc_book}.xml"
     num_verses = utils.get_torah_ch_verse_num(hc_book, hc_chapter)
 
-    # Prepare DOCX header and file path
     header = f"{hc_book} Chapter {hc_chapter}"
-    heb_text = f"תּוֹרָה - סֵפֶר {hc_book_heb}"
+    heb_header = f"תּוֹרָה - סֵפֶר {hc_book_heb}"
     file_name = f"{hc_book}_Ch_{hc_chapter}.docx"
+    output_path = utils.METSUDAH_DOCX_ENG_OUTPUT
 
-    doc = create_docx_with_header(header, heb_text, utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
+    doc = create_docx_with_header(header, heb_header, output_path, file_name)
 
-    # Loop through each verse
-    for hc_verse in range(1, num_verses + 1):
-        # Get Hebrew verse with verse number
-        heb_verse_num = utils.get_hebrew_verse_num(hc_verse, utils.H_VERSE_NUM_JSON)
-        heb_verse = TanachXML_engine.get_verse(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse)
-        heb_verse = " ".join(heb_verse)
-        heb_string = f"{heb_verse_num}   {heb_verse}"
-        append_paragraph_to_docx(doc, heb_string, is_hebrew=True)
+    for verse in range(1, num_verses + 1):
+        append_paragraph_to_docx(doc, get_heb_string(book_xml, hc_chapter, verse), is_hebrew=True)
+        append_paragraph_to_docx(doc, get_eng_string(hc_book, hc_chapter, verse), is_hebrew=False)
 
-        # Get English verse from Excel
-        row = hc_verse + 1  # +1 to skip header
-        sheet = f"{hc_book} CH{hc_chapter}"
-        xlsx_metsudah_eng = f"{hc_book}.xlsx"
-        eng_metsudah_xlsx_path = utils.METSUDAH_XLSX_ENG_FILES / xlsx_metsudah_eng
-        a, b = excel_engine.get_excel_row_ab(eng_metsudah_xlsx_path, sheet, row)
-        eng_string = f"{a} {b}"
-        append_paragraph_to_docx(doc, eng_string, is_hebrew=False)
-
-    # Save file
-    full_path = os.path.join(utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
-    doc.save(full_path)
-    print(f"[INFO] Saved chapter to: {full_path}")
+    doc.save(os.path.join(output_path, file_name))
+    print(f"[INFO] Saved chapter to: {os.path.join(output_path, file_name)}")
 
 # Example usage:
 # create_docx_with_header("Genesis - Chapter 1", "\u05d1\u05e8\u05d0\u05e9\u05d9\u05ea \u05e4\u05e8\u05e7 \u05d0", "/path/to/folder", "output.docx")
