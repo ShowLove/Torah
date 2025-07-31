@@ -9,3 +9,6 @@ torah_search_bar/.DS_Store
 
 #Ignore Output Data
 data/output_data/
+
+#Ignore docx output data
+data/docx_output_data/
