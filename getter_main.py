@@ -66,39 +66,8 @@ def main():
         # Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex.
         TanachXML_engine.example_usage(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse, hc_word_index)
     elif choice == "6":
-
-        # Get a HEB verse string with verse number
-        heb_verse_num = utils.get_hebrew_verse_num(hc_verse, utils.H_VERSE_NUM_JSON)
-        heb_verse = TanachXML_engine.get_verse(utils.HEB_TORAH_BOOK_DATA_XML, hc_book_xml, hc_chapter, hc_verse)
-        heb_verse = " ".join(heb_verse)
-        heb_string = str(heb_verse_num) + "   " + str(heb_verse)
-        print(heb_string)
-
-        # Get a ENG verse string with verse number 
-        row = hc_verse + 1 # Because the first row is the header we do: + 1.
-        sheet = str(hc_book) + " CH" + str(hc_chapter) 
-        xlsx_metsudah_eng = hc_book + ".xlsx"
-        eng_metsudah_xlsx_path = utils.METSUDAH_XLSX_ENG_FILES / xlsx_metsudah_eng
-        a, b = excel_engine.get_excel_row_ab(eng_metsudah_xlsx_path, sheet, row)
-        eng_string = str(a) + " " + str(b)
-        print(eng_string)
-
-        # Create a docx file with a header
-        header = hc_book + " Chapter " + str(hc_chapter)
-        heb_text = "תּוֹרָה - סֵפֶר " + hc_book_heb
-        file_name = hc_book + "_Ch_" + str(hc_chapter) + ".docx"
-        doc = docx_engine.create_docx_with_header(header, heb_text, utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
-
-        # Step 2: Add additional text
-        docx_engine.append_paragraph_to_docx(doc, heb_string, is_hebrew=True)
-        docx_engine.append_paragraph_to_docx(doc, eng_string, is_hebrew=False)
-
-        docx_engine.append_paragraph_to_docx(doc, heb_string, is_hebrew=True)
-        docx_engine.append_paragraph_to_docx(doc, eng_string, is_hebrew=False)
-
-        # Step 3: Save changes
-        full_path = os.path.join(utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
-        doc.save(full_path)
+        # Get a Chapter using eng Metsudah translation and the Hebrew.
+        docx_engine.get_metsudah_ch_docx(hc_book, hc_book_heb, hc_chapter)
     else:
         print("Have a nice day !")
 

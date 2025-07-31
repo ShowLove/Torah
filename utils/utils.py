@@ -38,6 +38,8 @@ for path in DEPENDENCY_DIRS:
     if path_str not in sys.path:
         sys.path.append(path_str)
 
+import excel_engine
+
 # absolute paths to subdirectories
 TORAH_SEARCH_BAR_DIR = PROJECT_ROOT / "torah_search_bar"
 UTILS_DIR = PROJECT_ROOT / "utils"
@@ -62,8 +64,6 @@ H_VERSE_NUM_JSON = DATA_DIR / "heb_verse_nums.json"
 
 # Sites metsudah
 METSUDAH_ENG_SITE = "http://www.mnemotrix.com/texis/vtx/chumash"
-
-import excel_engine
 
 def terminal_prompt():
     # Ask the user to choose between the options
