@@ -74,6 +74,7 @@ def terminal_prompt():
     print("     4. Get a book from the Metsudah Eng translation site and save it in excel based on a hard coded value. ")
     print("     5. Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex from hard coded values. ")
     print("     6. Create a word document of a book chapter of mixed Heb and Metsudah Eng based on hard coded values.")
+    print("     7. Create a word document with Notes sections of a book chapter of mixed Heb and Metsudah Eng based on hard coded values.")
     choice = input("Please enter a number: 1 through 2:      (input) -->  ").strip()
     return choice
 
