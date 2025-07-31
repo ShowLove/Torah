@@ -93,6 +93,9 @@ def main():
         docx_engine.append_paragraph_to_docx(doc, heb_string, is_hebrew=True)
         docx_engine.append_paragraph_to_docx(doc, eng_string, is_hebrew=False)
 
+        docx_engine.append_paragraph_to_docx(doc, heb_string, is_hebrew=True)
+        docx_engine.append_paragraph_to_docx(doc, eng_string, is_hebrew=False)
+
         # Step 3: Save changes
         full_path = os.path.join(utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
         doc.save(full_path)
