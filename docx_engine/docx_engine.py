@@ -114,7 +114,11 @@ def get_eng_string(book, chapter, verse):
     a, b = excel_engine.get_excel_row_ab(path, sheet, row)
     return f"{a} {b}"
 
-def get_metsudah_ch_docx(hc_book: str, hc_book_heb: str, hc_chapter: int):
+def get_notes_string(book, chapter, verse):
+    notes = f"[notes]( {book} Ch {chapter}, Verse {verse} )[end_notes]"
+    return f"{notes}"
+
+def get_metsudah_ch_docx(hc_book: str, hc_book_heb: str, hc_chapter: int, add_notes: bool = False):
     """
     Export a full chapter of Torah to a DOCX file with Hebrew and English verses.
     """
@@ -131,9 +135,13 @@ def get_metsudah_ch_docx(hc_book: str, hc_book_heb: str, hc_chapter: int):
     for verse in range(1, num_verses + 1):
         append_paragraph_to_docx(doc, get_heb_string(book_xml, hc_chapter, verse), is_hebrew=True)
         append_paragraph_to_docx(doc, get_eng_string(hc_book, hc_chapter, verse), is_hebrew=False)
+        if (add_notes):
+            append_paragraph_to_docx(doc, get_notes_string(hc_book, hc_chapter, verse), is_hebrew=False)
 
     doc.save(os.path.join(output_path, file_name))
     print(f"[INFO] Saved chapter to: {os.path.join(output_path, file_name)}")
+
+
 
 # Example usage:
 # create_docx_with_header("Genesis - Chapter 1", "\u05d1\u05e8\u05d0\u05e9\u05d9\u05ea \u05e4\u05e8\u05e7 \u05d0", "/path/to/folder", "output.docx")

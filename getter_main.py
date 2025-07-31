@@ -68,6 +68,9 @@ def main():
     elif choice == "6":
         # Get a Chapter using eng Metsudah translation and the Hebrew.
         docx_engine.get_metsudah_ch_docx(hc_book, hc_book_heb, hc_chapter)
+    elif choice == "7":
+        # Get a Chapter with notes using eng Metsudah translation and the Hebrew.
+        docx_engine.get_metsudah_ch_docx(hc_book, hc_book_heb, hc_chapter, True)
     else:
         print("Have a nice day !")
 
