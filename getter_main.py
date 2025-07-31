@@ -43,7 +43,7 @@ def main():
     hc_book_heb = "בראשית"
     hc_book_xml = "Genesis.xml"
     hc_chapter = 1
-    hc_verse = 1
+    hc_verse = 2
     hc_word_index = 3
 
     # Ask the user to choose between the options
@@ -83,12 +83,19 @@ def main():
         eng_string = str(a) + " " + str(b)
         print(eng_string)
 
-
         # Create a docx file with a header
         header = hc_book + " Chapter " + str(hc_chapter)
         heb_text = "תּוֹרָה - סֵפֶר " + hc_book_heb
         file_name = hc_book + "_Ch_" + str(hc_chapter) + ".docx"
-        docx_engine.create_docx_with_header(header, heb_text, utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
+        doc = docx_engine.create_docx_with_header(header, heb_text, utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
+
+        # Step 2: Add additional text
+        docx_engine.append_paragraph_to_docx(doc, heb_string, is_hebrew=True)
+        docx_engine.append_paragraph_to_docx(doc, eng_string, is_hebrew=False)
+
+        # Step 3: Save changes
+        full_path = os.path.join(utils.METSUDAH_DOCX_ENG_OUTPUT, file_name)
+        doc.save(full_path)
     else:
         print("Have a nice day !")
 

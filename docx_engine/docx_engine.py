@@ -56,5 +56,26 @@ def create_docx_with_header(eng_str: str, heb_str: str, file_path: str, file_nam
 
     return doc
 
+def append_paragraph_to_docx(doc: Document, text: str, is_hebrew: bool = False):
+    """
+    Appends a paragraph with specified text to a DOCX Document object.
+
+    Args:
+        doc (Document): An existing python-docx Document object.
+        text (str): Text content to append.
+        is_hebrew (bool): Whether the text is Hebrew (sets font/alignment accordingly).
+    """
+    para = doc.add_paragraph()
+    run = para.add_run(text)
+    
+    if is_hebrew:
+        run.font.name = DOCX_HEBREW_FONT
+        run.font.size = Pt(FONT_SIZE_HEB)
+        para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    else:
+        run.font.name = DOCX_ENGLISH_FONT
+        run.font.size = Pt(FONT_SIZE_ENG)
+        para.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
 # Example usage:
 # create_docx_with_header("Genesis - Chapter 1", "\u05d1\u05e8\u05d0\u05e9\u05d9\u05ea \u05e4\u05e8\u05e7 \u05d0", "/path/to/folder", "output.docx")
