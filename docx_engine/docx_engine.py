@@ -118,7 +118,6 @@ def get_metsudah_ch_docx(hc_book: str, hc_book_heb: str, hc_chapter: int):
     """
     Export a full chapter of Torah to a DOCX file with Hebrew and English verses.
     """
-
     book_xml = f"{hc_book}.xml"
     num_verses = utils.get_torah_ch_verse_num(hc_book, hc_chapter)
 
