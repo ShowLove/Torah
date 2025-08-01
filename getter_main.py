@@ -42,9 +42,10 @@ def main():
     hc_book = "Genesis"
     hc_book_heb = "בראשית"
     hc_book_xml = "Genesis.xml"
-    hc_chapter = 1
-    hc_verse = 2
+    hc_chapter = 6
+    hc_verse = 8
     hc_word_index = 3
+    get_notes = True
 
     # Ask the user to choose between the options
     choice = utils.terminal_prompt()
@@ -71,6 +72,9 @@ def main():
     elif choice == "7":
         # Get a Chapter with notes using eng Metsudah translation and the Hebrew.
         docx_engine.get_metsudah_ch_docx(hc_book, hc_book_heb, hc_chapter, True)
+    elif choice == "8":
+        # Get all chapters in a Book using eng Metsudah translation and the Hebrew.
+        docx_engine.metsudah_book_chapters_to_word(hc_book, hc_book_heb, get_notes)
     else:
         print("Have a nice day !")
 

@@ -141,7 +141,22 @@ def get_metsudah_ch_docx(hc_book: str, hc_book_heb: str, hc_chapter: int, add_no
     doc.save(os.path.join(output_path, file_name))
     print(f"[INFO] Saved chapter to: {os.path.join(output_path, file_name)}")
 
+def metsudah_book_chapters_to_word(book_name, book_name_heb, file_path):
+    """
+    Given a Torah book name, retrieves each chapter from the Book with a Metsudah English
+    translation and hebrew text and saves each chapter to a separate docx.
 
+    Args:
+        book_name (str): Name of the Torah book (e.g., 'Genesis')
+        book_name_heb (str): Name of the Torah book (e.g., 'בראשית')
+        file_name (str): Path and Name of the DOCX file to save.
+    """
+
+    chapter_count = utils.get_torah_book_num_chapters(book_name)
+
+    for num_chapter in range(1, chapter_count + 1):
+        print(f"Processing {book_name} ...")
+        get_metsudah_ch_docx(book_name, book_name_heb, num_chapter)
 
 # Example usage:
 # create_docx_with_header("Genesis - Chapter 1", "\u05d1\u05e8\u05d0\u05e9\u05d9\u05ea \u05e4\u05e8\u05e7 \u05d0", "/path/to/folder", "output.docx")
