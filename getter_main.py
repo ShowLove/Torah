@@ -39,12 +39,12 @@ def main():
     # Books - Genesis, Exodus, Leviticus, Numbers, Deuteronomy
     #          בראשית  שמות    ויקרא      במדבר    דברים
     # Books Heb - 
-    hc_book = "Genesis"
-    hc_book_heb = "בראשית"
-    hc_book_xml = "Genesis.xml"
-    hc_chapter = 6
-    hc_verse = 8
-    hc_word_index = 3
+    hc_book = "Exodus"
+    hc_book_heb = "שמות"
+    hc_book_xml = "Exodus.xml"
+    hc_chapter = 1
+    hc_verse = 1
+    hc_word_index = 1
     get_notes = True
 
     # Ask the user to choose between the options

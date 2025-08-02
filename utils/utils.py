@@ -68,13 +68,14 @@ METSUDAH_ENG_SITE = "http://www.mnemotrix.com/texis/vtx/chumash"
 def terminal_prompt():
     # Ask the user to choose between the options
     print("Choose an option:")
-    print("     1. Get a single verse from GUI input retrieved from the metsudah site.")
-    print("     2. Get a chapter of the Torah from the Metsudah Eng translation site based on a hard coded value. ")
-    print("     3. Open the metsudah site in chrome. ")
-    print("     4. Get a book from the Metsudah Eng translation site and save it in excel based on a hard coded value. ")
-    print("     5. Get a Verse and Word in Verse from the TanachXML data base based on Leningrad Codex from hard coded values. ")
-    print("     6. Create a word document of a book chapter of mixed Heb and Metsudah Eng based on hard coded values.")
-    print("     7. Create a word document with Notes sections of a book chapter of mixed Heb and Metsudah Eng based on hard coded values.")
+    print("     1. Get a SINGLE VERSE from GUI input retrieved from the metsudah site.")
+    print("     2. Get A CHAPTER of the Torah from the Metsudah Eng translation site based on a hard coded value. ")
+    print("     3. Open the metsudah SITE in chrome. ")
+    print("     4. Get A BOOK from the Metsudah Eng translation site and save it in EXCEL based on a hard coded value. ")
+    print("     5. Get a VERSE AND WORD in Verse from the TanachXML data base based on Leningrad Codex from hard coded values. ")
+    print("     6. Create a word document of A BOOK CHAPTER of mixed Heb and Metsudah Eng based on hard coded values.")
+    print("     7. Create a word document with NOTES sections of A BOOK CHAPTER of mixed Heb and Metsudah Eng based on hard coded values.")
+    print("     8. Create a word document of AN ENTIRE BOOK of mixed Heb and Metsudah Eng based on hard coded values.")
     choice = input("Please enter a number: 1 through 2:      (input) -->  ").strip()
     return choice
 
